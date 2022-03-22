@@ -10,11 +10,12 @@ using UnityEngine;
 
 public class Airplane : MonoBehaviour
 {
-    public bool propellerOn = false;  //true면 프로펠러가 돌아가고 false 안돌아간다.
-    public float propSpeed = 720.0f;
+    public bool propellerOn = false;    // true면 프로펠러가 돌아가고 false 안돌아간다.
+    public float propSpeed = 720.0f;    // 1초에 2바퀴 돌리기가 기본
     
-    private Transform propTransform = null;
+    private Transform propTransform = null; // 프로펠러의 트랜스폼
 
+    // 오브젝트가 생성이 완료됬을 때 실행되는 함수
     private void Awake()
     {
         //transform에 자식들 중에서 이름이 "Propeller"인 트랜스폼 찾기
@@ -23,9 +24,9 @@ public class Airplane : MonoBehaviour
 
     private void Update()
     {
-        if (propellerOn)
+        if (propellerOn)    // propellerOn이 true일때만 돌리기
         {
-            propTransform.Rotate(0, 0, propSpeed * Time.deltaTime);
+            propTransform.Rotate(0, 0, propSpeed * Time.deltaTime); // 프로펠러의 트랜스폼을 돌리기
         }
     }
 
