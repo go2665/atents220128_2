@@ -10,6 +10,10 @@ using UnityEngine;
 
 public class Airplane : MonoBehaviour
 {
+    public float moveSpeed = 3.0f;
+    public Transform[] waypoints = null;
+    int waypointIndex = 0;
+
     public bool propellerOn = false;    // true면 프로펠러가 돌아가고 false 안돌아간다.
     public float propSpeed = 720.0f;    // 1초에 2바퀴 돌리기가 기본
     
@@ -22,12 +26,56 @@ public class Airplane : MonoBehaviour
         propTransform = transform.Find("Propeller");
     }
 
+    private void Start()
+    {
+        propellerOn = true;
+        if(waypoints.Length > 0)
+        {
+            waypointIndex = 0;
+            transform.LookAt(waypoints[waypointIndex]);
+        }
+        else
+        {
+            Debug.Log("웨이포인트가 존재하지 않음.");
+        }
+    }
+
     private void Update()
     {
+        //transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * moveSpeed);        
+        transform.Translate(transform.forward * moveSpeed * Time.deltaTime, Space.World);
+        if(CheckArrive())
+        {
+            GoNextWaypoint();
+        }
+        
         if (propellerOn)    // propellerOn이 true일때만 돌리기
         {
             propTransform.Rotate(0, 0, propSpeed * Time.deltaTime); // 프로펠러의 트랜스폼을 돌리기
         }
+    }
+
+    bool CheckArrive()
+    {
+        //bool result = false;
+        //waypoints[waypointIndex].position; //도착지점
+        //transform.position;   //시작지점
+        
+        Vector3 distance = waypoints[waypointIndex].position - transform.position;
+        //if(distance.sqrMagnitude < 0.1f)
+        //{
+        //    result = true;
+        //}
+        //return result;
+
+        return distance.sqrMagnitude < 0.1f;
+    }
+
+    void GoNextWaypoint()
+    {
+        waypointIndex++;
+        waypointIndex %= waypoints.Length;
+        transform.LookAt(waypoints[waypointIndex]);
     }
 
     // Inspector창에서 값이 성공적으로 변경되었을 때 실행
