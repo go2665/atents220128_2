@@ -27,6 +27,8 @@ public class Player : MonoBehaviour, IDead
 
     private bool isAlive = true;
 
+    private Collider[] targets = new Collider[1];
+
     // 오브젝트가 만들어진 직후에 실행
     private void Awake()
     {
@@ -106,6 +108,31 @@ public class Player : MonoBehaviour, IDead
     {
         //Debug.Log("UseItem");
         anim.SetTrigger("OnUseItem");   // 스페이스 키를 눌렀을 때 트리거 실행        
+
+        Vector3 center = transform.position + transform.rotation * new Vector3(0, 1.2f, 1.0f);        
+        // 특정 영역에 컬라이더가 있는지 체크하는 함수
+        Physics.OverlapSphereNonAlloc(center, 0.5f, targets);   // 한번 만든 배열을 계속 사용한다.
+        //targets = Physics.OverlapSphere(center, 0.5f);  // 배열을 매번 새로 만든다.
+
+        // 오버랩된 오브젝트가 있는지 확인
+        if (targets[0] != null)
+        {
+            GameObject target = targets[0].gameObject;  // 오버랩된 오브젝트를 가져오기
+            IUseable useableItem = target.GetComponent<IUseable>();
+            while (useableItem == null && target.transform.parent != null)     // 최상단의 IUseable 찾기
+            {
+                target = target.transform.parent.gameObject;
+                useableItem = target.GetComponent<IUseable>();
+            }
+
+            if(useableItem != null)  // 사용 가능한 아이템이 있으면 사용한다.
+            {
+                //targetDoor.Open(true);
+                useableItem.OnUse();
+            }
+
+            targets[0] = null;  // 처리가 끝났으니 초기화
+        }
     }
 
     public void OnDead()
@@ -133,5 +160,17 @@ public class Player : MonoBehaviour, IDead
             moveInput = 0.0f;
             anim.SetBool("IsMove", false);
         }
+    }
+
+    // 씬창에서만 보이는 기즈모를 그릴때 호출되는 함수
+    // 프로그래머가 추가로 그릴 부분이 있을 때 사용
+    private void OnDrawGizmos()
+    {        
+        // 아이템을 사용할 때 사용할 아이템을 결정하는 영역 표시(이 영역에 있는 아이템을 사용하겠다)
+        Gizmos.color = Color.yellow;    // 기즈모의 색상을 노란색으로 변경
+        // 구의 중심점 계산
+        // 현재 위치 + Player의 회전값으로 회전시킨 offset값
+        Vector3 center = transform.position + transform.rotation * new Vector3(0, 1.2f, 1.0f);
+        Gizmos.DrawWireSphere(center, 0.5f);    //center위치에 반지름 0.5의 구를 그림
     }
 }

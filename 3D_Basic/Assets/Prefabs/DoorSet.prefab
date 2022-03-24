@@ -575,7 +575,6 @@ GameObject:
   - component: {fileID: 4733006976467219598}
   - component: {fileID: 1917413273937236723}
   - component: {fileID: 6502783356145364758}
-  - component: {fileID: 8448556279699175147}
   m_Layer: 0
   m_Name: DoorSet
   m_TagString: Untagged
@@ -631,18 +630,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8448556279699175147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4733006976467219601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fcce582edc85504b81043f5fe93fcb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4733006976509147433
 GameObject:
   m_ObjectHideFlags: 0
