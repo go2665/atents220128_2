@@ -575,9 +575,9 @@ GameObject:
   - component: {fileID: 4733006976467219598}
   - component: {fileID: 1917413273937236723}
   - component: {fileID: 6502783356145364758}
-  - component: {fileID: 1960413870627985930}
+  - component: {fileID: -5813934506120410817}
   m_Layer: 0
-  m_Name: DoorSet
+  m_Name: SlidingDoorSet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -622,7 +622,7 @@ Animator:
   m_GameObject: {fileID: 4733006976467219601}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7d6e0a017fc71cc4f88409d1750fb71d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 1d955e886b73cf743a89d2e11863f359, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -631,7 +631,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1960413870627985930
+--- !u!114 &-5813934506120410817
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -640,7 +640,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4733006976467219601}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f5e00118c8253446a1717f036cd6b65, type: 3}
+  m_Script: {fileID: 11500000, guid: 6cf6a99a831a1054a90654847a5484fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4733006976509147433
@@ -942,7 +942,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1d53840c6de501342babf522cc321c08, type: 2}
+  - {fileID: 2100000, guid: b7223de11b7c7bd46b9228be69574eea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
