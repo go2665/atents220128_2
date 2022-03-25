@@ -5,17 +5,26 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     private Animator anim = null;   //애니메이터
+    private bool isOpen = false;
+    public bool IsOpen
+    {
+        get
+        {
+            return isOpen;
+        }
+    }
     protected bool isEnterFront = false;    // true : 대상이 앞쪽으로 들어오고 있다.  false : 대상이 뒤쪽으로 들어오고 있다.
-    
+
     private void Awake()
     {
         anim = GetComponent<Animator>();    //애니메이터 캐싱
     }
 
     // 문이 열릴때 실행되는 함수
-    protected void Open()
-    {        
-        if(isEnterFront)   
+    public virtual bool Open()
+    {
+        //Debug.Log("Door Open");
+        if (isEnterFront)   
         {
             // front가 true면 문 앞에 플레이어가 있다.
             anim.SetTrigger("Open_Front");  // 문을 앞에서 뒤쪽으로 열라는 트리거
@@ -25,12 +34,31 @@ public class Door : MonoBehaviour
             // front가 false면 문 뒤에 플레이어가 있다.
             anim.SetTrigger("Open_Back");   // 문을 뒤쪽에서 앞으로 열라는 트리거
         }
+        isOpen = true;
+
+        return isOpen;
     }
 
     // 문이 닫힐때 실행되는 함수
-    protected void Close()
+    public virtual bool Close()
     {
+        //Debug.Log("Door Close");
         anim.SetTrigger("Close");   // 문을 닫으라는 트리거
+        isOpen = false;
+
+        return isOpen;
+    }
+
+    public void ToggleOpenClose()
+    {
+        if (isOpen)
+        {
+            Close();
+        }
+        else
+        {
+            Open();
+        }
     }
 
     // 문 앞에 있는지 뒤에 있는지 확인하는 함수

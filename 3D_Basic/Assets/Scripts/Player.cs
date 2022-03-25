@@ -118,6 +118,7 @@ public class Player : MonoBehaviour, IDead
         if (targets[0] != null)
         {
             GameObject target = targets[0].gameObject;  // 오버랩된 오브젝트를 가져오기
+            
             IUseable useableItem = target.GetComponent<IUseable>();
             while (useableItem == null && target.transform.parent != null)     // 최상단의 IUseable 찾기
             {

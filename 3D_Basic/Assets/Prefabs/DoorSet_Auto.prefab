@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4733006975863290158, guid: 03a6611fd466d9c45aeb586aed6bd8c5, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2659
+      objectReference: {fileID: 0}
     - target: {fileID: 4733006975863290162, guid: 03a6611fd466d9c45aeb586aed6bd8c5, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -65,12 +69,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4733006976467219601, guid: 03a6611fd466d9c45aeb586aed6bd8c5, type: 3}
       propertyPath: m_Name
-      value: DoorSet
+      value: DoorSet_Auto
       objectReference: {fileID: 0}
     - target: {fileID: 4733006976509147426, guid: 03a6611fd466d9c45aeb586aed6bd8c5, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4733006976509147426, guid: 03a6611fd466d9c45aeb586aed6bd8c5, type: 3}
+      propertyPath: m_VersionIndex
+      value: 373
+      objectReference: {fileID: 0}
+    - target: {fileID: 4733006976509147428, guid: 03a6611fd466d9c45aeb586aed6bd8c5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1d53840c6de501342babf522cc321c08, type: 2}
     - target: {fileID: 4733006976509147430, guid: 03a6611fd466d9c45aeb586aed6bd8c5, type: 3}
       propertyPath: m_Mesh
       value: 
