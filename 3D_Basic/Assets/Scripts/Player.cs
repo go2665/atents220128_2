@@ -13,7 +13,6 @@ public class Player : MonoBehaviour, IDead
     /// S : 후진
     /// A : 좌회전
     /// D : 우회전
-    /// ㅁㄴㅇㅁㄴㅇㅁㄴㅇ
 
     public float moveSpeed = 5.0f;      // 플레이어 이동 속도(기본값 1초에 5)
     public float spinSpeed = 360.0f;    // 플레이어 회전 속도(기본값 1초에 한바퀴)
@@ -145,7 +144,7 @@ public class Player : MonoBehaviour, IDead
             // 사망 연출(죽으면 플레이어는 뒤로 넘어진다. rigidbody 사용)        
             rigid.constraints = RigidbodyConstraints.None;      // 회전과 이동 묶어두었던 것을 풀기
             rigid.drag = 0;             // 마찰력 기본값으로 복구
-            rigid.angularDrag = 0.05f;
+            rigid.angularDrag = 0.1f;
             //rigid.AddForce(-transform.forward * 3.0f);    // 플레이어의 뒤쪽방향으로 힘을 가하기
             rigid.AddForceAtPosition(-transform.forward * 3.0f, transform.position + new Vector3(0, 1.5f, 0));
 
