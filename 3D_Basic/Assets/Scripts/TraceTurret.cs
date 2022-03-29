@@ -15,8 +15,7 @@ public class TraceTurret : MonoBehaviour
     public float smoothness = 3.0f;
      
     IEnumerator shotSave;                   // 코루틴용 IEnumerator 저장
-    bool startCouroutine = false;
-
+    
     Transform target = null;
 
     //private void Awake()
@@ -28,7 +27,7 @@ public class TraceTurret : MonoBehaviour
     private void Start()
     {
         shotSave = Shot();          // IEnumerator 저장
-        //StartCoroutine(shotSave);   // 저장한 IEnumerator로 코루틴 실행
+        StartCoroutine(shotSave);   // 저장한 IEnumerator로 코루틴 실행
     }
 
     private void Update()
@@ -36,24 +35,7 @@ public class TraceTurret : MonoBehaviour
         if (target != null)  // 무언가가 트리거 안에 들어와 있다.
         {
             LookTarget();   // 방향 돌리기
-            //Debug.Log($"In Angle : {CanShoot()}");
-            if(CanShoot())  // 쏘는 각도 안에 들어왔는지 확인
-            {
-                // 쏘는 각도 안이다.
-                if (!startCouroutine)   // 지금 안 쏘고 있는 중
-                {
-                    StartCoroutine(shotSave);   // 코루틴 시작
-                    startCouroutine = true;     // 코루틴 시작했다는 표시 남김
-                }
-            }
-            else
-            {
-                // 쏘는 각도 밖이다.
-                if(startCouroutine) // 지금 쏘고 있는 중
-                {
-                    StopShoot();    // 발사 중지
-                }
-            }
+            //Debug.Log($"In Angle : {CanShoot()}");            
         }
     }
 
@@ -92,16 +74,20 @@ public class TraceTurret : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(interval - shots * rateOfFire); // 1초-0.1초*5 대기
-            // 총알 연사 시작
-            for (int i = 0; i < shots; i++) 
+            if (target != null && CanShoot())   // 대상이 있고 쏠 수 있을때만 진행
             {
-                //GameObject bulletInstance = Instantiate(bullet, shotTransform);  // 총알 생성
-                //bulletInstance.transform.parent = null;
-                Instantiate(bullet, shotTransform.position, shotTransform.rotation);
+                yield return new WaitForSeconds(interval - shots * rateOfFire); // 1초-0.1초*5 대기
+                                                                                // 총알 연사 시작
+                for (int i = 0; i < shots; i++)
+                {
+                    //GameObject bulletInstance = Instantiate(bullet, shotTransform);  // 총알 생성
+                    //bulletInstance.transform.parent = null;
+                    Instantiate(bullet, shotTransform.position, shotTransform.rotation);
 
-                yield return new WaitForSeconds(rateOfFire);    // 0.1초 대기
+                    yield return new WaitForSeconds(rateOfFire);    // 0.1초 대기
+                }
             }
+            yield return null;  // 다음 프레임으로(Update 함수처럼 사용중)
         }
     }
 
@@ -123,14 +109,6 @@ public class TraceTurret : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             target = null;            
-            StopShoot();    // 범위 밖이면 쏘는 것도 중지
         }
-    }
-
-    private void StopShoot()
-    {
-        //StopAllCoroutines();
-        StopCoroutine(shotSave);    // 총알 쏘는 코루틴 정지
-        startCouroutine = false;    // 코루틴 정지 중이라고 표시
     }
 }
