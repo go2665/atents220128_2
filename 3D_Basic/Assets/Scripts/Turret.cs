@@ -13,12 +13,12 @@ public enum TurretMode
 public class Turret : MonoBehaviour
 {
     // 공통    
-    public TurretMode mode = TurretMode.STAY;      //터렛의 기본 모드는 STAY
-    private Gun gun = null;
+    public TurretMode mode = TurretMode.STAY;      // 터렛의 기본 모드는 STAY
+    private Gun gun = null;                        // 터렛의 총
 
     // TurnMode용 변수
-    [Header("TurnMode용 변수")]
-    [Range(0, 180.0f)]
+    [Header("TurnMode용 변수")]              // 인스펙터 창에 해더 추가
+    [Range(0, 180.0f)]                      // 아래 변수의 범위를 지정(슬라이더바로 UI변경)
     public float halfAngle = 10.0f;         // 포신이 회전하는 각도
     public float rotateSpeed = 90.0f;       // 초당 회전 속도
     float rotateDirection = 1.0f;           // 회전 방향 결정용 변수
@@ -37,17 +37,17 @@ public class Turret : MonoBehaviour
 
     private void Awake()
     {
-        gun = transform.GetComponentInChildren<Gun>();
+        gun = transform.GetComponentInChildren<Gun>();  // 자식으로 있는 총 찾기
     }
 
     private void Start()
     {
-        InitializeGun(1.0f, 3, 0.1f);
+        InitializeGun(1.0f, 3, 0.1f);   // 총의 특성 설정(발사 인터벌과 연사 등)
         switch (mode)
         {
             case TurretMode.STAY:
             case TurretMode.TURN:
-                StartFire();
+                StartFire();            //Stay와 Turn모드는 시작하면 무조건 발사
                 break;
             case TurretMode.TRACE:
                 break;
@@ -58,7 +58,7 @@ public class Turret : MonoBehaviour
 
     private void Update()
     {
-        switch (mode)
+        switch (mode)               // 각각의 모드에 맞는 업데이트 함수 실행
         {
             case TurretMode.STAY:
                 StayMode();
@@ -76,7 +76,7 @@ public class Turret : MonoBehaviour
 
     void InitializeGun(float interval, int shots, float rateOfFire)
     {
-        gun.Initialize(interval, shots, rateOfFire);
+        gun.Initialize(interval, shots, rateOfFire);    // 총 특성 초기화
     }
 
     void StayMode()
@@ -113,7 +113,7 @@ public class Turret : MonoBehaviour
 
             if(CanShoot())
             {
-                StartFire();
+                StartFire();    // 쏠 대상이 있고 일정 각도안에 들어왔을 때만 발사
             }
             else
             {
@@ -173,11 +173,13 @@ public class Turret : MonoBehaviour
         }
     }
 
+    // 터렛에 달린 총 발사
     public void StartFire()
     {
         gun.StartFire();
     }
 
+    // 터렛에 달린 총 발사 중지
     public void StopFire()
     {
         gun.StopFire();
