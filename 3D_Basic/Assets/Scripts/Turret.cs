@@ -13,12 +13,12 @@ public enum TurretMode
 public class Turret : MonoBehaviour
 {
     // 공통    
-    public TurretMode mode = TurretMode.STAY;
+    public TurretMode mode = TurretMode.STAY;      //터렛의 기본 모드는 STAY
     private Gun gun = null;
 
     // TurnMode용 변수
     [Header("TurnMode용 변수")]
-    [Range(0,180.0f)]
+    [Range(0, 180.0f)]
     public float halfAngle = 10.0f;         // 포신이 회전하는 각도
     public float rotateSpeed = 90.0f;       // 초당 회전 속도
     float rotateDirection = 1.0f;           // 회전 방향 결정용 변수

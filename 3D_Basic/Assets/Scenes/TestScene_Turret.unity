@@ -9337,7 +9337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 2
-  halfAngle: 15
+  halfAngle: 250
   rotateSpeed: 90
   fireAngle: 5
   smoothness: 3
@@ -12437,13 +12437,9 @@ PrefabInstance:
       objectReference: {fileID: 932364124}
     - target: {fileID: 49817038135426785, guid: c23f90104f4afa14896e978502c2f55b, type: 3}
       propertyPath: m_VersionIndex
-      value: 718
+      value: 724
       objectReference: {fileID: 0}
     - target: {fileID: 49817038135426786, guid: c23f90104f4afa14896e978502c2f55b, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 932364124}
-    - target: {fileID: 49817038135426789, guid: c23f90104f4afa14896e978502c2f55b, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 932364124}
@@ -12453,13 +12449,9 @@ PrefabInstance:
       objectReference: {fileID: 495505914}
     - target: {fileID: 49817038710401967, guid: c23f90104f4afa14896e978502c2f55b, type: 3}
       propertyPath: m_VersionIndex
-      value: 536
+      value: 542
       objectReference: {fileID: 0}
     - target: {fileID: 49817038710402000, guid: c23f90104f4afa14896e978502c2f55b, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 495505914}
-    - target: {fileID: 49817038710402003, guid: c23f90104f4afa14896e978502c2f55b, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 495505914}
