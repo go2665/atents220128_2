@@ -2083,8 +2083,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b970d48376a49541bc910bfac80d3c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: 2
-  halfAngle: 250
+  mode: 0
+  additionalGunCount: 0
+  halfAngle: 30
   rotateSpeed: 90
   fireAngle: 5
   smoothness: 3

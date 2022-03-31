@@ -14,7 +14,12 @@ public class Turret : MonoBehaviour
 {
     // 공통    
     public TurretMode mode = TurretMode.STAY;      // 터렛의 기본 모드는 STAY
-    private Gun[] guns = null;                        // 터렛의 총
+    public int additionalGunCount = 0;
+    private int oldAdditionalGnuCount = 0;
+    private Gun[] guns = null;                     // 터렛의 총
+    private Transform gunBase = null;
+    private GameObject gunObject = null;
+    private Queue<GameObject> additionalGuns = new Queue<GameObject>(0);
 
     // TurnMode용 변수
     [Header("TurnMode용 변수")]              // 인스펙터 창에 해더 추가
@@ -30,7 +35,7 @@ public class Turret : MonoBehaviour
     public float fireAngle = 5.0f;          // 발사 가능한 각도
     public float smoothness = 3.0f;         // 움직임 정도(1/3초에 360도 정도의 속도)
     private Transform target = null;        // 추적 대상
-    private Transform gunBase = null;
+    
 
     // 총알 발사 조건
     // 1. 모조건 발사
@@ -39,8 +44,10 @@ public class Turret : MonoBehaviour
     private void Awake()
     {
         gunBase = transform.Find("GunBase");
+        gunObject = gunBase.GetChild(0).gameObject;
+        AddGuns();
         guns = gunBase.GetComponentsInChildren<Gun>();  // 자식으로 있는 총 찾기
-    }
+    }    
 
     private void Start()
     {
@@ -194,6 +201,45 @@ public class Turret : MonoBehaviour
         foreach (Gun gun in guns)
         {
             gun.StopFire();
+        }
+    }
+
+    private void AddGuns()
+    {
+        additionalGuns = new Queue<GameObject>(additionalGunCount);
+
+        for (int i = 0; i < additionalGunCount; i++)
+        {
+            GameObject cloneGun = Instantiate(gunObject, gunBase);
+            cloneGun.transform.Translate(cloneGun.transform.up * (i + 1) * 0.2f);
+            additionalGuns.Enqueue(cloneGun);
+        }
+    }
+
+    private void RemoveGuns()
+    {
+        while (additionalGuns.Count > 0)
+        {
+            GameObject clonGun = additionalGuns.Dequeue();
+            Destroy(clonGun);
+        }
+    }
+
+    private void OnValidate()
+    {
+        if (additionalGunCount != oldAdditionalGnuCount)
+        {
+            if (gunBase == null)
+            {
+                gunBase = transform.Find("GunBase");
+            }
+            if (gunObject == null)
+            {
+                gunObject = gunBase.GetChild(0).gameObject;
+            }
+            RemoveGuns();
+            AddGuns();
+            additionalGunCount = oldAdditionalGnuCount;
         }
     }
 }
