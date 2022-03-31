@@ -195,7 +195,7 @@ public class Turret : MonoBehaviour
     {
         foreach (Gun gun in guns)   // guns에 있는 모든 총 발사 중지
         {
-            gun.StopFire();
+            gun.StopFire();   
         }
     }
 
@@ -224,23 +224,23 @@ public class Turret : MonoBehaviour
         }
     }
 
-    // 인스펙터 창에서 값이 정상적으로 변경되었을 때 실행
-    private void OnValidate()
-    {
-        if (additionalGunCount != oldAdditionalGunCount)    // additionalGunCount가 변경되었을 때만 실행
-        {
-            // gunBase나 gunObject가 null이면 찾아서 저장
-            if (gunBase == null)
-            {
-                gunBase = transform.Find("GunBase");
-            }
-            if (gunObject == null)
-            {
-                gunObject = gunBase.GetChild(0).gameObject;
-            }
-            RemoveGuns();   // 기존에 추가된 총 모두 삭제
-            AddGuns();      // 새롭게 총 추가
-            oldAdditionalGunCount = additionalGunCount;     // oldAdditionalGunCount 갱신
-        }
-    }
+    //// 인스펙터 창에서 값이 정상적으로 변경되었을 때 실행
+    //private void OnValidate()
+    //{
+    //    if (additionalGunCount != oldAdditionalGunCount)    // additionalGunCount가 변경되었을 때만 실행
+    //    {
+    //        // gunBase나 gunObject가 null이면 찾아서 저장
+    //        if (gunBase == null)
+    //        {
+    //            gunBase = transform.Find("GunBase");
+    //        }
+    //        if (gunObject == null)
+    //        {
+    //            gunObject = gunBase.GetChild(0).gameObject;
+    //        }
+    //        RemoveGuns();   // 기존에 추가된 총 모두 삭제
+    //        AddGuns();      // 새롭게 총 추가
+    //        oldAdditionalGunCount = additionalGunCount;     // oldAdditionalGunCount 갱신
+    //    }
+    //}
 }
