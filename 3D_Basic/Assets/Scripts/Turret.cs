@@ -30,6 +30,7 @@ public class Turret : MonoBehaviour
     public float fireAngle = 5.0f;          // 발사 가능한 각도
     public float smoothness = 3.0f;         // 움직임 정도(1/3초에 360도 정도의 속도)
     private Transform target = null;        // 추적 대상
+    private Transform gunBase = null;
 
     // 총알 발사 조건
     // 1. 모조건 발사
@@ -37,7 +38,8 @@ public class Turret : MonoBehaviour
 
     private void Awake()
     {
-        guns = transform.GetComponentsInChildren<Gun>();  // 자식으로 있는 총 찾기
+        gunBase = transform.Find("GunBase");
+        guns = gunBase.GetComponentsInChildren<Gun>();  // 자식으로 있는 총 찾기
     }
 
     private void Start()
@@ -103,10 +105,7 @@ public class Turret : MonoBehaviour
             //Debug.Log(targetAngle);
             // 실제 회전은 여기서 적용. y축으로 targetAngle만큼 회전하는 쿼터니언 생성
             // 생성한 쿼터니언을 기둥의 회전으로 적용
-            foreach (Gun gun in guns)
-            {
-                gun.transform.rotation = Quaternion.Euler(0, targetAngle, 0);
-            }
+            gunBase.rotation = Quaternion.Euler(0, targetAngle, 0);
         }
     }
 
@@ -148,21 +147,18 @@ public class Turret : MonoBehaviour
         // 보간을 응용해서 부드럽게 움직이는 연출이 가능
         Vector3 dir = target.position - transform.position; //방향백터 계산(터렛->플레이어)
         dir.y = 0;
-        Debug.Log(dir);
-        foreach (Gun gun in guns)
-        {
-            gun.transform.rotation =
-                Quaternion.Slerp(
-                    gun.transform.rotation,             // 시작할때의 회전 상태
-                    Quaternion.LookRotation(dir),   // 끝났을 때의 회전 상태
-                    smoothness * Time.deltaTime);   // 시작과 끝 사이 지점(0이면 시작, 1이면 끝)
-        }
+        //Debug.Log(dir);
+        gunBase.rotation =
+            Quaternion.Slerp(
+                gunBase.rotation,             // 시작할때의 회전 상태
+                Quaternion.LookRotation(dir),   // 끝났을 때의 회전 상태
+                smoothness * Time.deltaTime);   // 시작과 끝 사이 지점(0이면 시작, 1이면 끝)
     }
 
     private bool CanShoot()
     {
         // 총구 방향 백터와 터렛에서 플레이어로 가는 방향 백터사이의 각도를 구함
-        float angle = Vector3.Angle(guns[0].transform.forward, target.position - transform.position);
+        float angle = Vector3.Angle(gunBase.forward, target.position - transform.position);
         //Debug.Log(angle);
         return Mathf.Abs(angle) < fireAngle;
     }
