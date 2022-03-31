@@ -14,7 +14,7 @@ public class Turret : MonoBehaviour
 {
     // 공통    
     public TurretMode mode = TurretMode.STAY;      // 터렛의 기본 모드는 STAY
-    private Gun gun = null;                        // 터렛의 총
+    private Gun[] guns = null;                        // 터렛의 총
 
     // TurnMode용 변수
     [Header("TurnMode용 변수")]              // 인스펙터 창에 해더 추가
@@ -37,7 +37,7 @@ public class Turret : MonoBehaviour
 
     private void Awake()
     {
-        gun = transform.GetComponentInChildren<Gun>();  // 자식으로 있는 총 찾기
+        guns = transform.GetComponentsInChildren<Gun>();  // 자식으로 있는 총 찾기
     }
 
     private void Start()
@@ -76,7 +76,10 @@ public class Turret : MonoBehaviour
 
     void InitializeGun(float interval, int shots, float rateOfFire)
     {
-        gun.Initialize(interval, shots, rateOfFire);    // 총 특성 초기화
+        foreach (Gun gun in guns)
+        {
+            gun.Initialize(interval, shots, rateOfFire);    // 총 특성 초기화
+        }
     }
 
     void StayMode()
@@ -86,7 +89,7 @@ public class Turret : MonoBehaviour
 
     void TurnMode()
     {
-        if (gun != null)
+        if (guns != null)
         {
             // targetAngle은 매프레임 증가(증가 방향은 rotateDirection에 의해 결정된다)
             targetAngle += rotateDirection * rotateSpeed * Time.deltaTime;
@@ -100,7 +103,10 @@ public class Turret : MonoBehaviour
             //Debug.Log(targetAngle);
             // 실제 회전은 여기서 적용. y축으로 targetAngle만큼 회전하는 쿼터니언 생성
             // 생성한 쿼터니언을 기둥의 회전으로 적용
-            gun.transform.rotation = Quaternion.Euler(0, targetAngle, 0);
+            foreach (Gun gun in guns)
+            {
+                gun.transform.rotation = Quaternion.Euler(0, targetAngle, 0);
+            }
         }
     }
 
@@ -142,17 +148,21 @@ public class Turret : MonoBehaviour
         // 보간을 응용해서 부드럽게 움직이는 연출이 가능
         Vector3 dir = target.position - transform.position; //방향백터 계산(터렛->플레이어)
         dir.y = 0;
-        transform.rotation =
-            Quaternion.Slerp(
-                transform.rotation,             // 시작할때의 회전 상태
-                Quaternion.LookRotation(dir),   // 끝났을 때의 회전 상태
-                smoothness * Time.deltaTime);   // 시작과 끝 사이 지점(0이면 시작, 1이면 끝)
+        Debug.Log(dir);
+        foreach (Gun gun in guns)
+        {
+            gun.transform.rotation =
+                Quaternion.Slerp(
+                    gun.transform.rotation,             // 시작할때의 회전 상태
+                    Quaternion.LookRotation(dir),   // 끝났을 때의 회전 상태
+                    smoothness * Time.deltaTime);   // 시작과 끝 사이 지점(0이면 시작, 1이면 끝)
+        }
     }
 
     private bool CanShoot()
     {
         // 총구 방향 백터와 터렛에서 플레이어로 가는 방향 백터사이의 각도를 구함
-        float angle = Vector3.Angle(gun.transform.forward, target.position - transform.position);
+        float angle = Vector3.Angle(guns[0].transform.forward, target.position - transform.position);
         //Debug.Log(angle);
         return Mathf.Abs(angle) < fireAngle;
     }
@@ -176,12 +186,18 @@ public class Turret : MonoBehaviour
     // 터렛에 달린 총 발사
     public void StartFire()
     {
-        gun.StartFire();
+        foreach (Gun gun in guns)
+        {
+            gun.StartFire();
+        }
     }
 
     // 터렛에 달린 총 발사 중지
     public void StopFire()
     {
-        gun.StopFire();
+        foreach (Gun gun in guns)
+        {
+            gun.StopFire();
+        }
     }
 }
