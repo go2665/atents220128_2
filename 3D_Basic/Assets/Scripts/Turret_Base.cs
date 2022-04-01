@@ -5,6 +5,10 @@ using UnityEngine;
 public class Turret_Base : MonoBehaviour
 {
     public int additionalGunCount = 0;                  // 추가될 총의 개수
+    public float interval  = 1.0f;                      // 총 발사 간격
+    public int shots = 3;                               // 총 연사 수
+    public float rateOfFire = 0.1f;                     // 총 연사시 간격
+
     private Gun[] guns = null;                          // 터렛의 총들
     private Transform gunBase = null;                   // 총들이 부모 transform
     private GameObject gunObject = null;                // 기본 총 오브젝트(복사될 원본)
@@ -15,7 +19,7 @@ public class Turret_Base : MonoBehaviour
         gunBase = transform.Find("GunBase");            // 총이 자식으로 붙을 gunBase 찾기
         gunObject = gunBase.GetChild(0).gameObject;     // 복제될 원본 총 오브젝트 찾기
         AddGuns();                                      // additionalGunCount만큼 총을 추가
-        InitializeGun(1.0f, 3, 0.1f);                   // 총의 특성 설정(발사 인터벌과 연사 등)
+        InitializeGun(interval, shots, rateOfFire);     // 총의 특성 설정(발사 인터벌과 연사 등)
     }
 
     // additionalGunCount만큼 총을 추가해주는 함수
@@ -44,11 +48,11 @@ public class Turret_Base : MonoBehaviour
     }
 
     // 총의 발사 인터벌, 연사수, 연사간격 설정
-    private void InitializeGun(float interval, int shots, float rateOfFire)
+    private void InitializeGun(float _interval, int _shots, float _rateOfFire)
     {
         foreach (Gun gun in guns)   // guns에 들어있는 모든 총들을 초기화
         {
-            gun.Initialize(interval, shots, rateOfFire);    // 총 특성 초기화
+            gun.Initialize(_interval, _shots, _rateOfFire);    // 총 특성 초기화
         }
     }
 
