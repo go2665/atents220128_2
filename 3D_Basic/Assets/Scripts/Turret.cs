@@ -15,7 +15,7 @@ public class Turret : MonoBehaviour
     // 공통    
     public TurretMode mode = TurretMode.STAY;       // 터렛의 기본 모드는 STAY
     public int additionalGunCount = 0;              // 추가될 총의 개수
-    private int oldAdditionalGunCount = 0;          // additionalGunCount의 이전 값
+    //private int oldAdditionalGunCount = 0;          // additionalGunCount의 이전 값
     private Gun[] guns = null;                      // 터렛의 총들
     private Transform gunBase = null;               // 총들이 부모 transform
     private GameObject gunObject = null;            // 기본 총 오브젝트(복사될 원본)

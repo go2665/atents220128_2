@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class Turret_Base : MonoBehaviour
 {
-    public int additionalGunCount = 0;              // 추가될 총의 개수
-    private Gun[] guns = null;                      // 터렛의 총들
-    private Transform gunBase = null;               // 총들이 부모 transform
-    private GameObject gunObject = null;            // 기본 총 오브젝트(복사될 원본)
+    public int additionalGunCount = 0;                  // 추가될 총의 개수
+    private Gun[] guns = null;                          // 터렛의 총들
+    private Transform gunBase = null;                   // 총들이 부모 transform
+    private GameObject gunObject = null;                // 기본 총 오브젝트(복사될 원본)
     private Queue<GameObject> additionalGuns = new Queue<GameObject>(0);    // 추가로 생성된 총들의 목록
 
     protected void Initiallize()
     {
         gunBase = transform.Find("GunBase");            // 총이 자식으로 붙을 gunBase 찾기
         gunObject = gunBase.GetChild(0).gameObject;     // 복제될 원본 총 오브젝트 찾기
-        AddGuns();
+        AddGuns();                                      // additionalGunCount만큼 총을 추가
         InitializeGun(1.0f, 3, 0.1f);                   // 총의 특성 설정(발사 인터벌과 연사 등)
     }
 
