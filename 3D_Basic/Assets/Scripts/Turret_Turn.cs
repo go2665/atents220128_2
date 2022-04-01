@@ -31,6 +31,6 @@ public class Turret_Turn : Turret_Base
         //Debug.Log(targetAngle);
         // 실제 회전은 여기서 적용. y축으로 targetAngle만큼 회전하는 쿼터니언 생성
         // 생성한 쿼터니언을 기둥의 회전으로 적용
-        TurnGunBase(Quaternion.Euler(0, targetAngle, 0));
+        GunBase.rotation = Quaternion.Euler(0, targetAngle, 0);
     }
 }

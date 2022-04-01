@@ -64,11 +64,6 @@ public class Turret_Base : MonoBehaviour
         }
     }
 
-    protected void TurnGunBase(Quaternion rotate)
-    {        
-        gunBase.rotation = rotate;
-    }
-
     // 터렛에 달린 총 발사
     public virtual void StartFire()
     {
