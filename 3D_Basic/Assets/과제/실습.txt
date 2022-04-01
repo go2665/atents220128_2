@@ -62,3 +62,13 @@
  - Turret_Stay 완성하기
 시간
  - 12시까지
+
+목표
+ - Turret_Turn 완성하기
+시간
+ - 1시까지
+
+ 목표
+ - Turret_Trace 완성하기
+시간
+ - 2시까지
