@@ -7,8 +7,9 @@ public class MemoryPool : MonoBehaviour
     private int currentSize = 0;                // 큐의 현재 크기 + 새로 생성되는 적 이름에 붙일 인덱스 번호로도 싸용        
     private Queue<GameObject> pool = null;      // 대량으로 생성해 놓은 메모리 풀
                                                  
+    public int poolSize = 8;                    // 풀의 최대 크기
     public GameObject objPrefab = null;         // 생성할 오브젝트의 종류
-    public int poolSize = 8;
+    public Transform parent = null;            // 생성된 오브젝트가 붙을 오브젝트
 
     private static MemoryPool instance = null;  // 싱글톤은 나중에 제거할 부분(GameManager만들어진 후)
     public static MemoryPool Inst
@@ -88,9 +89,10 @@ public class MemoryPool : MonoBehaviour
     }
 
     // 파라메터로 받은 오브젝트를 pool로 돌려주는 함수
-    public void ReturnEnemy(GameObject obj)
+    public void ReturnObject(GameObject obj)
     {
         obj.SetActive(false);
+        obj.transform.parent = this.transform;
         pool.Enqueue(obj);
     }
 }

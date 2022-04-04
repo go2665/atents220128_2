@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     public float speed = 5.0f;      // 총알의 이동 속도
     public float lifeTime = 3.0f;   // 총알 지속 시간
     Rigidbody rigid = null;         // 움직이는 물체라 rigidbody 추가 + 이동 처리용
+    float timeCount = 0.0f;
 
     // 오브젝트가 생성완료되었을 때 실행
     private void Awake()
@@ -17,11 +18,31 @@ public class Bullet : MonoBehaviour
         rigid = GetComponent<Rigidbody>();  //rigidbody 저장
     }
 
-    // 최초의 Update가 실행되기 직전에 실행
-    private void Start()
+    // 오브젝트가 활성화 될 때 실행
+    private void OnEnable()
     {
+        // 재사용을 위한 데이터 초기화
+        timeCount = 0.0f;
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;        
+        rigid.useGravity = false;
+        rigid.angularVelocity = Vector3.zero;
+
         rigid.velocity = transform.forward * speed; // 물체의 이동 방향과 속도 설정
-        Destroy(this.gameObject, lifeTime);
+    }
+
+    private void Update()
+    {
+        timeCount += Time.deltaTime;
+        if(timeCount > lifeTime)
+        {
+            Dead();
+        }
+    }
+
+    void Dead()
+    {
+        MemoryPool.Inst.ReturnObject(this.gameObject);
     }
 
     // 다른 collider랑 충돌했을 때 실행되는 함수
@@ -47,7 +68,8 @@ public class Bullet : MonoBehaviour
             rigid.AddForce(reflect * 2.0f, ForceMode.Impulse); // 부딪쳐서 튕기는 느낌 추가            
             Vector3 randomDir = new Vector3(Random.value, Random.value, Random.value);  //랜덤 방향 지정            
             rigid.AddTorque(randomDir * 5.0f, ForceMode.Impulse); // 바닥에 떨어져서 구르는 느낌 추가
-            Destroy(this.gameObject, lifeTime); // 3초 뒤에 사라지기
+
+            timeCount = 0.0f;
         }
         
     }

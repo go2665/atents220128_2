@@ -49,7 +49,11 @@ public class Gun : MonoBehaviour
             // 총알 연사 시작
             for (int i = 0; i < shots; i++)
             {
-                Instantiate(bullet, shotTransform.position, shotTransform.rotation);    // 총알 생성
+                //Instantiate(bullet, shotTransform.position, shotTransform.rotation);    // 총알 생성
+                bullet = MemoryPool.Inst.GetObject();
+                bullet.transform.position = shotTransform.position;
+                bullet.transform.rotation = shotTransform.rotation;
+                bullet.transform.parent = MemoryPool.Inst.parent;
 
                 yield return new WaitForSeconds(rateOfFire);    // 0.1초 대기
             }
