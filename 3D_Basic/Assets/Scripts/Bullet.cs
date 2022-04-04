@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
     // 2. 충돌 감지 + 대상 해치우기
 
     public float speed = 5.0f;      // 총알의 이동 속도
+    public float lifeTime = 3.0f;   // 총알 지속 시간
     Rigidbody rigid = null;         // 움직이는 물체라 rigidbody 추가 + 이동 처리용
 
     // 오브젝트가 생성완료되었을 때 실행
@@ -20,6 +21,7 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         rigid.velocity = transform.forward * speed; // 물체의 이동 방향과 속도 설정
+        Destroy(this.gameObject, lifeTime);
     }
 
     // 다른 collider랑 충돌했을 때 실행되는 함수
@@ -45,7 +47,7 @@ public class Bullet : MonoBehaviour
             rigid.AddForce(reflect * 2.0f, ForceMode.Impulse); // 부딪쳐서 튕기는 느낌 추가            
             Vector3 randomDir = new Vector3(Random.value, Random.value, Random.value);  //랜덤 방향 지정            
             rigid.AddTorque(randomDir * 5.0f, ForceMode.Impulse); // 바닥에 떨어져서 구르는 느낌 추가
-            Destroy(this.gameObject, 3.0f); // 3초 뒤에 사라지기
+            Destroy(this.gameObject, lifeTime); // 3초 뒤에 사라지기
         }
         
     }

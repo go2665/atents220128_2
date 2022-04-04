@@ -1088,6 +1088,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   additionalGunCount: 2
+  interval: 1
+  shots: 3
+  rateOfFire: 0.1
 --- !u!1 &6959422978229184841
 GameObject:
   m_ObjectHideFlags: 0
