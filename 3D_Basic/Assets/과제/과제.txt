@@ -68,3 +68,10 @@ TraceTurret 코드 읽고 이해해보기
  2. Bullet용 메모리 풀을 만들기
     (FakeFleppyBird 코드 참조
      https://github.com/go2665/atents220128)
+
+
+4/5
+목표
+ - Enemy에 추적 기능 만들기
+   1. Enemy에서 일정범위 안에 Player가 있으면 Player쪽으로 이동
+   2. Player가 일정범위를 벗어나면 다시 순찰 계속
