@@ -72,3 +72,11 @@
  - Turret_Trace 완성하기
 시간
  - 2시까지
+
+
+4/5
+목표
+ - 게임이 시작되면 Enemy가 길찾기로 이동한다.
+ - StartPoint와 EndPoint를 계속 왕복한다.
+시간
+ - 2시까지
