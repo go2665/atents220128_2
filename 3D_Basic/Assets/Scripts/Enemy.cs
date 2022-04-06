@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     NavMeshAgent agent = null;
     Transform target = null;
-    int index = 0;
+    int waypointIndex = 0;
     int enterCounter = 0;
     int EnterCounter
     {
@@ -30,8 +30,8 @@ public class Enemy : MonoBehaviour
             enterCounter = Mathf.Clamp(value, 0, 2);
         }
     }
-    EnemyState state = EnemyState.PATROL;
     float timeCount = 0.0f;    
+    EnemyState state = EnemyState.PATROL;
 
     private void Awake()
     {
@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        agent.SetDestination(waypoints[index].position);
+        agent.SetDestination(waypoints[waypointIndex].position);
     }
 
     bool CheckArrive()
@@ -51,9 +51,9 @@ public class Enemy : MonoBehaviour
 
     void GoNextWaypoint()
     {
-        index++;
-        index = index % waypoints.Length;
-        agent.SetDestination(waypoints[index].position);
+        waypointIndex++;
+        waypointIndex = waypointIndex % waypoints.Length;
+        agent.SetDestination(waypoints[waypointIndex].position);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -61,7 +61,7 @@ public class Enemy : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             EnterCounter++;
-            StateTransition(EnterCounter, other.transform);
+            StateTransition(EnterCounter, other.gameObject);
 
             //Debug.Log($"대상 확인 : {other.name}");
             //agent.SetDestination(other.transform.position);
@@ -73,14 +73,33 @@ public class Enemy : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             EnterCounter--;
-            if (state == EnemyState.PATROL)
-            {
-                StateTransition(EnterCounter, null);
-            }
-            else
-            {
-                StateTransition(EnterCounter, other.transform);
-            }
+            StateTransition(EnterCounter, other.gameObject);
+        }
+    }
+
+    void StateTransition(int counter, GameObject _target)
+    {
+        state = (EnemyState)counter;
+
+        switch (state)
+        {
+            case EnemyState.PATROL:
+                target = null;
+                agent.isStopped = false;
+                // 원래 순찰 경로로 돌아가기
+                break;
+            case EnemyState.CHASE:
+                target = _target.transform;
+                agent.isStopped = false;
+                break;
+            case EnemyState.ATTACK:
+                target = _target.transform;
+                agent.isStopped = true;
+                break;
+            default:
+                target = null;
+                agent.isStopped = true;
+                break;
         }
     }
 
@@ -110,27 +129,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void StateTransition(int counter, Transform _target)
-    {
-        state = (EnemyState)counter;
-        target = _target;
-
-        switch (state)
-        {
-            case EnemyState.PATROL:
-                agent.isStopped = false;
-                // 원래 순찰 경로로 돌아가기
-                break;
-            case EnemyState.CHASE:
-                agent.isStopped = false;
-                break;
-            case EnemyState.ATTACK:
-                agent.isStopped = true;
-                break;
-            default:
-                break;
-        }
-    }
+    
     
 
     //void Test()
