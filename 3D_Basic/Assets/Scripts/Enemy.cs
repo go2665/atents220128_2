@@ -3,13 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum EnemyState
+{
+    PATROL = 0,
+    CHASE,
+    ATTACK
+}
+
 public class Enemy : MonoBehaviour
 {
     public Transform[] waypoints = null;
-    
+    public float attackDelay = 1.0f;
+
     NavMeshAgent agent = null;
-    int index = 0;
     Transform target = null;
+    int index = 0;
+    int enterCounter = 0;
+    int EnterCounter
+    {
+        get
+        {
+            return enterCounter;
+        }
+        set
+        {
+            enterCounter = Mathf.Clamp(value, 0, 2);
+        }
+    }
+    EnemyState state = EnemyState.PATROL;
+    float timeCount = 0.0f;    
 
     private void Awake()
     {
@@ -19,15 +41,7 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        //agent.SetDestination(waypoints[index].position);
-    }
-
-    private void Update()
-    {
-        //if(CheckArrive())
-        //{
-        //    GoNextWaypoint();
-        //}
+        agent.SetDestination(waypoints[index].position);
     }
 
     bool CheckArrive()
@@ -46,9 +60,11 @@ public class Enemy : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            Debug.Log($"대상 확인 : {other.name}");
+            EnterCounter++;
+            StateTransition(EnterCounter, other.transform);
+
+            //Debug.Log($"대상 확인 : {other.name}");
             //agent.SetDestination(other.transform.position);
-            target = other.transform;
         }
     }
 
@@ -56,19 +72,65 @@ public class Enemy : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            target = null;
-            agent.isStopped = true;
+            EnterCounter--;
+            if (state == EnemyState.PATROL)
+            {
+                StateTransition(EnterCounter, null);
+            }
+            else
+            {
+                StateTransition(EnterCounter, other.transform);
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        if (target != null)
+        switch (state)
         {
-            agent.SetDestination(target.position);
+            case EnemyState.PATROL:
+                if (CheckArrive())
+                {
+                    GoNextWaypoint();
+                }
+                break;
+            case EnemyState.CHASE:
+                agent.SetDestination(target.position);
+                break;
+            case EnemyState.ATTACK:
+                timeCount += Time.fixedDeltaTime;
+                if (timeCount > attackDelay)
+                {
+                    Debug.Log($"공격 : {Time.realtimeSinceStartup}");
+                    timeCount = 0;
+                }
+                break;
+            default:
+                break;
         }
     }
 
+    void StateTransition(int counter, Transform _target)
+    {
+        state = (EnemyState)counter;
+        target = _target;
+
+        switch (state)
+        {
+            case EnemyState.PATROL:
+                agent.isStopped = false;
+                // 원래 순찰 경로로 돌아가기
+                break;
+            case EnemyState.CHASE:
+                agent.isStopped = false;
+                break;
+            case EnemyState.ATTACK:
+                agent.isStopped = true;
+                break;
+            default:
+                break;
+        }
+    }
     
 
     //void Test()
