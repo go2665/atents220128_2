@@ -5,9 +5,11 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    NavMeshAgent agent = null;
     public Transform[] waypoints = null;
+    
+    NavMeshAgent agent = null;
     int index = 0;
+    Transform target = null;
 
     private void Awake()
     {
@@ -17,15 +19,15 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        agent.SetDestination(waypoints[index].position);
+        //agent.SetDestination(waypoints[index].position);
     }
 
     private void Update()
     {
-        if(CheckArrive())
-        {
-            GoNextWaypoint();
-        }
+        //if(CheckArrive())
+        //{
+        //    GoNextWaypoint();
+        //}
     }
 
     bool CheckArrive()
@@ -39,6 +41,35 @@ public class Enemy : MonoBehaviour
         index = index % waypoints.Length;
         agent.SetDestination(waypoints[index].position);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            Debug.Log($"대상 확인 : {other.name}");
+            //agent.SetDestination(other.transform.position);
+            target = other.transform;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            target = null;
+            agent.isStopped = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (target != null)
+        {
+            agent.SetDestination(target.position);
+        }
+    }
+
+    
 
     //void Test()
     //{
