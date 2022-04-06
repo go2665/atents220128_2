@@ -51,7 +51,11 @@ public class Enemy : MonoBehaviour
     // 목표지점에 도착했는지 체크하는 함수
     bool CheckArrive()
     {
-        return agent.remainingDistance <= agent.stoppingDistance;
+        //agent.pathPending : 에이전트가 경로를 계산 중이면 true 아니면 false
+        //agent.remainingDistance : 도착지점까지 남아있는 거리
+        //agent.stoppingDistance : 도착했다고 판단해도 되는 거리
+
+        return !agent.pathPending && (agent.remainingDistance <= agent.stoppingDistance);
     }
 
     // 다음 웨이포인트 지점으로 이동
@@ -92,17 +96,16 @@ public class Enemy : MonoBehaviour
             case EnemyState.PATROL:         // 순찰 상태일 때 
                 target = null;              // 대상 없음
                 agent.isStopped = false;    // 길찾기 사용
-                timeCount = 0;              // 공격용 카운터 초기화
-                // 원래 순찰 경로로 돌아가기
+                agent.SetDestination(waypoints[waypointIndex].position); // 원래 순찰 경로로 돌아가기
                 break;
             case EnemyState.CHASE:          // 추적 상태일 때
                 target = _target.transform; // 추적 대상 설정
                 agent.isStopped = false;    // 길찾기 사용
-                timeCount = 0;              // 공격용 카운터 초기화
                 break;
             case EnemyState.ATTACK:         // 공격 상태일 때
                 target = _target.transform; // 공격 대상 설정
                 agent.isStopped = true;     // 기찾기 정지
+                timeCount = 0;              // 공격용 카운터 초기화
                 break;
             default:                        // 절대로 들어오면 안된다.
                 target = null;
@@ -116,7 +119,7 @@ public class Enemy : MonoBehaviour
     {
         switch (state)                  // 상태에 따라 다른 진행
         {
-            case EnemyState.PATROL:     // 순찰 상태일 때
+            case EnemyState.PATROL:     // 순찰 상태일 때                
                 if (CheckArrive())      // 목적지에 도착했는지 확인
                 {
                     GoNextWaypoint();   // 도착했으면 다음 지점으로 이동
@@ -136,6 +139,17 @@ public class Enemy : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    bool CheckObstacle()
+    {
+        Ray ray = new Ray();                    // 시작점과 방향 필요
+        RaycastHit hit = new RaycastHit();      //레이캐스트의 결과를 담을 구조체
+        Physics.Raycast(ray, out hit, 5.0f);    //레이캐스트 실행
+
+        //hit.collider.gameObject;
+
+        return false;
     }
 
     

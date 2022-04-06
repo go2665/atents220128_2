@@ -75,3 +75,11 @@ TraceTurret 코드 읽고 이해해보기
  - Enemy에 추적 기능 만들기
    1. Enemy에서 일정범위 안에 Player가 있으면 Player쪽으로 이동
    2. Player가 일정범위를 벗어나면 다시 순찰 계속
+
+
+4/6
+목표 
+ 1. Enemy 클래스의 CheckObstacle() 함수 완성하기
+    Enemy와 Player 사이에 장애물이 있으면 true, 아니면 false를 리턴한다.
+ 2. NavMeshObstacle 컴포넌트와 Switch 프리팹을 이용해서 스위치를 사용하면 
+    NPC가 지나갈 수 있는 통로가 열리는 게임 오브젝트 작성
