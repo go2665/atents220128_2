@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+// 적 상태 표시용 enum
 public enum EnemyState
 {
     PATROL = 0,
@@ -12,13 +13,13 @@ public enum EnemyState
 
 public class Enemy : MonoBehaviour
 {
-    public Transform[] waypoints = null;
-    public float attackDelay = 1.0f;
+    public Transform[] waypoints = null;    // 순찰할 지점
+    public float attackDelay = 1.0f;        // 공격 가능할 때 공격 시작할 때까지의 딜레이
 
-    NavMeshAgent agent = null;
-    Transform target = null;
-    int waypointIndex = 0;
-    int enterCounter = 0;
+    NavMeshAgent agent = null;              // 길찾기용 NavMesh 에이전트
+    Transform target = null;                // 추적할 대상(플레이어만 대상이 된다)
+    int waypointIndex = 0;                  // 현재 내가 가야할 웨이포인트의 인덱스
+    int enterCounter = 0;                   // 겹친 트리거에 들어간 정도
     int EnterCounter
     {
         get
@@ -27,101 +28,109 @@ public class Enemy : MonoBehaviour
         }
         set
         {
-            enterCounter = Mathf.Clamp(value, 0, 2);
+            enterCounter = Mathf.Clamp(value, 0, 2);    // enterCounter의 범위 지정
         }
     }
-    float timeCount = 0.0f;    
-    EnemyState state = EnemyState.PATROL;
+    float timeCount = 0.0f;                 // 공격 가능한 범위에 들어갔을 때부터 지난 시간
+    EnemyState state = EnemyState.PATROL;   // 현재 enemy의 상태
 
+    // 게임 오브젝트가 생성된 직후
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();   // agent 초기화
         //agent.remainingDistance
     }
 
+    // 첫번째 update가 실행되기 직전
     private void Start()
     {
-        agent.SetDestination(waypoints[waypointIndex].position);
+        state = EnemyState.PATROL;          // 시작은 PATROL 상태로
+        agent.SetDestination(waypoints[waypointIndex].position);    // 첫번째 웨이포인트로 이동
     }
 
+    // 목표지점에 도착했는지 체크하는 함수
     bool CheckArrive()
     {
         return agent.remainingDistance <= agent.stoppingDistance;
     }
 
+    // 다음 웨이포인트 지점으로 이동
     void GoNextWaypoint()
     {
         waypointIndex++;
         waypointIndex = waypointIndex % waypoints.Length;
-        agent.SetDestination(waypoints[waypointIndex].position);
+        agent.SetDestination(waypoints[waypointIndex].position);    // 다음 웨이포인트로 이동
     }
 
+    // 트리거로 설정된 내 컬라이더 안에 다른 컬라이더가 들어왔을 때 실행
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Player"))  // 플레이어가 들어왔다면
         {
-            EnterCounter++;
-            StateTransition(EnterCounter, other.gameObject);
-
-            //Debug.Log($"대상 확인 : {other.name}");
-            //agent.SetDestination(other.transform.position);
+            EnterCounter++;             // 상태를 결정하는 EnterCounter를 증가시키고
+            StateTransition(EnterCounter, other.gameObject);    // 상태를 변화시킨다.
         }
     }
 
+    // 트리거로 설정된 내 컬라이더 안에서 다른 컬라이더가 나갔을 때 실행
     private void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Player"))  // 플레이어가 나갔다면
         {
-            EnterCounter--;
+            EnterCounter--;             // 상태 변경시키기
             StateTransition(EnterCounter, other.gameObject);
         }
     }
 
+    // 상태를 변경시키는 함수
     void StateTransition(int counter, GameObject _target)
     {
-        state = (EnemyState)counter;
+        state = (EnemyState)counter;        // counter값으로 상태 지정
 
-        switch (state)
+        switch (state)                      // 지정된 상태에 따라 알맞은 작업 수행
         {
-            case EnemyState.PATROL:
-                target = null;
-                agent.isStopped = false;
+            case EnemyState.PATROL:         // 순찰 상태일 때 
+                target = null;              // 대상 없음
+                agent.isStopped = false;    // 길찾기 사용
+                timeCount = 0;              // 공격용 카운터 초기화
                 // 원래 순찰 경로로 돌아가기
                 break;
-            case EnemyState.CHASE:
-                target = _target.transform;
-                agent.isStopped = false;
+            case EnemyState.CHASE:          // 추적 상태일 때
+                target = _target.transform; // 추적 대상 설정
+                agent.isStopped = false;    // 길찾기 사용
+                timeCount = 0;              // 공격용 카운터 초기화
                 break;
-            case EnemyState.ATTACK:
-                target = _target.transform;
-                agent.isStopped = true;
+            case EnemyState.ATTACK:         // 공격 상태일 때
+                target = _target.transform; // 공격 대상 설정
+                agent.isStopped = true;     // 기찾기 정지
                 break;
-            default:
+            default:                        // 절대로 들어오면 안된다.
                 target = null;
                 agent.isStopped = true;
                 break;
         }
     }
 
+    // 고정된 시간 간격으로 호출
     private void FixedUpdate()
     {
-        switch (state)
+        switch (state)                  // 상태에 따라 다른 진행
         {
-            case EnemyState.PATROL:
-                if (CheckArrive())
+            case EnemyState.PATROL:     // 순찰 상태일 때
+                if (CheckArrive())      // 목적지에 도착했는지 확인
                 {
-                    GoNextWaypoint();
+                    GoNextWaypoint();   // 도착했으면 다음 지점으로 이동
                 }
                 break;
-            case EnemyState.CHASE:
-                agent.SetDestination(target.position);
+            case EnemyState.CHASE:      // 추적 상태일 때
+                agent.SetDestination(target.position);  // 추적 대상 위치로 이동
                 break;
-            case EnemyState.ATTACK:
-                timeCount += Time.fixedDeltaTime;
-                if (timeCount > attackDelay)
+            case EnemyState.ATTACK:     // 공격 상태일 때
+                timeCount += Time.fixedDeltaTime;       // 시간 누적시켜서
+                if (timeCount > attackDelay)            // 누적된 시간이 딜레이보다 커지면
                 {
-                    Debug.Log($"공격 : {Time.realtimeSinceStartup}");
-                    timeCount = 0;
+                    Debug.Log($"공격 : {Time.realtimeSinceStartup}"); // 공격
+                    timeCount = 0;                      // 누적시킨 시간 초기화
                 }
                 break;
             default:
