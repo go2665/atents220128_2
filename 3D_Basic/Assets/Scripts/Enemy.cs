@@ -15,6 +15,8 @@ public class Enemy : MonoBehaviour
 {
     public Transform[] waypoints = null;    // 순찰할 지점
     public float attackDelay = 1.0f;        // 공격 가능할 때 공격 시작할 때까지의 딜레이
+    public float sightRange = 5.0f;
+    public float attackRange = 1.0f;
 
     NavMeshAgent agent = null;              // 길찾기용 NavMesh 에이전트
     Transform target = null;                // 추적할 대상(플레이어만 대상이 된다)
@@ -34,11 +36,18 @@ public class Enemy : MonoBehaviour
     float timeCount = 0.0f;                 // 공격 가능한 범위에 들어갔을 때부터 지난 시간
     EnemyState state = EnemyState.PATROL;   // 현재 enemy의 상태
 
+
     // 게임 오브젝트가 생성된 직후
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();   // agent 초기화
         //agent.remainingDistance
+        SphereCollider[] colliders = GetComponents<SphereCollider>();
+        colliders[0].radius = sightRange;
+        colliders[0].center = new Vector3(0, 1.8f, 0);
+        colliders[1].radius = attackRange;
+        colliders[1].center = new Vector3(0, 1, 0);
+
     }
 
     // 첫번째 update가 실행되기 직전
@@ -126,7 +135,18 @@ public class Enemy : MonoBehaviour
                 }
                 break;
             case EnemyState.CHASE:      // 추적 상태일 때
-                agent.SetDestination(target.position);  // 추적 대상 위치로 이동
+                if (CheckObstacle(target))
+                {
+                    // 장애물이 있다 => 패트롤 계속 진행
+                    if (CheckArrive())      // 목적지에 도착했는지 확인
+                    {
+                        GoNextWaypoint();   // 도착했으면 다음 지점으로 이동
+                    }
+                }
+                else
+                {
+                    agent.SetDestination(target.position);  // 추적 대상 위치로 이동
+                }
                 break;
             case EnemyState.ATTACK:     // 공격 상태일 때
                 timeCount += Time.fixedDeltaTime;       // 시간 누적시켜서
@@ -141,15 +161,25 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    bool CheckObstacle()
+    bool CheckObstacle(Transform _target)
     {
-        Ray ray = new Ray();                    // 시작점과 방향 필요
-        RaycastHit hit = new RaycastHit();      //레이캐스트의 결과를 담을 구조체
-        Physics.Raycast(ray, out hit, 5.0f);    //레이캐스트 실행
+        bool result = true;
 
-        //hit.collider.gameObject;
+        Vector3 origin = transform.position + Vector3.up * 1.8f;
 
-        return false;
+        Ray ray = new Ray(origin, _target.position - transform.position );// 시작점과 방향 필요
+        RaycastHit hit = new RaycastHit();      // 레이캐스트의 결과를 담을 구조체
+        Physics.Raycast(ray, out hit, sightRange);    // 레이캐스트 실행
+        if( hit.collider != null )
+        {
+            if( hit.collider.CompareTag("Player") ) // 플레이어와 적 사이에 가리는 물체가 없다.
+            {
+                result = false;
+                //Debug.Log("See!");
+            }
+        }
+
+        return result;
     }
 
     

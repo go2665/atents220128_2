@@ -83,3 +83,9 @@ TraceTurret 코드 읽고 이해해보기
     Enemy와 Player 사이에 장애물이 있으면 true, 아니면 false를 리턴한다.
  2. NavMeshObstacle 컴포넌트와 Switch 프리팹을 이용해서 스위치를 사용하면 
     NPC가 지나갈 수 있는 통로가 열리는 게임 오브젝트 작성
+
+
+4/7
+목표
+ - 대상을 부드럽게 추적하는 카메라 만들기(FollowCamera)
+ - Lerp 함수를 이용해서 처리
