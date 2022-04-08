@@ -27,7 +27,7 @@ public class GameManager
         }
         set
         {
-            coinCount += value;
+            coinCount = value;
         }
     }
     private float remindTime = 30.0f;
