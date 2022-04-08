@@ -24,6 +24,7 @@ public class Coin : MonoBehaviour
             // 점수를 추가시킨다.
             GameManager.Inst.CoinCount++;
             Debug.Log($"코인 갯수 : {GameManager.Inst.CoinCount}");
+            Destroy(this.gameObject);
         }
     }
 }
