@@ -88,4 +88,4 @@ TraceTurret 코드 읽고 이해해보기
 4/7
 목표
  - 대상을 부드럽게 추적하는 카메라 만들기(FollowCamera)
- - Lerp 함수를 이용해서 처리
+ - Lerp, Slerp  함수를 이용해서 처리
