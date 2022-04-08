@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager
 {
@@ -52,11 +53,20 @@ public class GameManager
             if (instance == null)  // 객체 생성이 한번도 안일어났는지 확인
             {
                 instance = new GameManager();   // 한번도 안일어났으면 그때 처음으로 객체 생성                
-                instance.LoadGameData();
+                instance.Initialize();
             }
             return instance;    //return까지 왔다는 것은 instance에 이미 무엇인가 할당이 되어있음
         }
     }
+
+    Canvas uiCanvase = null;
+
+    void Initialize()
+    {
+        uiCanvase = GameObject.FindObjectOfType<Canvas>();
+        LoadGameData();
+    }
+
 
     public void SaveGameData()
     {
@@ -102,11 +112,19 @@ public class GameManager
 
     public void OnStageStart()
     {
-
+        uiCanvase = GameObject.FindObjectOfType<Canvas>();
+        CanvasGroup group = uiCanvase.GetComponent<CanvasGroup>();
+        group.alpha = 0.0f;
     }
 
     public void OnStageClear()
     {
+        CanvasGroup group = uiCanvase.GetComponent<CanvasGroup>();
+        group.alpha = 1.0f;
+    }
 
+    public static void Test()
+    {
+        Debug.Log("Test");
     }
 }
