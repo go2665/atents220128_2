@@ -32,6 +32,8 @@ public class GameManager
             uiCoinCount.text = $"Coin : {coinCount} 개";
         }
     }
+
+    private const float TIME = 30.0f;
     private float remindTime = 30.0f;
 
     Player player = null;
@@ -61,16 +63,35 @@ public class GameManager
     }
 
     GameObject uiClear = null;
+    GameObject uiGameOver = null;
     Text uiCoinCount = null;
+    Text uiTimer = null;
 
     void Initialize()
     {
+        player = GameObject.FindObjectOfType<Player>();
+
         uiClear = GameObject.Find("GameClear");
+        uiGameOver = GameObject.Find("GameOver");
 
         GameObject uiMain = GameObject.Find("MainUI");
         uiCoinCount = uiMain.transform.Find("CoinCount").GetComponent<Text>();
+        uiTimer = uiMain.transform.Find("Timer").GetComponent<Text>();
 
         LoadGameData();
+    }
+
+    public void Update(float deltaTime)
+    {
+        remindTime -= deltaTime;
+        if(remindTime < 0)
+        {
+            // 게임 오버 처리
+            OnGameOver();
+            remindTime = 0;
+        }
+
+        uiTimer.text = $"Time : {remindTime:F2} 초";
     }
 
 
@@ -114,6 +135,10 @@ public class GameManager
         //    highScore = score;      //하이스코어 갱신하고 
         //    SaveGameData();         //파일로 저장
         //}
+
+        player.OnDead();
+        CanvasGroup group = uiGameOver.GetComponent<CanvasGroup>();
+        group.alpha = 1.0f;
     }
 
     public void OnStageStart()
