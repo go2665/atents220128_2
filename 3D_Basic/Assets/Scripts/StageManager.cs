@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -12,5 +13,10 @@ public class StageManager : MonoBehaviour
     void Update()
     {
         GameManager.Inst.Update(Time.deltaTime);
+    }
+
+    public void StageClearButton()
+    {
+        SceneManager.LoadScene(0);
     }
 }

@@ -67,16 +67,10 @@ public class GameManager
     GameObject uiGameOver = null;
     Text uiCoinCount = null;
     Text uiTimer = null;
+    Text uiScore = null;
 
     void Initialize()
-    {
-        uiClear = GameObject.Find("GameClear");
-        uiGameOver = GameObject.Find("GameOver");
-
-        GameObject uiMain = GameObject.Find("MainUI");
-        uiCoinCount = uiMain.transform.Find("CoinCount").GetComponent<Text>();
-        uiTimer = uiMain.transform.Find("Timer").GetComponent<Text>();
-
+    {     
         LoadGameData();
     }
 
@@ -144,6 +138,14 @@ public class GameManager
 
     public void OnStageStart()
     {
+        uiClear = GameObject.Find("GameClear");
+        uiScore = uiClear.transform.Find("ScoreText").GetComponent<Text>();
+        uiGameOver = GameObject.Find("GameOver");
+
+        GameObject uiMain = GameObject.Find("MainUI");
+        uiCoinCount = uiMain.transform.Find("CoinCount").GetComponent<Text>();
+        uiTimer = uiMain.transform.Find("Timer").GetComponent<Text>();
+
         player = GameObject.FindObjectOfType<Player>();
         camera = GameObject.FindObjectOfType<FollowCamera>();
         camera.SetTarget(player.GetCameraPosition());
@@ -158,8 +160,22 @@ public class GameManager
 
     public void OnStageClear()
     {
+        //uiScore
+        // 코인 1개당 10점
+        // 남은 시간 1초당 10점
+        // 최종 스코어는 코인점수+시간점수
+
+        //ex)
+        //Coin 3개 = 30점
+        //남은 시간 9초 = 90점
+        //최종 점수 = 120점
+        int coinScore = coinCount * 10;
+        int timeScore = ((int)remindTime) * 10;
+        int finalScore = coinScore + timeScore;
+        uiScore.text = $"Coin {coinCount}개 = {coinScore}점\n남은 시간 {(int)remindTime}초 = {timeScore}점\n최종 점수 = {finalScore}점";
+
         CanvasGroup group = uiClear.GetComponent<CanvasGroup>();
-        group.alpha = 1.0f;
+        group.alpha = 1.0f;        
     }
 
     public static void Test()
