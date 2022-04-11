@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 // 이 스크립트를 가진 게임오브젝트는 무조건 Animator가 있다(없으면 만든다)
 [RequireComponent(typeof(Animator))]
-public class Player : MonoBehaviour, IDead
+public class Player : MonoBehaviour, IDead, ICameraTarget
 {
     /// 9시 45분까지 구현해보기(Input System 사용)
     /// WASD로 캐릭터 움직이기
@@ -159,6 +159,8 @@ public class Player : MonoBehaviour, IDead
             spinInput = 0.0f;
             moveInput = 0.0f;
             anim.SetBool("IsMove", false);
+
+            GameManager.Inst.OnGameOver();
         }
     }
 
@@ -172,5 +174,10 @@ public class Player : MonoBehaviour, IDead
         // 현재 위치 + Player의 회전값으로 회전시킨 offset값
         Vector3 center = transform.position + transform.rotation * new Vector3(0, 1.2f, 1.0f);
         Gizmos.DrawWireSphere(center, 0.5f);    //center위치에 반지름 0.5의 구를 그림
+    }
+
+    public Transform GetCameraPosition()
+    {
+        return transform.Find("CameraPosition");
     }
 }

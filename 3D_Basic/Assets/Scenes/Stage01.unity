@@ -1588,7 +1588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0400a0d37c3e3347802dee37af47de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1226347869}
+  target: {fileID: 0}
   smoothness: 2
 --- !u!43 &1043024417
 Mesh:
@@ -2055,11 +2055,6 @@ Mesh:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2257667801192377575, guid: cefd32dbe7d76134dbed34ad3fe0c5aa, type: 3}
   m_PrefabInstance: {fileID: 734270649}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1226347869 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1433253378, guid: 0790f0fb74fad5d4daabda1d457fbf05, type: 3}
-  m_PrefabInstance: {fileID: 1409165678}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1273069694
 PrefabInstance:

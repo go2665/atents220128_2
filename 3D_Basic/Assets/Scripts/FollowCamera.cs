@@ -14,9 +14,12 @@ public class FollowCamera : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = Vector3.Lerp(
-            transform.position, target.position, smoothness * Time.fixedDeltaTime);
-        transform.rotation = Quaternion.Lerp(
-            transform.rotation, target.rotation, smoothness * Time.fixedDeltaTime);        
+        if (target != null)
+        {
+            transform.position = Vector3.Lerp(
+                transform.position, target.position, smoothness * Time.fixedDeltaTime);
+            transform.rotation = Quaternion.Lerp(
+                transform.rotation, target.rotation, smoothness * Time.fixedDeltaTime);
+        }
     }
 }

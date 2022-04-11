@@ -48,6 +48,7 @@ public class GameManager
             player = value;
         }
     }
+    FollowCamera camera = null;
 
     public static GameManager Inst
     {
@@ -69,8 +70,6 @@ public class GameManager
 
     void Initialize()
     {
-        player = GameObject.FindObjectOfType<Player>();
-
         uiClear = GameObject.Find("GameClear");
         uiGameOver = GameObject.Find("GameOver");
 
@@ -139,10 +138,16 @@ public class GameManager
         player.OnDead();
         CanvasGroup group = uiGameOver.GetComponent<CanvasGroup>();
         group.alpha = 1.0f;
+
+        camera.SetTarget(null);
     }
 
     public void OnStageStart()
     {
+        player = GameObject.FindObjectOfType<Player>();
+        camera = GameObject.FindObjectOfType<FollowCamera>();
+        camera.SetTarget(player.GetCameraPosition());
+
         uiClear = GameObject.Find("GameClear");
         CanvasGroup group = uiClear.GetComponent<CanvasGroup>();
         group.alpha = 0.0f;

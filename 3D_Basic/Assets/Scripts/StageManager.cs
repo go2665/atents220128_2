@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
+    private void Start()
+    {
+        GameManager.Inst.OnStageStart();
+    }
+
     void Update()
     {
         GameManager.Inst.Update(Time.deltaTime);
