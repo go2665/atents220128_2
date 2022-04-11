@@ -59,11 +59,11 @@ public class GameManager
         }
     }
 
-    Canvas uiCanvase = null;
+    GameObject uiClear = null;
 
     void Initialize()
     {
-        uiCanvase = GameObject.FindObjectOfType<Canvas>();
+        uiClear = GameObject.Find("GameClear");
         LoadGameData();
     }
 
@@ -112,14 +112,14 @@ public class GameManager
 
     public void OnStageStart()
     {
-        uiCanvase = GameObject.FindObjectOfType<Canvas>();
-        CanvasGroup group = uiCanvase.GetComponent<CanvasGroup>();
+        uiClear = GameObject.Find("GameClear");
+        CanvasGroup group = uiClear.GetComponent<CanvasGroup>();
         group.alpha = 0.0f;
     }
 
     public void OnStageClear()
     {
-        CanvasGroup group = uiCanvase.GetComponent<CanvasGroup>();
+        CanvasGroup group = uiClear.GetComponent<CanvasGroup>();
         group.alpha = 1.0f;
     }
 
