@@ -146,6 +146,9 @@ public class GameManager
         uiClear = GameObject.Find("GameClear");
         CanvasGroup group = uiClear.GetComponent<CanvasGroup>();
         group.alpha = 0.0f;
+
+        coinCount = 0;
+        remindTime = TIME;
     }
 
     public void OnStageClear()
