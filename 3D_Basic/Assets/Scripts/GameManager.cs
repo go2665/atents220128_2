@@ -29,6 +29,7 @@ public class GameManager
         set
         {
             coinCount = value;
+            uiCoinCount.text = $"Coin : {coinCount} 개";
         }
     }
     private float remindTime = 30.0f;
@@ -60,10 +61,15 @@ public class GameManager
     }
 
     GameObject uiClear = null;
+    Text uiCoinCount = null;
 
     void Initialize()
     {
         uiClear = GameObject.Find("GameClear");
+
+        GameObject uiMain = GameObject.Find("MainUI");
+        uiCoinCount = uiMain.transform.Find("CoinCount").GetComponent<Text>();
+
         LoadGameData();
     }
 
