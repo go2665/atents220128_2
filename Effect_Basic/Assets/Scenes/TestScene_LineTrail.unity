@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!96 &399289270
 TrailRenderer:
   serializedVersion: 2
@@ -192,7 +192,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.31292534
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -202,11 +202,11 @@ TrailRenderer:
       - serializedVersion: 3
         time: 1
         value: 0
-        inSlope: -2.606243
-        outSlope: -2.606243
+        inSlope: -0.3145997
+        outSlope: -0.3145997
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.10179639
+        inWeight: 0.19461077
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
