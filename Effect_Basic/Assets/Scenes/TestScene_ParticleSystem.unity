@@ -5116,6 +5116,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Firefly
       objectReference: {fileID: 0}
+    - target: {fileID: 970396481614232176, guid: 87e147911163d2b4e9cbef5ecdf8721b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 970396481614232183, guid: 87e147911163d2b4e9cbef5ecdf8721b, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -5471,6 +5475,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45506a64181a3db4db6fb4d07bd83c48, type: 3}
+--- !u!1001 &7506271877553355563
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398320, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398321, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: SubModule.subEmitters.Array.data[0].emitter
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506271877573398323, guid: 23707643051994241811d79da1a4e3f2, type: 3}
+      propertyPath: m_Name
+      value: EnergyExplosion
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 23707643051994241811d79da1a4e3f2, type: 3}
 --- !u!1001 &7842198451492867639
 PrefabInstance:
   m_ObjectHideFlags: 0
