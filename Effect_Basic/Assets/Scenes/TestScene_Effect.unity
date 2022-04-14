@@ -130,13 +130,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 143005787, guid: 581e5d1d998800142b7363120f0e26cc, type: 3}
+      propertyPath: ShapeModule.angle
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 143005787, guid: 581e5d1d998800142b7363120f0e26cc, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 143005788, guid: 581e5d1d998800142b7363120f0e26cc, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1948174474954965867, guid: 581e5d1d998800142b7363120f0e26cc, type: 3}
       propertyPath: m_Name
       value: Frame
       objectReference: {fileID: 0}
     - target: {fileID: 1948174474954965876, guid: 581e5d1d998800142b7363120f0e26cc, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1948174474954965876, guid: 581e5d1d998800142b7363120f0e26cc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -527,7 +539,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8351450523326841102, guid: d899f083b6caf2445a2cdad2ad16816a, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8351450523326841102, guid: d899f083b6caf2445a2cdad2ad16816a, type: 3}
       propertyPath: m_LocalPosition.x
