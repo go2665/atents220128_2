@@ -5299,10 +5299,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6001681594119082845, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
-      propertyPath: InitialModule.gravityModifier.scalar
-      value: 0.05
-      objectReference: {fileID: 0}
     - target: {fileID: 6001681594232411500, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -5347,33 +5343,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6001681594232411501, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
-      propertyPath: ShapeModule.m_Scale.y
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6001681594232411501, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6001681594232411501, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 6001681594232411503, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
       propertyPath: m_Name
       value: Firework2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6001681595896157934, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
-      propertyPath: NoiseModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6001681595896157934, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
-      propertyPath: NoiseModule.strength.scalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6001681595896157934, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
-      propertyPath: NoiseModule.scrollSpeed.scalar
-      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
