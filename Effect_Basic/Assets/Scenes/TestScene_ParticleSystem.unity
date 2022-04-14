@@ -5177,10 +5177,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Frame
       objectReference: {fileID: 0}
-    - target: {fileID: 1948174474954965867, guid: 581e5d1d998800142b7363120f0e26cc, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1948174474954965876, guid: 581e5d1d998800142b7363120f0e26cc, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -5346,6 +5342,10 @@ PrefabInstance:
     - target: {fileID: 6001681594232411503, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
       propertyPath: m_Name
       value: Firework2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6001681594232411503, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b5ea26b43c69e841b96aa35a122a56d, type: 3}
