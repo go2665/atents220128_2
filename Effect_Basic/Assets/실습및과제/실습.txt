@@ -38,3 +38,11 @@
 목표
  - FireAura가 나오는 마법검 만들기
  - FireAura, Smoke, Point_Glow 머티리얼 사용
+시간
+ - 40분(10:30~10:50, 11:30~11:50)
+
+목표
+ - GroundFog 만들기
+ - GroundFog 머티리얼 사용
+시간
+ - 40분(1시 50분까지)
