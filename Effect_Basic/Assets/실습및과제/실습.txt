@@ -32,3 +32,9 @@
  - EnergyExplosion 만들기
 시간
  - 1시 20분까지
+
+
+4/15
+목표
+ - FireAura가 나오는 마법검 만들기
+ - FireAura, Smoke, Point_Glow 머티리얼 사용
