@@ -1,0 +1,9 @@
+4/18
+1. 3D_Character 프로젝트에 InputSystem 적용하기
+2. PlayerController라는 게임 오브젝트 만들기
+	2.1 PlayerInput 컴포넌트 추가
+	2.2 빈 스크립트 추가
+		2.2.1 Target으로 지정된 게임 오브젝트를 조작할 수 있음
+		2.2.2 W를 누르면 앞으로 전진
+		2.2.3 S를 누르면 후진
+		2.2.4 W나 S를 누르는 정도에 따라 애니메이션 변경(Move Blend Tree 사용. W는 1, S는 0)
