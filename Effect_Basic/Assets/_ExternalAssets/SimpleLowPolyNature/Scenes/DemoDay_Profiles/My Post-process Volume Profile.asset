@@ -137,10 +137,10 @@ MonoBehaviour:
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0
+    value: 0.72
   smoothness:
     overrideState: 1
-    value: 0.491
+    value: 1
   roundness:
     overrideState: 1
     value: 1
@@ -148,11 +148,11 @@ MonoBehaviour:
     overrideState: 1
     value: 0
   mask:
-    overrideState: 0
-    value: {fileID: 0}
+    overrideState: 1
+    value: {fileID: 2800000, guid: 700cd4507c10e2c4aa57a4bd764d841b, type: 3}
     defaultState: 1
   opacity:
-    overrideState: 0
+    overrideState: 1
     value: 1
 --- !u!114 &-1778425416421662114
 MonoBehaviour:
