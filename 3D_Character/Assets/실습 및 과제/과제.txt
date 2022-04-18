@@ -1,4 +1,6 @@
 4/18
+조건
+입력에 따라 이동 애니메이션 변경하기
 1. 3D_Character 프로젝트에 InputSystem 적용하기
 2. PlayerController라는 게임 오브젝트 만들기
 	2.1 PlayerInput 컴포넌트 추가
