@@ -5,51 +5,49 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject target = null;
-    public float moveSpeed = 3.0f;
-
-    private Animator anim = null;
-    private CharacterController controller = null;
-
-    private Vector3 inputDir = Vector3.zero;
+    public GameObject targetObject = null;
+    IControllable targetControl = null;
 
     private void Start()
     {
-        SetTarget(target);
+        SetTarget(targetObject);
     }
 
     public void SetTarget(GameObject _newTarget)
     {
         if (_newTarget != null)
         {
-            target = _newTarget;
-            anim = target.GetComponent<Animator>();
-            controller = target.GetComponent<CharacterController>();
+            targetObject = _newTarget;
+            targetControl = targetObject.GetComponent<IControllable>();
+            if (targetControl != null)
+            {
+                targetControl.ControllerConnect();
+            }
+            else
+            {
+                targetObject = null;
+            }
         }
         else
         {
-            target = null;
-            anim = null;
-            controller = null;
+            targetObject = null;
+            targetControl = null;
         }
     }
 
     private void OnValidate()
     {
-        SetTarget(target);
+        SetTarget(targetObject);
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        inputDir = context.ReadValue<Vector2>();        
+        targetControl?.MoveInput(context.ReadValue<Vector2>());
     }
 
     private void Update()
-    {
-        anim.SetFloat("Speed",inputDir.y);
-        CollisionFlags flags = controller.Move(target.transform.forward * inputDir.y * Time.deltaTime * moveSpeed);
-        //bool isGround = controller.SimpleMove(target.transform.forward * inputDir.y * moveSpeed);
-        //Debug.Log(isGround);
+    {        
+        targetControl?.MoveUpdate();        
     }
 
 }
