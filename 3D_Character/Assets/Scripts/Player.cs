@@ -5,10 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour, IControllable
 {
     public float moveSpeed = 3.0f;
+    public float turnSpeed = 0.3f;
 
     private Animator anim = null;
     private CharacterController controller = null;
-    private Vector2 inputDir = Vector2.zero;
+    private Vector3 inputDir = Vector2.zero;
+    private Quaternion targetRotation = Quaternion.identity;
 
     public void ControllerConnect()
     {
@@ -18,14 +20,31 @@ public class Player : MonoBehaviour, IControllable
 
     public void MoveInput(Vector2 dir)
     {
-        inputDir = dir;
+        // dir.x : a(-1) d(+1)
+        // dir.y : s(-1) w(+1)
+
+        //Vector3 a = Camera.main.transform.right;
+        //Vector3 b = Vector3.up;
+
+        inputDir.x = dir.x;
+        inputDir.y = 0;
+        inputDir.z = dir.y;
+        inputDir.Normalize();
+
+        if (inputDir.sqrMagnitude > 0.0f)
+        {
+            targetRotation = Quaternion.LookRotation(inputDir); 
+        }
+
     }
 
     public void MoveUpdate()
     {
-        anim.SetFloat("Speed",inputDir.y);
-        //CollisionFlags flags = controller.Move(transform.forward * inputDir.y * Time.deltaTime * moveSpeed);
-        controller.SimpleMove(transform.forward * inputDir.y * moveSpeed);
-        //Debug.Log(isGround);
+        //Debug.Log(inputDir.sqrMagnitude);
+        anim.SetFloat("Speed",inputDir.sqrMagnitude);
+        controller.SimpleMove(inputDir * moveSpeed);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
     }
+
 }
