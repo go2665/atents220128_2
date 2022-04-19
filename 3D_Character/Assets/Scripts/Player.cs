@@ -22,10 +22,6 @@ public class Player : MonoBehaviour, IControllable
     {
         // dir.x : a(-1) d(+1)
         // dir.y : s(-1) w(+1)
-
-        //Vector3 a = Camera.main.transform.right;
-        //Vector3 b = Vector3.up;
-
         inputDir.x = dir.x;
         inputDir.y = 0;
         inputDir.z = dir.y;
