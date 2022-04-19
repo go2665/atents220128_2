@@ -33,6 +33,7 @@ public class Player : MonoBehaviour, IControllable
 
         if (inputDir.sqrMagnitude > 0.0f)
         {
+            inputDir = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0) * inputDir;            
             targetRotation = Quaternion.LookRotation(inputDir); 
         }
 
