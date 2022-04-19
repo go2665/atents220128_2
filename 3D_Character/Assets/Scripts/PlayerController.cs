@@ -47,7 +47,9 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         anim.SetFloat("Speed",inputDir.y);
-        controller.Move(target.transform.forward * inputDir.y * Time.deltaTime * moveSpeed);
+        CollisionFlags flags = controller.Move(target.transform.forward * inputDir.y * Time.deltaTime * moveSpeed);
+        //bool isGround = controller.SimpleMove(target.transform.forward * inputDir.y * moveSpeed);
+        //Debug.Log(isGround);
     }
 
 }
