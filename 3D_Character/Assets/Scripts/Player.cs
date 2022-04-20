@@ -12,6 +12,20 @@ public class Player : MonoBehaviour, IControllable
     private Vector3 inputDir = Vector2.zero;
     private Quaternion targetRotation = Quaternion.identity;
 
+    //public float waitTime = 5.0f;
+
+    //void Update()
+    //{
+    //    waitTime -= Time.deltaTime;
+    //    if(waitTime < 0)
+    //    {
+    //        anim.SetInteger("IdleSelect", Random.Range(1, 5));
+    //        waitTime = 5.0f;
+    //        AnimationClip[] clip = anim.runtimeAnimatorController.animationClips;
+    //        float a = clip[0].length;
+    //    }
+    //}
+
     public void ControllerConnect()
     {
         anim = GetComponent<Animator>();
