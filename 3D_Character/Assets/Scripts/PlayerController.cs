@@ -50,4 +50,12 @@ public class PlayerController : MonoBehaviour
         targetControl?.MoveUpdate();        
     }
 
+    public void OnMoveModeChange(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            //Debug.Log("Shift");
+            targetControl?.MoveModeChange();
+        }
+    }
 }

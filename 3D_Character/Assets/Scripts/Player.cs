@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MoveMode : byte
+{
+    WALK = 0,
+    RUN
+}
+
 public class Player : MonoBehaviour, IControllable
 {
-    public float moveSpeed = 3.0f;
+    public float walkSpeed = 3.0f;
+    public float runSpeed = 6.0f;
     public float turnSpeed = 0.3f;
     public GameObject weapone = null;
     public GameObject shield = null;
@@ -13,6 +20,7 @@ public class Player : MonoBehaviour, IControllable
     private CharacterController controller = null;
     private Vector3 inputDir = Vector2.zero;
     private Quaternion targetRotation = Quaternion.identity;
+    private MoveMode moveMode = MoveMode.WALK;
 
     //public float waitTime = 5.0f;
 
@@ -53,11 +61,43 @@ public class Player : MonoBehaviour, IControllable
 
     public void MoveUpdate()
     {
-        //Debug.Log(inputDir.sqrMagnitude);
-        anim.SetFloat("Speed",inputDir.sqrMagnitude);
-        controller.SimpleMove(inputDir * moveSpeed);
+        if (inputDir.magnitude > 0.0f)
+        {
+            float speed = 1.0f;
+            if (moveMode == MoveMode.WALK)
+            {
+                anim.SetFloat("Speed", 0.5f);
+                speed = walkSpeed;
+            }
+            else if (moveMode == MoveMode.RUN)
+            {
+                anim.SetFloat("Speed", 1.0f);
+                speed = runSpeed;
+            }
+            else
+            {
+                anim.SetFloat("Speed", 0.0f);
+            }
+            
+            controller.SimpleMove(inputDir * speed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+        }
+        else
+        {
+            anim.SetFloat("Speed", 0.0f);
+        }        
+    }
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+    public void MoveModeChange()
+    {
+        if( moveMode == MoveMode.WALK )
+        {
+            moveMode = MoveMode.RUN;
+        }
+        else
+        {
+            moveMode = MoveMode.WALK;
+        }
     }
 
     public void ArmsEquip(bool equip)
