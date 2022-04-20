@@ -358,6 +358,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &170465098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2066896392038628040, guid: 45288819fde2143449a96207b14db0bb, type: 3}
+  m_PrefabInstance: {fileID: 839973341}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &309754775
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,3 +829,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   turnSpeed: 5
+  weapone: {fileID: 1841319498}
+  shield: {fileID: 170465098}
+--- !u!1 &1841319498 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2066896392038628070, guid: 45288819fde2143449a96207b14db0bb, type: 3}
+  m_PrefabInstance: {fileID: 839973341}
+  m_PrefabAsset: {fileID: 0}

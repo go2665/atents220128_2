@@ -6,6 +6,8 @@ public class Player : MonoBehaviour, IControllable
 {
     public float moveSpeed = 3.0f;
     public float turnSpeed = 0.3f;
+    public GameObject weapone = null;
+    public GameObject shield = null;
 
     private Animator anim = null;
     private CharacterController controller = null;
@@ -56,6 +58,13 @@ public class Player : MonoBehaviour, IControllable
         controller.SimpleMove(inputDir * moveSpeed);
 
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+    }
+
+    public void ArmsEquip(bool equip)
+    {
+        // equip이 true면 무기와 방패가 보인다. false 보이지 않는다.
+        weapone.SetActive(equip);
+        shield.SetActive(equip);
     }
 
 }
