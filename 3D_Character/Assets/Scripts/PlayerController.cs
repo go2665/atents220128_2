@@ -58,4 +58,12 @@ public class PlayerController : MonoBehaviour
             targetControl?.MoveModeChange();
         }
     }
+
+    public void OnAttackInput(InputAction.CallbackContext context)
+    {
+        if( context.started )
+        {
+            targetControl?.AttackInput();
+        }
+    }
 }

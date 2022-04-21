@@ -107,4 +107,8 @@ public class Player : MonoBehaviour, IControllable
         shield.SetActive(equip);
     }
 
+    public void AttackInput()
+    {
+        Debug.Log("Attack");
+    }
 }
