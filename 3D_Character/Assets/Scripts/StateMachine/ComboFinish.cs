@@ -17,7 +17,7 @@ public class ComboFinish : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(stateInfo.normalizedTime > 0.5f)
+        if(stateInfo.normalizedTime > 0.8f)
         {
             ps.Clear();
             ps.Stop();

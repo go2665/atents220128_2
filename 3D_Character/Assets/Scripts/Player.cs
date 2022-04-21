@@ -109,6 +109,16 @@ public class Player : MonoBehaviour, IControllable
 
     public void AttackInput()
     {
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
+        anim.SetFloat("ComboState",
+            Mathf.Repeat(anim.GetCurrentAnimatorStateInfo(0).normalizedTime, 1.0f));
+        anim.SetTrigger("Attack");
+        StartCoroutine(ResetTrigger());        
+    }
+
+    IEnumerator ResetTrigger()
+    {
+        yield return new WaitForSeconds(1.0f);
+        anim.ResetTrigger("Attack");
     }
 }

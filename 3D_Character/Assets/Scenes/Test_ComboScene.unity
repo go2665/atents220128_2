@@ -246,6 +246,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: de0cf5d8-ecde-444a-a4ab-ffc14db5037b
     m_ActionName: Player/MoveModeChange[/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 71801986}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnAttackInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 53bd3fb1-3aad-49c0-bbf1-f0a185e60383
+    m_ActionName: Player/Attack[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -621,7 +637,7 @@ PrefabInstance:
     - target: {fileID: 2066896392029128874, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: c6c82bd6c88f0e545967b91e398574c5, type: 2}
+      objectReference: {fileID: 9100000, guid: 9ae48723af0031c40a99f5a5b86e11ac, type: 2}
     - target: {fileID: 2066896392038131574, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: m_RootOrder
       value: 1
