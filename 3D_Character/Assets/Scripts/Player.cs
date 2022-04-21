@@ -20,7 +20,7 @@ public class Player : MonoBehaviour, IControllable
     private CharacterController controller = null;
     private Vector3 inputDir = Vector2.zero;
     private Quaternion targetRotation = Quaternion.identity;
-    private MoveMode moveMode = MoveMode.WALK;
+    private MoveMode moveMode = MoveMode.RUN;
 
     //public float waitTime = 5.0f;
 
