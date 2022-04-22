@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     private float attackPower = 10.0f;
     private float attackRange = 1.0f;
     private float attackSpeed = 1.0f;
+    private float attackCooltime = 1.0f;
     private float critical = 0.1f;
 
     // 방어
@@ -40,6 +41,9 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     NavMeshAgent navAgent = null;
     bool isChase = false;
 
+    // 공격용 데이터
+    IBattle playerBattle = null;
+
     private void Awake()
     {
         navAgent = GetComponent<NavMeshAgent>();
@@ -53,6 +57,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     private void Start()
     {
         playerTransform = GameManager.Inst.MainPlayer.transform;
+        playerBattle = GameManager.Inst.MainPlayer.GetComponent<IBattle>();
     }
 
     private void Update()
@@ -124,8 +129,8 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     {
         Destroy(this.gameObject);
     }
-        
-    void IdleUpdate()
+
+    private void IdleUpdate()
     {
         waitTime -= Time.deltaTime;
         if (waitTime < 0.0f)
@@ -134,14 +139,18 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         }
     }
 
-    void ChaseUpdate()
+    private void ChaseUpdate()
     {
         navAgent.SetDestination(playerTransform.position);
     }
 
     private void AttackUpdate()
     {
-        //쿨타임 체크
-        //완료되면 Attack()실행
+        attackCooltime -= Time.deltaTime;
+        if(attackCooltime < 0.0f)
+        {
+            Attack(playerBattle);
+            attackCooltime = attackSpeed;
+        }
     }
 }
