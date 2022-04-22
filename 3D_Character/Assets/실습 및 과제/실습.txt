@@ -41,4 +41,4 @@ Player의 AttackInput을 수정하여 콤보 공격 기능 완성
 
 4/22
 Enemy가 Player를 공격해서 Player를 사망하게 만들기
-시간 : 2시까지
+시간 : 2시 20분까지
