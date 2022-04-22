@@ -8,34 +8,50 @@ public enum MoveMode : byte
     RUN
 }
 
-public class Player : MonoBehaviour, IControllable
+public class Player : MonoBehaviour, IControllable, IBattle
 {
+    // 이동용 데이터
     public float walkSpeed = 3.0f;
     public float runSpeed = 6.0f;
     public float turnSpeed = 0.3f;
+
+    // 장비 데이터
     public GameObject weapone = null;
     public GameObject shield = null;
+    Weapon myWeapon = null;
 
+    // 공격용 데이터
+    private float attackPower = 15.0f;
+    private float critical = 0.2f;
+    public bool IsAttack { get; set; }
+
+    // 방어용 데이터
+    private float defencePower = 10.0f;
+    private float hp = 100.0f;
+    private float maxHP = 100.0f;
+
+    // 기타 데이터
     private Animator anim = null;
     private CharacterController controller = null;
     private Vector3 inputDir = Vector2.zero;
     private Quaternion targetRotation = Quaternion.identity;
     private MoveMode moveMode = MoveMode.RUN;
 
-    //public float waitTime = 5.0f;
+    void Awake()
+    {
+        myWeapon = weapone.GetComponentInChildren<Weapon>();
+    }
 
-    //void Update()
-    //{
-    //    waitTime -= Time.deltaTime;
-    //    if(waitTime < 0)
-    //    {
-    //        anim.SetInteger("IdleSelect", Random.Range(1, 5));
-    //        waitTime = 5.0f;
-    //        AnimationClip[] clip = anim.runtimeAnimatorController.animationClips;
-    //        float a = clip[0].length;
-    //    }
-    //}
-
+    void Update()
+    {
+        // 무기에 닿았던 적들 전부 데미지 주기
+        while(myWeapon.HitTargetCount() > 0)
+        {
+            IBattle target = myWeapon.GetHitTarget();
+            Attack(target);
+        }
+    }
+    
     public void ControllerConnect()
     {
         anim = GetComponent<Animator>();
@@ -120,5 +136,33 @@ public class Player : MonoBehaviour, IControllable
     {
         yield return new WaitForSeconds(1.0f);
         anim.ResetTrigger("Attack");
+    }
+
+    public void Attack(IBattle target)
+    {
+        if (target != null)
+        {
+            float damage = attackPower;
+            if (Random.Range(0.0f, 1.0f) < critical)
+            {
+                damage *= 2.0f;
+            }
+            target.TakeDamage(damage);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        float finalDamage = damage - defencePower;
+        if (finalDamage < 1.0f)
+        {
+            finalDamage = 1.0f;
+        }
+        hp -= finalDamage;
+        if (hp <= 0.0f)
+        {
+            //Die();
+        }
+        hp = Mathf.Clamp(hp, 0.0f, maxHP);
     }
 }
