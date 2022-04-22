@@ -39,7 +39,6 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     public float waitTime = 3.0f;
     Transform playerTransform = null;
     NavMeshAgent navAgent = null;
-    bool isChase = false;
 
     // 공격용 데이터
     IBattle playerBattle = null;
