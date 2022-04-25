@@ -153,7 +153,7 @@ public class Player : MonoBehaviour, IControllable, IBattle
 
     public void TakeDamage(float damage)
     {
-        Debug.Log($"{gameObject.name} : {damage} 데미지 입음");
+        //Debug.Log($"{gameObject.name} : {damage} 데미지 입음");
         float finalDamage = damage - defencePower;
         if (finalDamage < 1.0f)
         {
