@@ -43,6 +43,15 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     // 공격용 데이터
     IBattle playerBattle = null;
 
+    // 피격 처리용 데이터
+    public Material hit = null;
+    Material original = null;
+    SkinnedMeshRenderer skRenderer = null;
+    float changeDuration = 0.5f;
+    float hitElapsed = 0.0f;
+    Collider bodyCollider = null;
+
+
     private void Awake()
     {
         navAgent = GetComponent<NavMeshAgent>();
@@ -51,6 +60,10 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         SphereCollider col = GetComponent<SphereCollider>();
         col.radius = attackRange;
         col.isTrigger = true;
+
+        skRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        original = skRenderer.material;
+        bodyCollider = GetComponentInChildren<Collider>();
     }
 
     private void Start()
@@ -77,7 +90,14 @@ public class Enemy : MonoBehaviour, IBattle, IDie
                 break;
             default:
                 break;
-        }        
+        }  
+        
+        if( skRenderer.material != original )
+        {
+            Color newColor = skRenderer.material.color;
+            newColor = Color.Lerp(newColor, Color.white, changeDuration * Time.deltaTime);
+            skRenderer.material.color = newColor;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -134,6 +154,17 @@ public class Enemy : MonoBehaviour, IBattle, IDie
             //Die();
         }
         hp = Mathf.Clamp(hp, 0.0f, maxHP);
+        StartCoroutine(UnBeatable());
+    }
+
+    IEnumerator UnBeatable()
+    {
+        bodyCollider.enabled = false;
+        skRenderer.material = hit;
+        skRenderer.material.color = new Color(1, 1, 1, 0);
+        yield return new WaitForSeconds(changeDuration);
+        skRenderer.material = original;
+        bodyCollider.enabled = true;
     }
 
     public virtual void Die()

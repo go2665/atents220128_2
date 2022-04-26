@@ -568,6 +568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTime: 0
+  hit: {fileID: 2100000, guid: e5dec7921e3f04b4abc62c1df9f5352b, type: 2}
 --- !u!135 &604975121
 SphereCollider:
   m_ObjectHideFlags: 0
