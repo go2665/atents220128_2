@@ -102,6 +102,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     {
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
+            navAgent.isStopped = false;
             state = EnemyState.CHASE;
         }
     }
