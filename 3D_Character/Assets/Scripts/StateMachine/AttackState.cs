@@ -28,5 +28,4 @@ public class AttackState : StateMachineBehaviour
         animator.ResetTrigger("Attack");
         //Debug.Log("Eixt");
     }
-
 }
