@@ -85,7 +85,9 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         if(other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
             state = EnemyState.ATTACK;
-            StartCoroutine(TransitionToAttack());
+            //StartCoroutine(TransitionToAttack());
+            navAgent.isStopped = true;
+            navAgent.velocity = Vector3.zero;
         }
     }
 
