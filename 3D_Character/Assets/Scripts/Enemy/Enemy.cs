@@ -62,8 +62,8 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         col.isTrigger = true;
 
         skRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        original = skRenderer.material;
-        bodyCollider = GetComponentInChildren<Collider>();
+        original = skRenderer.material;         
+        bodyCollider = transform.Find("HitBox").GetComponent<Collider>();
     }
 
     private void Start()
