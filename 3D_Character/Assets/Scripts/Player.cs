@@ -128,14 +128,8 @@ public class Player : MonoBehaviour, IControllable, IBattle
         //Debug.Log("Attack");
         anim.SetFloat("ComboState",
             Mathf.Repeat(anim.GetCurrentAnimatorStateInfo(0).normalizedTime, 1.0f));
-        anim.SetTrigger("Attack");
-        StartCoroutine(ResetTrigger());        
-    }
-
-    IEnumerator ResetTrigger()
-    {
-        yield return new WaitForSeconds(1.0f);
         anim.ResetTrigger("Attack");
+        anim.SetTrigger("Attack");        
     }
 
     public void Attack(IBattle target)
