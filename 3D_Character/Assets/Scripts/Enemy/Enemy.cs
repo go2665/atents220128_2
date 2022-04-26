@@ -130,7 +130,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         hp -= finalDamage;
         if( hp <= 0.0f )
         {
-            Die();
+            //Die();
         }
         hp = Mathf.Clamp(hp, 0.0f, maxHP);
     }

@@ -13,13 +13,15 @@ public class Weapon : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {        
-        if (player.IsAttack && other.isTrigger == false && other.gameObject != player.gameObject)
+    {
+        //Debug.Log($"target2 : {other.gameObject.name}");
+        if (player.IsAttack && other.CompareTag("HitTarget") 
+            && other.gameObject != player.gameObject)
         {
-            IBattle battle = other.GetComponent<IBattle>();
+            Debug.Log($"target : {other.gameObject.transform.parent.name}");
+            IBattle battle = other.GetComponentInParent<IBattle>();
             if (battle != null)
-            {
-                //Debug.Log($"target : {other.gameObject.name}");
+            {                
                 hitTarget.Enqueue(battle);
             }
         }

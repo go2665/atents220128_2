@@ -539,20 +539,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1090219386143568, guid: a817c29ea6847604bb2c6c51d9a74bf1, type: 3}
   m_PrefabInstance: {fileID: 621864313}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &604975118
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604975117}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.6, z: 0}
 --- !u!54 &604975119
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -617,6 +603,11 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!4 &604975124 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4885079432260988, guid: a817c29ea6847604bb2c6c51d9a74bf1, type: 3}
+  m_PrefabInstance: {fileID: 621864313}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &621864313
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1083,6 +1074,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2066896392038131574, guid: 45288819fde2143449a96207b14db0bb, type: 3}
   m_PrefabInstance: {fileID: 839973341}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1572666383
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1572666384}
+  - component: {fileID: 1572666385}
+  m_Layer: 0
+  m_Name: HitBox
+  m_TagString: HitTarget
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1572666384
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572666383}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 604975124}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1572666385
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572666383}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &1841319498 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2066896392038628070, guid: 45288819fde2143449a96207b14db0bb, type: 3}

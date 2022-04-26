@@ -129,7 +129,7 @@ public class Player : MonoBehaviour, IControllable, IBattle
         anim.SetFloat("ComboState",
             Mathf.Repeat(anim.GetCurrentAnimatorStateInfo(0).normalizedTime, 1.0f));
         anim.ResetTrigger("Attack");
-        anim.SetTrigger("Attack");        
+        anim.SetTrigger("Attack");
     }
 
     public void Attack(IBattle target)
