@@ -30,6 +30,11 @@ public class Player : MonoBehaviour, IControllable, IBattle
     private float hp = 100.0f;
     private float maxHP = 100.0f;
 
+    // 락온용 데이터
+    public GameObject lockOnEffect = null;
+    private Transform lockOnTarget = null;
+    private float lockOnRange = 5.0f;
+
     // 기타 데이터
     private Animator anim = null;
     private CharacterController controller = null;
@@ -130,6 +135,57 @@ public class Player : MonoBehaviour, IControllable, IBattle
             Mathf.Repeat(anim.GetCurrentAnimatorStateInfo(0).normalizedTime, 1.0f));
         anim.ResetTrigger("Attack");
         anim.SetTrigger("Attack");
+    }
+
+    public void LockOnInput()
+    {
+        //Debug.Log("LockOnInput");
+        if( lockOnTarget == null )
+        {
+            LockOn();            
+        }
+        else
+        {
+            LockOff();
+        }
+    }
+
+    void LockOn()
+    {
+        Collider[] cols = Physics.OverlapSphere(
+            this.transform.position, lockOnRange, LayerMask.GetMask("Enemy"));
+        // LayerMask.GetMask("Enemy")           //0b_1000000
+        // 1<<LayerMask.NameToLayer("Enemy")    //0b_1000000    
+        // LayerMask.GetMask("Enemy","Default","Water")  //0b_1010001
+        // LayerMask.NameToLayer("Enemy")       //6이 리턴
+
+        if( cols.Length > 0 )
+        {
+            // 가장 가까운 적을 찾는 코드 작성
+            Collider nearest = null;
+            float nearestDistance = float.MaxValue; 
+            foreach(Collider col in cols)
+            {
+                float distance = (col.transform.position - this.transform.position).sqrMagnitude;
+                if(distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    nearest = col;
+                }
+            }
+
+            lockOnTarget = nearest.transform;
+            lockOnEffect.transform.position = lockOnTarget.position;
+            lockOnEffect.transform.parent = lockOnTarget;
+            lockOnEffect.SetActive(true);
+        }
+    }
+
+    void LockOff()
+    {
+        lockOnTarget = null;
+        lockOnEffect.transform.parent = null;
+        lockOnEffect.SetActive(false);
     }
 
     public void Attack(IBattle target)

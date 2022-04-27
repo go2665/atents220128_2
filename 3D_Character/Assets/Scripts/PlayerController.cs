@@ -66,4 +66,12 @@ public class PlayerController : MonoBehaviour
             targetControl?.AttackInput();
         }
     }
+
+    public void OnLockOn(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            targetControl?.LockOnInput();
+        }
+    }
 }

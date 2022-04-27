@@ -97,15 +97,15 @@ public class Enemy : MonoBehaviour, IBattle, IDie
             Color newColor = skRenderer.material.color;
             //newColor = Color.Lerp(newColor, Color.white, changeDuration * Time.deltaTime);
 
-            //Mathf.Sin()               //Sin함수
-            //Mathf.Deg2Rad * 90.0f;    //Degree를 Radian으로 변경해주는 상수
-            //Mathf.Rad2Deg * 2;        //Radian을 Degree로 변경해주는 상수
+            // Mathf.Sin()               //Sin함수
+            // Mathf.Deg2Rad * 90.0f;    //Degree를 Radian으로 변경해주는 상수
+            // Mathf.Rad2Deg * 2;        //Radian을 Degree로 변경해주는 상수
 
             // 270~360로 변경되는 수를 만들기
             // 처음 맞았을 때 270, changeDuration만큼 시간이 지났을 때 360
-            float angle = 270.0f;
+            // float angle = 270.0f;
             hitElapsed += Time.deltaTime;
-            //Debug.Log(hitElapsed);
+            // Debug.Log(hitElapsed);
 
             // angle값은 hitElapsed가 0일때 = 270, hitElapsed가 changeDuration일 때 360
             // angle값은 진행상황이 0%일 때 270, 100%일 때 360
@@ -117,9 +117,6 @@ public class Enemy : MonoBehaviour, IBattle, IDie
             // Debug.Log($"Sin(270~360) + 1 : {Mathf.Sin((270.0f + hitElapsed / changeDuration * 90.0f) * Mathf.Deg2Rad)+1.0f}");
 
             newColor.a = Mathf.Sin((270.0f + hitElapsed / changeDuration * 90.0f) * Mathf.Deg2Rad) + 1.0f;
-
-
-
             skRenderer.material.color = newColor;
         }
     }
