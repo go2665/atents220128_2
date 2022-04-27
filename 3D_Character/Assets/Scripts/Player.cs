@@ -195,6 +195,14 @@ public class Player : MonoBehaviour, IControllable, IBattle
         lockOnEffect.SetActive(false);
     }
 
+    public void LockOff(Transform target)
+    {
+        if(target == lockOnTarget)
+        {
+            LockOff();
+        }
+    }
+
     public void Attack(IBattle target)
     {
         if (target != null)
