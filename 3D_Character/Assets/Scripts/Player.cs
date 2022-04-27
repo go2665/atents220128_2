@@ -55,6 +55,12 @@ public class Player : MonoBehaviour, IControllable, IBattle
             IBattle target = myWeapon.GetHitTarget();
             Attack(target);
         }
+
+        // 록온을 했을 때 대상을 계속 바라보기
+        if(lockOnTarget != null)
+        {
+            this.transform.LookAt(lockOnTarget.position);
+        }
     }
     
     public void ControllerConnect()
@@ -75,7 +81,8 @@ public class Player : MonoBehaviour, IControllable, IBattle
         if (inputDir.sqrMagnitude > 0.0f)
         {
             inputDir = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0) * inputDir;            
-            targetRotation = Quaternion.LookRotation(inputDir); 
+            targetRotation = Quaternion.LookRotation(inputDir);
+            inputDir.y = -9.8f;
         }
 
     }
@@ -100,7 +107,7 @@ public class Player : MonoBehaviour, IControllable, IBattle
                 anim.SetFloat("Speed", 0.0f);
             }
             
-            controller.SimpleMove(inputDir * speed);
+            controller.Move(inputDir * speed * Time.deltaTime);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
         }
         else

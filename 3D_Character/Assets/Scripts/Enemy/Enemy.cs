@@ -51,6 +51,9 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     float hitElapsed = 0.0f;
     Collider bodyCollider = null;
 
+    // 기타
+    Rigidbody rigid = null;
+
 
     private void Awake()
     {
@@ -64,6 +67,8 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         skRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         original = skRenderer.material;         
         bodyCollider = transform.Find("HitBox").GetComponent<Collider>();
+
+        rigid = GetComponent<Rigidbody>();
     }
 
     private void Start()
@@ -142,10 +147,12 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
-        {
-            navAgent.isStopped = false;
+        {            
+            navAgent.isStopped = false;           
             state = EnemyState.CHASE;
         }
+        rigid.velocity = Vector3.zero;
+        rigid.angularVelocity = Vector3.zero;
     }
 
     public void Attack(IBattle target)
