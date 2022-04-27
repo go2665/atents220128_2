@@ -55,3 +55,8 @@ Enemy가 Player를 공격해서 Player를 사망하게 만들기
   3.1 MyPolyartDefault 머티리얼 사용하기
   3.2 Enemy만 수정하기
    - 1시 20분까지
+
+
+4/27
+1. angle 값을 270~360으로 변경시켜라(Enemy.Update()의 지역변수)
+   - 9시45분까지
