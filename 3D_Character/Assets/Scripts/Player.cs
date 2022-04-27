@@ -59,7 +59,10 @@ public class Player : MonoBehaviour, IControllable, IBattle
         // 록온을 했을 때 대상을 계속 바라보기
         if(lockOnTarget != null)
         {
-            this.transform.LookAt(lockOnTarget.position);
+            //this.transform.LookAt(lockOnTarget.position);
+
+            Vector3 dir = lockOnTarget.position - this.transform.position;
+            targetRotation = Quaternion.LookRotation(dir);
         }
     }
     
