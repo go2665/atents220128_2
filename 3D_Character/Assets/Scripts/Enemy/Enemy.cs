@@ -187,6 +187,8 @@ public class Enemy : MonoBehaviour, IBattle, IDie
             Die();
         }
         hp = Mathf.Clamp(hp, 0.0f, maxHP);
+        anim.SetTrigger("Hit");
+        attackCooltime = attackSpeed;
         StartCoroutine(UnBeatable());
     }
 
@@ -208,8 +210,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     }  
 
     private void IdleUpdate()
-    {
-        
+    {        
         waitTime -= Time.deltaTime;
         if (waitTime < 0.0f)
         {
