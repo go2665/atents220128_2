@@ -95,7 +95,6 @@ public class Enemy : MonoBehaviour, IBattle, IDie
                 AttackUpdate();
                 break;
             case EnemyState.DEAD:
-                Die();
                 break;
             default:
                 break;
@@ -151,7 +150,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
+        if (state != EnemyState.DEAD && other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {            
             navAgent.isStopped = false;           
             state = EnemyState.CHASE;
@@ -175,21 +174,24 @@ public class Enemy : MonoBehaviour, IBattle, IDie
 
     public void TakeDamage(float damage)
     {
-        Debug.Log($"{gameObject.name} : {damage} 데미지 입음");
         float finalDamage = damage - defencePower;
         if (finalDamage < 1.0f)
         {
             finalDamage = 1.0f;
         }
+        Debug.Log($"{gameObject.name} : {finalDamage} 데미지 입음");
         hp -= finalDamage;
-        if( hp <= 0.0f )
+        if (hp <= 0.0f)
         {
             Die();
         }
-        hp = Mathf.Clamp(hp, 0.0f, maxHP);
-        anim.SetTrigger("Hit");
-        attackCooltime = attackSpeed;
-        StartCoroutine(UnBeatable());
+        else
+        {
+            hp = Mathf.Clamp(hp, 0.0f, maxHP);
+            anim.SetTrigger("Hit");
+            attackCooltime = attackSpeed;
+            StartCoroutine(UnBeatable());
+        }
     }
 
     IEnumerator UnBeatable()
@@ -205,8 +207,18 @@ public class Enemy : MonoBehaviour, IBattle, IDie
 
     public virtual void Die()
     {
+        state = EnemyState.DEAD;
+
         GameManager.Inst.MainPlayer.LockOff(bodyCollider.transform);
-        Destroy(this.gameObject);
+
+        bodyCollider.enabled = false;
+
+        navAgent.isStopped = true;
+        navAgent.velocity = Vector3.zero;
+
+        anim.SetTrigger("Die");
+
+        Destroy(this.gameObject, 3.0f);
     }  
 
     private void IdleUpdate()

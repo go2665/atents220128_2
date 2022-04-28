@@ -21,8 +21,8 @@ public class Player : MonoBehaviour, IControllable, IBattle
     Weapon myWeapon = null;
 
     // 공격용 데이터
-    private float attackPower = 15.0f;
-    private float critical = 0.2f;
+    public float attackPower = 15.0f;
+    public float critical = 0.2f;
     public bool IsAttack { get; set; }
 
     // 방어용 데이터

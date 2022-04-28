@@ -1158,6 +1158,8 @@ MonoBehaviour:
   turnSpeed: 20
   weapone: {fileID: 1841319498}
   shield: {fileID: 170465098}
+  attackPower: 40
+  critical: 0.2
   lockOnEffect: {fileID: 1620702998}
 --- !u!4 &1530888930 stripped
 Transform:
