@@ -53,6 +53,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
 
     // 기타
     Rigidbody rigid = null;
+    Animator anim = null;
 
 
     private void Awake()
@@ -69,6 +70,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         bodyCollider = transform.Find("HitBox").GetComponent<Collider>();
 
         rigid = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
     }
 
     private void Start()
@@ -79,6 +81,8 @@ public class Enemy : MonoBehaviour, IBattle, IDie
 
     private void Update()
     {
+        anim.SetInteger("EnemyState", (int)state);
+
         switch (state)
         {
             case EnemyState.IDLE:
@@ -134,6 +138,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
             //StartCoroutine(TransitionToAttack());
             navAgent.isStopped = true;
             navAgent.velocity = Vector3.zero;
+            attackCooltime = attackSpeed;
         }
     }
 
@@ -204,6 +209,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
 
     private void IdleUpdate()
     {
+        
         waitTime -= Time.deltaTime;
         if (waitTime < 0.0f)
         {
@@ -221,6 +227,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         attackCooltime -= Time.deltaTime;
         if(attackCooltime < 0.0f)
         {
+            anim.SetTrigger("Attack");
             Attack(playerBattle);
             attackCooltime = attackSpeed;
         }
