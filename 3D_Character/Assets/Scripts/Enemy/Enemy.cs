@@ -17,6 +17,18 @@ public class Enemy : MonoBehaviour, IBattle, IDie
 {
     // HP
     private float hp = 100.0f;
+    private float HP
+    {
+        get
+        {
+            return hp;
+        }
+        set
+        {
+            hp = value;
+            healthBar?.SetHeath(hp);
+        }
+    }
     private float maxHP = 100.0f;
     
     // 공격
@@ -71,7 +83,6 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         bodyCollider = transform.Find("HitBox").GetComponent<Collider>();
         healthBar = GetComponentInChildren<HealthBar>();
         healthBar.SetMaxHealth(maxHP);
-        healthBar.SetHeath(hp);
 
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
@@ -81,6 +92,8 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     {
         playerTransform = GameManager.Inst.MainPlayer.transform;
         playerBattle = GameManager.Inst.MainPlayer.GetComponent<IBattle>();
+
+        HP = maxHP;
     }
 
     private void Update()
@@ -184,18 +197,17 @@ public class Enemy : MonoBehaviour, IBattle, IDie
             finalDamage = 1.0f;
         }
         Debug.Log($"{gameObject.name} : {finalDamage} 데미지 입음");
-        hp -= finalDamage;
-        healthBar.SetHeath(hp);
-        if (hp <= 0.0f)
+        HP -= finalDamage;
+        if (HP <= 0.0f)
         {
             Die();
         }
         else
         {
-            hp = Mathf.Clamp(hp, 0.0f, maxHP);
+            HP = Mathf.Clamp(HP, 0.0f, maxHP);
             anim.SetTrigger("Hit");
             attackCooltime = attackSpeed;
-            StartCoroutine(UnBeatable());
+            StartCoroutine(UnBeatable());            
         }
     }
 
@@ -212,6 +224,8 @@ public class Enemy : MonoBehaviour, IBattle, IDie
 
     public virtual void Die()
     {
+        HP = 0.0f;
+
         state = EnemyState.DEAD;
 
         GameManager.Inst.MainPlayer.LockOff(bodyCollider.transform);
