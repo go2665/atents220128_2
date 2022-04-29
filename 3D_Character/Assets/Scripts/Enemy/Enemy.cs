@@ -50,6 +50,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     float changeDuration = 0.5f;
     float hitElapsed = 0.0f;
     Collider bodyCollider = null;
+    HealthBar healthBar = null;
 
     // 기타
     Rigidbody rigid = null;
@@ -68,6 +69,9 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         skRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         original = skRenderer.material;         
         bodyCollider = transform.Find("HitBox").GetComponent<Collider>();
+        healthBar = GetComponentInChildren<HealthBar>();
+        healthBar.SetMaxHealth(maxHP);
+        healthBar.SetHeath(hp);
 
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
@@ -181,6 +185,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         }
         Debug.Log($"{gameObject.name} : {finalDamage} 데미지 입음");
         hp -= finalDamage;
+        healthBar.SetHeath(hp);
         if (hp <= 0.0f)
         {
             Die();
@@ -245,4 +250,14 @@ public class Enemy : MonoBehaviour, IBattle, IDie
             attackCooltime = attackSpeed;
         }
     }
+
+    //public float GetHealth()
+    //{
+    //    return hp;
+    //}
+
+    //public float GetMaxHealth()
+    //{
+    //    return maxHP;
+    //}
 }
