@@ -417,7 +417,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2412586242081842664, guid: 193201be5d5542249a4338c35fcf89af, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2412586242081842664, guid: 193201be5d5542249a4338c35fcf89af, type: 3}
       propertyPath: m_LocalPosition.x
@@ -601,7 +601,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &399266803
 MonoBehaviour:
@@ -908,6 +908,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5904753484224456837, guid: 45288819fde2143449a96207b14db0bb, type: 3}
+      propertyPath: hitEffect
+      value: 
+      objectReference: {fileID: 100000, guid: 00a92c114ff3df14f85e863487af7b4f, type: 3}
     - target: {fileID: 6639629717168529985, guid: 45288819fde2143449a96207b14db0bb, type: 3}
       propertyPath: prewarm
       value: 1
