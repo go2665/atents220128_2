@@ -27,7 +27,7 @@ public class Weapon : MonoBehaviour
                 Vector3 effectPoint = other.ClosestPoint(hitPoint);
                 Instantiate(hitEffect, effectPoint, Quaternion.identity);                
                 //GameObject obj;
-                //var mainModule = obj.GetComponent<ParticleSystem>().main;
+                //ParticleSystem.MainModule mainModule = obj.GetComponent<ParticleSystem>().main;
                 //mainModule.stopAction = ParticleSystemStopAction.Destroy;
                 hitTarget.Enqueue(battle);
             }
