@@ -25,11 +25,11 @@ public class Weapon : MonoBehaviour
             {
                 Vector3 hitPoint = this.transform.position - this.transform.up * 0.8f;
                 Vector3 effectPoint = other.ClosestPoint(hitPoint);
-                Instantiate(hitEffect, effectPoint, Quaternion.identity);
-                
+                Instantiate(hitEffect, effectPoint, Quaternion.identity);                
+                //GameObject obj;
+                //var mainModule = obj.GetComponent<ParticleSystem>().main;
+                //mainModule.stopAction = ParticleSystemStopAction.Destroy;
                 hitTarget.Enqueue(battle);
-
-                //Time.timeScale = 0.0f;
             }
         }
     }
