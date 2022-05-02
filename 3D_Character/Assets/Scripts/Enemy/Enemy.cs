@@ -13,24 +13,32 @@ public enum EnemyState
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(SphereCollider))]
-public class Enemy : MonoBehaviour, IBattle, IDie
+public class Enemy : MonoBehaviour, IBattle, IDie, IHealth
 {
-    // HP
+    // IHealth
     private float hp = 100.0f;
-    private float HP
+    public float HP
     {
         get
         {
             return hp;
         }
-        set
+        private set
         {
             hp = value;
-            healthBar?.SetHeath(hp);
+            onHealthChange?.Invoke();
         }
     }
     private float maxHP = 100.0f;
-    
+    public float MaxHP
+    {
+        get
+        {
+            return maxHP;
+        }
+    }
+    public HealthDelegate onHealthChange { get; set; }
+
     // 공격
     private float attackPower = 10.0f;
     private float attackRange = 1.0f;
@@ -62,7 +70,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie
     float changeDuration = 0.5f;
     float hitElapsed = 0.0f;
     Collider bodyCollider = null;
-    HealthBar healthBar = null;
+    //HealthBar healthBar = null;
 
     // 기타
     Rigidbody rigid = null;
@@ -81,8 +89,8 @@ public class Enemy : MonoBehaviour, IBattle, IDie
         skRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         original = skRenderer.material;         
         bodyCollider = transform.Find("HitBox").GetComponent<Collider>();
-        healthBar = GetComponentInChildren<HealthBar>();
-        healthBar.SetMaxHealth(maxHP);
+        //healthBar = GetComponentInChildren<HealthBar>();
+        //healthBar.SetMaxHealth(maxHP);
 
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
