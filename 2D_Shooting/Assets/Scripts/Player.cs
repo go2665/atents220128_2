@@ -16,10 +16,12 @@ public class Player : MonoBehaviour
     // 공격 관련
     public GameObject shoot = null;
     public Transform fireTransform = null;
+    GameObject flash = null;
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();        
+        anim = GetComponent<Animator>();
+        flash = transform.Find("Flash").gameObject;
     }
 
     private void Update()
@@ -57,6 +59,14 @@ public class Player : MonoBehaviour
     {
         //Instantiate(shoot, fireTransform.position, fireTransform.rotation);
         GameObject shootObj = MemoryPool.Inst.GetObject();      // 게임메니저 추가하면서 수정해야 함.
-        shootObj.transform.position = fireTransform.position;        
+        shootObj.transform.position = fireTransform.position;
+        flash.SetActive(true);
+        StartCoroutine(FlashOff());
+    }
+
+    IEnumerator FlashOff()
+    {
+        yield return new WaitForSeconds(0.1f);
+        flash.SetActive(false);
     }
 }
