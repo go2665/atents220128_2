@@ -57,6 +57,6 @@ public class Player : MonoBehaviour
     {
         //Instantiate(shoot, fireTransform.position, fireTransform.rotation);
         GameObject shootObj = MemoryPool.Inst.GetObject();      // 게임메니저 추가하면서 수정해야 함.
-        shootObj.transform.position = fireTransform.position;
+        shootObj.transform.position = fireTransform.position;        
     }
 }
