@@ -15,7 +15,7 @@ public class MemoryPool : MonoBehaviour
                                                  
     public int defaultPoolSize = 8;             // 풀의 최대 크기(기본값)
     public GameObject objPrefab = null;         // 생성할 오브젝트의 종류
-    public Transform parent = null;             // 생성된 오브젝트가 붙을 오브젝트
+    //public Transform parent = null;             // 생성된 오브젝트가 붙을 오브젝트
 
     private static MemoryPool instance = null;  // 싱글톤은 나중에 제거할 부분(GameManager만들어진 후)
     public static MemoryPool Inst
@@ -98,7 +98,7 @@ public class MemoryPool : MonoBehaviour
     public void ReturnObject(GameObject obj)
     {
         obj.SetActive(false);
-        obj.transform.parent = this.transform;
+        //obj.transform.parent = this.transform;
         pool.Enqueue(obj);
     }
 }
