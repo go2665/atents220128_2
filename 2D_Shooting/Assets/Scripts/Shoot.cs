@@ -22,7 +22,8 @@ public class Shoot : MonoBehaviour
         if(collision.CompareTag("Killzone"))
         {
             //Destroy(this.gameObject);
-            MemoryPool.Inst.ReturnObject(this.gameObject);
+            //MemoryPool.Inst.ReturnObject(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 }

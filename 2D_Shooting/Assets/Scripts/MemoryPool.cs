@@ -67,6 +67,8 @@ public class MemoryPool : MonoBehaviour
         for (int i = 0; i < makeSize; i++)    // 오브젝트 하나씩 생성
         {
             GameObject obj = GameObject.Instantiate(objPrefab, this.transform);     //오브젝트 만들고 MemoryPool의 자식으로 붙임
+            PoolObject poolObj = obj.AddComponent<PoolObject>();
+            poolObj.onReturnToPool = ReturnObject;
             obj.name = $"{objPrefab.name}_{currentSize}";   //이름 변경
             obj.SetActive(false);                           //오브젝트 비활성화
             
@@ -95,7 +97,7 @@ public class MemoryPool : MonoBehaviour
     }
 
     // 파라메터로 받은 오브젝트를 pool로 돌려주는 함수
-    public void ReturnObject(GameObject obj)
+    private void ReturnObject(GameObject obj)
     {
         obj.SetActive(false);
         //obj.transform.parent = this.transform;
