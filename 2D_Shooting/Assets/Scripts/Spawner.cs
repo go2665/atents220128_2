@@ -42,6 +42,6 @@ public class Spawner : MonoBehaviour
         spawnEnemy.transform.position = startPos;
         spawnEnemy.transform.rotation = quat;
         Enemy enemyComp = spawnEnemy.GetComponent<Enemy>();
-        enemyComp?.ResetVelocity();
+        enemyComp?.ResetVelocity();        
     }
 }

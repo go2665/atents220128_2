@@ -16,14 +16,4 @@ public class Shoot : MonoBehaviour
     {
         rigid.velocity = Vector2.right * speed;
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.CompareTag("Killzone"))
-        {
-            //Destroy(this.gameObject);
-            //MemoryPool.Inst.ReturnObject(this.gameObject);
-            this.gameObject.SetActive(false);
-        }
-    }
 }
