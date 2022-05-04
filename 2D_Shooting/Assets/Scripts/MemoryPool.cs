@@ -21,7 +21,7 @@ public class MemoryPool : MonoBehaviour
     private void Awake()
     {
         Initialize();
-        DontDestroyOnLoad(this.gameObject); // 다른 씬이 로드되더라도 삭제되지 않는다.
+        //DontDestroyOnLoad(this.gameObject); // 다른 씬이 로드되더라도 삭제되지 않는다.
     }
 
     // 초기화(처음용 pool을 만든다.)

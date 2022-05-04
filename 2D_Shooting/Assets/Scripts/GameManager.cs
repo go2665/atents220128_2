@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)   // 제일 처음 만들어진 인스턴스다.
         {
             instance = this;
+            instance.Initialize();
             DontDestroyOnLoad(this.gameObject); // 다른 씬이 로드되더라도 삭제되지 않는다.
         }
         else
@@ -31,6 +32,11 @@ public class GameManager : MonoBehaviour
                 Destroy(this.gameObject);   //나는 죽는다.
             }
         }
+    }
+
+    private void Initialize()
+    {
+        shootMemoryPool = transform.Find("ShootMemoryPool").gameObject.GetComponent<MemoryPool>();
     }
 
     public GameObject GetShootObject()
