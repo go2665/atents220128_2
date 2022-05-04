@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     // 이동 관련
     public float speed = 10.0f;
     Vector2 inputDirection = Vector2.zero;
+    Rigidbody2D rigid = null;
     
     // 애니메이터 관련
     Animator anim = null;
@@ -20,13 +21,19 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         flash = transform.Find("Flash").gameObject;
     }
 
-    private void Update()
+    //private void Update()
+    //{
+    //    //transform.Translate(inputDirection * speed * Time.deltaTime);
+    //}
+
+    private void FixedUpdate()
     {
-        transform.Translate(inputDirection * speed * Time.deltaTime);
+        rigid.MovePosition((Vector2)transform.position + inputDirection * speed * Time.fixedDeltaTime);
     }
 
     public void MoveInput(InputAction.CallbackContext context)
@@ -58,7 +65,7 @@ public class Player : MonoBehaviour
     private void Fire()
     {
         //Instantiate(shoot, fireTransform.position, fireTransform.rotation);
-        GameObject shootObj = MemoryPool.Inst.GetObject();      // 게임메니저 추가하면서 수정해야 함.
+        GameObject shootObj = GameManager.Inst.GetShootObject();      // 게임메니저 추가하면서 수정해야 함.
         shootObj.transform.position = fireTransform.position;
         flash.SetActive(true);
         StartCoroutine(FlashOff());
