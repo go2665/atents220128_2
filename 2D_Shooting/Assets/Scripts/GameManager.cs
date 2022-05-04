@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public MemoryPool shootMemoryPool = null;    
+    public MemoryPool shootMemoryPool = null;
+    public MemoryPool enemyMemoryPool = null;
 
     private static GameManager instance = null;  // 싱글톤은 나중에 제거할 부분(GameManager만들어진 후)
     public static GameManager Inst
@@ -37,10 +38,16 @@ public class GameManager : MonoBehaviour
     private void Initialize()
     {
         shootMemoryPool = transform.Find("ShootMemoryPool").gameObject.GetComponent<MemoryPool>();
+        enemyMemoryPool = transform.Find("EnemyMemoryPool").gameObject.GetComponent<MemoryPool>();
     }
 
     public GameObject GetShootObject()
     {
         return shootMemoryPool.GetObject();
+    }
+
+    public GameObject GetEnemyObject()
+    {
+        return enemyMemoryPool.GetObject();
     }
 }

@@ -14,6 +14,11 @@ public class Enemy : MonoBehaviour
 
     private void OnEnable()
     {
-        rigid.velocity = Vector2.left * speed;
+        ResetVelocity();
+    }
+
+    public void ResetVelocity()
+    {
+        rigid.velocity = (-transform.right) * speed;
     }
 }
