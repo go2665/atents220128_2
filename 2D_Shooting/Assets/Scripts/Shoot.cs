@@ -16,4 +16,9 @@ public class Shoot : MonoBehaviour
     {
         rigid.velocity = Vector2.right * speed;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        this.gameObject.SetActive(false);
+    }
 }

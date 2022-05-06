@@ -26,7 +26,9 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
-        Instantiate(effect, transform.position, Quaternion.identity);
+        GameObject explosion = GameManager.Inst.GetExplosionObject();
+        explosion.transform.position = transform.position;
+
         this.gameObject.SetActive(false);
     }
 

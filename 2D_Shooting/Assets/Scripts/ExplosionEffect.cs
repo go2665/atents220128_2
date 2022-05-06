@@ -5,15 +5,17 @@ using UnityEngine;
 public class ExplosionEffect : MonoBehaviour
 {
     Animator anim = null;
-    int hash_explosion = Animator.StringToHash("Explosion");
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
     }
 
-    private void OnEnable()
+    private void Update()
     {
-        anim.Play(hash_explosion);
+        if( anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f )
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 }

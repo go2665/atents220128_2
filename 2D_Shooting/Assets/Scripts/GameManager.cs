@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public MemoryPool shootMemoryPool = null;
     public MemoryPool enemyMemoryPool = null;
+    public MemoryPool explosionMemoryPool = null;
 
     private static GameManager instance = null;  // 싱글톤은 나중에 제거할 부분(GameManager만들어진 후)
     public static GameManager Inst
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
     {
         shootMemoryPool = transform.Find("ShootMemoryPool").gameObject.GetComponent<MemoryPool>();
         enemyMemoryPool = transform.Find("EnemyMemoryPool").gameObject.GetComponent<MemoryPool>();
+        explosionMemoryPool = transform.Find("ExplosionMemoryPool").gameObject.GetComponent<MemoryPool>();
     }
 
     public GameObject GetShootObject()
@@ -49,5 +51,10 @@ public class GameManager : MonoBehaviour
     public GameObject GetEnemyObject()
     {
         return enemyMemoryPool.GetObject();
+    }
+
+    public GameObject GetExplosionObject()
+    {
+        return explosionMemoryPool.GetObject();
     }
 }
