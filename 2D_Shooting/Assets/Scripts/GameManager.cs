@@ -53,6 +53,11 @@ public class GameManager : MonoBehaviour
         return enemyMemoryPool.GetObject();
     }
 
+    public GameObject GetEnemyObject(Vector2 pos, Quaternion rot)
+    {
+        return enemyMemoryPool.GetObject(pos, rot);
+    }
+
     public GameObject GetExplosionObject()
     {
         return explosionMemoryPool.GetObject();

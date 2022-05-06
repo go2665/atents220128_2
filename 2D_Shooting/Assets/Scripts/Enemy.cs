@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
         ResetVelocity();
     }
 
-    public void ResetVelocity()
+    private void ResetVelocity()
     {
         rigid.velocity = (-transform.right) * speed;
     }

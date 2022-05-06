@@ -36,12 +36,8 @@ public class Spawner : MonoBehaviour
         Vector2 dir = targetPos - startPos;
         float angle = Vector2.SignedAngle(Vector2.left, dir);
         Quaternion quat = Quaternion.Euler(0, 0, angle);
-                
+
         // 메모리풀에서 적을 하나 가져와서 위치와 회전과 벨로시티 갱신
-        GameObject spawnEnemy = GameManager.Inst.GetEnemyObject();
-        spawnEnemy.transform.position = startPos;
-        spawnEnemy.transform.rotation = quat;
-        Enemy enemyComp = spawnEnemy.GetComponent<Enemy>();
-        enemyComp?.ResetVelocity();        
+        GameManager.Inst.GetEnemyObject(startPos, quat);
     }
 }

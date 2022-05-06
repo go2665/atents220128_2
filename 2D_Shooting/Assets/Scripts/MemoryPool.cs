@@ -60,6 +60,11 @@ public class MemoryPool : MonoBehaviour
     // Pool에서 오브젝트를 하나 가져오는 함수
     public GameObject GetObject()
     {
+        return GetObject(Vector2.zero, Quaternion.identity);
+    }
+
+    public GameObject GetObject(Vector2 pos, Quaternion rot)
+    {
         GameObject result = null;   //리턴용으로 변수 생성
 
         // 큐에 사용 가능한 오브젝트가 있는지 확인(큐가 비어있는지 확인)
@@ -71,6 +76,8 @@ public class MemoryPool : MonoBehaviour
 
         // 큐에 오브젝트가 있다.
         result = pool.Dequeue();    //Dequeue를 통해 오브젝트 하나 꺼냄
+        result.transform.position = pos;
+        result.transform.rotation = rot;
         result.SetActive(true);     // 오브젝트 활성화             
 
         return result;
