@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public enum SpawnType
+    {
+        Asteroid = 0,
+        Enemy
+    }
+
+    public SpawnType type = SpawnType.Asteroid;
     public Transform defaultSpawnPosition = null;
     public Transform defaultTargetPosition = null;
     public float randomRangeY = 5.0f;
@@ -37,7 +44,17 @@ public class Spawner : MonoBehaviour
         float angle = Vector2.SignedAngle(Vector2.left, dir);
         Quaternion quat = Quaternion.Euler(0, 0, angle);
 
-        // 메모리풀에서 적을 하나 가져와서 위치와 회전과 벨로시티 갱신
-        GameManager.Inst.GetEnemyObject(startPos, quat);
+        // 메모리풀에서 스폰 대상을 하나 가져와서 위치와 회전과 벨로시티 갱신
+        switch (type)
+        {
+            case SpawnType.Asteroid:
+                GameManager.Inst.GetAsteroidBigObject(startPos, quat);
+                break;
+            case SpawnType.Enemy:
+                GameManager.Inst.GetEnemyObject(startPos, quat);
+                break;
+            default:
+                break;
+        }
     }
 }
