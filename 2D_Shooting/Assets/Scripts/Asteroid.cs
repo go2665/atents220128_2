@@ -49,8 +49,8 @@ public class Asteroid : MonoBehaviour
         {
             if (childCount > 1)
             {
-                float startAngle = -splashAngle * 0.5f;       //자식이 날가가기 시작하는 각도
-                float angleGap = splashAngle / (childCount - 1);         //자식들 간의 각도 간격
+                float startAngle = -splashAngle * 0.5f;             //첫번째 자식의 각도
+                float angleGap = splashAngle / (childCount - 1);    //자식들 간의 각도 간격
                 for (int i = 0; i < childCount; i++)
                 {
                     childPool.GetObject(this.transform.position, Quaternion.Euler(0, 0, startAngle + angleGap * i));
