@@ -139,3 +139,6 @@ MonoBehaviour:
   hp: 0
   maxHP: 3
   moveSpeed: 1
+  childPool: {fileID: 0}
+  childCount: 5
+  splashAngle: 120
