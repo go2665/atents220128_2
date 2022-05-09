@@ -7,12 +7,18 @@ public class Asteroid : MonoBehaviour
     public int hp = 0;
     public int maxHP = 3;
     public float moveSpeed = 1.0f;
+    
+    // 자식으로 생성할 오브젝트 관련 정보
+    public MemoryPool childPool = null;
+    public uint childCount = 2;
+
+    
 
     Rigidbody2D rigid = null;
 
     private void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
+        rigid = GetComponent<Rigidbody2D>();        
     }
 
     private void OnEnable()
@@ -31,7 +37,19 @@ public class Asteroid : MonoBehaviour
             hp--;
             if(hp <= 0)
             {
+                SpawnChild();
                 this.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    void SpawnChild()
+    {
+        if(childPool != null && childCount > 0)
+        {
+            for (int i = 0; i < childCount; i++)
+            {
+                childPool.GetObject(this.transform.position, Quaternion.identity);
             }
         }
     }

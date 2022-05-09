@@ -48,7 +48,8 @@ public class Spawner : MonoBehaviour
         switch (type)
         {
             case SpawnType.Asteroid:
-                GameManager.Inst.GetAsteroidBigObject(startPos, quat);
+                GameObject obj = GameManager.Inst.GetAsteroidBigObject(startPos, quat);
+                obj.GetComponent<Asteroid>().childPool = GameObject.Find("AsteroidSmallMP").GetComponent<MemoryPool>();
                 break;
             case SpawnType.Enemy:
                 GameManager.Inst.GetEnemyObject(startPos, quat);
