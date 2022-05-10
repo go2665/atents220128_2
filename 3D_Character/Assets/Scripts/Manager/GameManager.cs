@@ -13,6 +13,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private ItemDataManager itemDatas = null;
+    public ItemDataManager ItemDatas
+    {
+        get
+        {
+            return itemDatas;
+        }
+    }
+
     private static GameManager instance = null;
     public static GameManager Inst
     {
@@ -43,5 +52,6 @@ public class GameManager : MonoBehaviour
     private void Initialize()
     {
         mainPlayer = FindObjectOfType<Player>();
+        itemDatas = GetComponent<ItemDataManager>();
     }
 }

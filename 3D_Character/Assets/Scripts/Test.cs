@@ -6,7 +6,8 @@ public class Test : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
-    {
+    {        
+        ItemData item = GameManager.Inst.ItemDatas[0];
         
     }
 
