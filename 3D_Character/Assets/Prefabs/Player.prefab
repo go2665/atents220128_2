@@ -124,7 +124,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6094951182271801862}
-  m_LocalRotation: {x: -0, y: -0.73799044, z: -0, w: 0.6748112}
+  m_LocalRotation: {x: 0, y: -0.7379903, z: 0, w: 0.6748113}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -191,7 +191,7 @@ MonoBehaviour:
   shield: {fileID: 6094951182271802328}
   attackPower: 11
   critical: 0.2
-  lockOnEffect: {fileID: 0}
+  lockOnEffect: {fileID: 2412586242081842667, guid: 193201be5d5542249a4338c35fcf89af, type: 3}
 --- !u!1 &6094951182271801864
 GameObject:
   m_ObjectHideFlags: 0

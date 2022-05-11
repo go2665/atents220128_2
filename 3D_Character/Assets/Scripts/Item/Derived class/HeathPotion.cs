@@ -4,4 +4,8 @@ using UnityEngine;
 
 public class HeathPotion : Item
 {
+    //protected override void Start()
+    //{
+    //    base.Start();        
+    //}
 }

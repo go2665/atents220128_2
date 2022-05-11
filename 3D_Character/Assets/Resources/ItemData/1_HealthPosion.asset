@@ -18,3 +18,4 @@ MonoBehaviour:
   itemDesc: "HP\uAC00 10\uD68C\uBCF5\uB41C\uB2E4."
   price: 100
   prefab: {fileID: 1000012970591572, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+  triggerSize: 0.5

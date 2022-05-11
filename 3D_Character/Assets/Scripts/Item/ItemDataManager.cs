@@ -33,21 +33,21 @@ public class ItemDataManager : MonoBehaviour
 
     public void Initialize()
     {
-        //string itemDataFullPath = $"{Application.dataPath}/{ITEM_DATA_RESOURCES_FOLDER_NAME}";    // "Assets/Resources/ItemData"로 합치기
-        //DirectoryInfo info = new DirectoryInfo(itemDataFullPath);   // ItemData가 있는 전체 경로를 이용해 해당 폴더의 정보 가져오기
-        //FileInfo[] files = info.GetFiles("*.asset");                // 확장자가 asset인 파일정보를 가져오기
-        //itemDatas = new ItemData[files.Length];
-        //for ( int i=0;i<files.Length;i++)            
-        //{
-        //    string loadFileName = $"{ITEM_DATA_FOLDER_NAME}/{Path.GetFileNameWithoutExtension(files[i].Name)}";
-        //    itemDatas[i] = Resources.Load<ItemData>(loadFileName);
-        //}
-
-        ItemData[] temp = Resources.FindObjectsOfTypeAll<ItemData>();
-        itemDatas = new ItemData[temp.Length];
-        foreach (ItemData item in temp)
+        string itemDataFullPath = $"{Application.dataPath}/{ITEM_DATA_RESOURCES_FOLDER_NAME}";    // "Assets/Resources/ItemData"로 합치기
+        DirectoryInfo info = new DirectoryInfo(itemDataFullPath);   // ItemData가 있는 전체 경로를 이용해 해당 폴더의 정보 가져오기
+        FileInfo[] files = info.GetFiles("*.asset");                // 확장자가 asset인 파일정보를 가져오기
+        itemDatas = new ItemData[files.Length];
+        for (int i = 0; i < files.Length; i++)
         {
-            itemDatas[item.id] = item;  // 원래 id의 목적 중 하나가 배열에서의 index와 매칭 시키는 것
+            string loadFileName = $"{ITEM_DATA_FOLDER_NAME}/{Path.GetFileNameWithoutExtension(files[i].Name)}";
+            itemDatas[i] = Resources.Load<ItemData>(loadFileName);
         }
+
+        //ItemData[] temp = Resources.FindObjectsOfTypeAll<ItemData>();
+        //itemDatas = new ItemData[temp.Length];
+        //foreach (ItemData item in temp)
+        //{
+        //    itemDatas[item.id] = item;  // 원래 id의 목적 중 하나가 배열에서의 index와 매칭 시키는 것
+        //}
     }
 }
