@@ -6,9 +6,12 @@ public class Test : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
-    {        
-        ItemData item = GameManager.Inst.ItemDatas[0];
-        
+    {
+        //ItemData item = GameManager.Inst.ItemDatas[0];
+        GameObject obj = ItemFactory.GetItem(ItemIDCode.HealthPotion);
+        obj.transform.position = this.transform.position;
+
+
     }
 
     // Update is called once per frame

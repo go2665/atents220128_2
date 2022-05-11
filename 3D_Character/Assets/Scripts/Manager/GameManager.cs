@@ -53,5 +53,6 @@ public class GameManager : MonoBehaviour
     {
         mainPlayer = FindObjectOfType<Player>();
         itemDatas = GetComponent<ItemDataManager>();
+        itemDatas.Initialize();
     }
 }

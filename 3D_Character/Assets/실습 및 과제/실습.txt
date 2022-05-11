@@ -94,3 +94,11 @@ Enemy가 Player를 공격해서 Player를 사망하게 만들기
 5/2
 1. 코드 읽고 이해하기
    - 10시 30분까지
+
+
+
+5/11
+1. ItemData[] temp = Resources.FindObjectsOfTypeAll<ItemData>(); 가 실행됬을 때 temp안에 있는 ItemData들을 순서대로 itemDatas에 넣어라
+   - 9시 50분까지
+2. 팩토리에서 Item을 생성할 때 SphereCollider 추가하기
+   - 10시 50분까지

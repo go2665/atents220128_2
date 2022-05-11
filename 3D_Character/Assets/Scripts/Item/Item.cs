@@ -6,7 +6,7 @@ public class Item : MonoBehaviour
 {
     public ItemData data = null;
 
-    private void Awake()
+    private void Start()
     {
         Instantiate(data.prefab, transform.position, transform.rotation, transform);
     }

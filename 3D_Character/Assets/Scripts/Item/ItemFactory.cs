@@ -2,19 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemFactory : MonoBehaviour
-{    
-    public GameObject[] prefabs = null;
+public class ItemFactory
+{
+    static int itemCount = 0;
 
-    public GameObject GetItem(uint id)
+    static public GameObject GetItem(uint id)
     {
-        //Instantiate(prefabs[id]);
         return GetItem((ItemIDCode)id);
     }
 
-    public GameObject GetItem(ItemIDCode code)
+    static public GameObject GetItem(ItemIDCode code)
     {
-        //GameObject obj = Instantiate(prefabs[(int)code]);
         GameObject obj = new GameObject();
         Item item = null;
         switch (code)
@@ -36,6 +34,10 @@ public class ItemFactory : MonoBehaviour
         }
         item.data = GameManager.Inst.ItemDatas[code];
 
-        return null;
+        string[] itemName = item.data.name.Split("_");
+        obj.name = $"{itemName[1]}_{itemCount}";
+        itemCount++;
+
+        return obj;
     }
 }
