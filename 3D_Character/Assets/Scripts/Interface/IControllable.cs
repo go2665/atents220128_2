@@ -8,4 +8,6 @@ interface IControllable
     void MoveModeChange();          // 걷기 달리기 전환 입력 처리
     void AttackInput();             // 공격 입력 처리
     void LockOnInput();             // 락온 입력 처리
+
+    void PickupInput();             // 아이템 줍는 입력 처리
 }

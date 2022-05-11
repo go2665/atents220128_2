@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void PickupDelegate();
+
 public enum MoveMode : byte
 {
     WALK = 0,
@@ -35,12 +37,16 @@ public class Player : MonoBehaviour, IControllable, IBattle
     private Transform lockOnTarget = null;
     private float lockOnRange = 5.0f;
 
+    // 아이템 사용
+    public PickupDelegate onPickupAction = null;
+
     // 기타 데이터
     private Animator anim = null;
     private CharacterController controller = null;
     private Vector3 inputDir = Vector2.zero;
     private Quaternion targetRotation = Quaternion.identity;
     private MoveMode moveMode = MoveMode.RUN;
+    
 
     void Awake()
     {
@@ -233,5 +239,10 @@ public class Player : MonoBehaviour, IControllable, IBattle
             //Die();
         }
         hp = Mathf.Clamp(hp, 0.0f, maxHP);
+    }
+
+    public void PickupInput()
+    {
+        onPickupAction?.Invoke();
     }
 }

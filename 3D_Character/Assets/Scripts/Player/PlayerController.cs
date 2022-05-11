@@ -74,4 +74,12 @@ public class PlayerController : MonoBehaviour
             targetControl?.LockOnInput();
         }
     }
+
+    public void OnPickup(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            targetControl?.PickupInput();
+        }
+    }
 }
