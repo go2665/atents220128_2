@@ -73,7 +73,7 @@ public class Inventory
     {
         bool result = false;
 
-        if( IsValidSlotIndex(slotIndex) )   // 적절한 인덱스 번호인지 확인
+        if( IsSlotSetted(slotIndex) )   // 적절한 인덱스 번호이면서 아이템이 설정되어있다.
         {
             // 지울 수 있는 slot의 인덱스다. 삭제 처리 진행
             Debug.Log($"{slots[slotIndex].SlotItem.name}을 인벤토리에서 제거합니다.");
@@ -90,15 +90,59 @@ public class Inventory
     }
 
     /// <summary>
+    /// 두 아이템 슬롯에 들어있는 아이템을 교환하는 함수
+    /// </summary>
+    /// <param name="from">시작 슬롯. 반드시 아이템이 있어야 함.</param>
+    /// <param name="to">도착 슬롯</param>
+    public void MoveItem(uint from, uint to)
+    {
+        if (IsSlotSetted(from) && IsValidSlotIndex(to))
+        {
+            // from은 적합한 인덱스이고 아이템이 할당되어 있다. 그리고 to는 적합한 인덱스이다.
+            Debug.Log($"{from}에 있는 {slots[from].SlotItem.name} 아이템을 {to}로 이동합니다.");
+            ItemData temp = slots[from].SlotItem;               // from과 to의 아이템을 스왑
+            slots[from].AssignSlotItem(slots[to].SlotItem);
+            slots[to].AssignSlotItem(temp);
+        }
+        else
+        {
+            // from은 적합하지 못한 인덱스이고 아이템이 없다. 또는 to가 적합한 인덱스가 아니다.
+            Debug.Log($"{from}에서 {to}로 아이템을 옮길 수 없습니다.");
+        }
+    }
+
+    /// <summary>
+    /// 인벤토리의 내용을 콘솔창에 출력해주는 함수
+    /// </summary>
+    public void Test_PrintInventory()
+    {
+        Debug.Log("Inven---------------------- ");
+        for(int i = 0; i <slots.Length; i++ )
+        {
+            Debug.Log($"{i} : {slots[i].SlotItem?.name}");  // 슬롯의 인덱스와 아이템의 이름 출력(없으면 안함)
+        }
+        Debug.Log("---------------------------- ");
+    }
+
+    /// <summary>
     /// index변수값이 적절한 인덱스인지 확인하는 함수
     /// </summary>
     /// <param name="index">확인할 인덱스</param>
     /// <returns>true면 적절한 인덱스 값. false면 사용할 수 없는 인덱스 값</returns>
     bool IsValidSlotIndex(uint index)
     {
-        // 적절하지 못한 인덱스
-        //  - 인덱스 범위를 초과했을 때
-        //  - 해당 슬롯의 itemData가 null인 경우
+        // 적절하지 못한 인덱스 -> 인덱스 범위를 초과했을 때        
+        return (index < slots.Length);
+    }
+
+    /// <summary>
+    /// index변수값이 적절하고 해당 슬롯에 아이템이 들어있는지 확인하는 함수
+    /// </summary>
+    /// <param name="index">확인할 인덱스</param>
+    /// <returns>true일 경우 인덱스가 적절하고 해당슬롯에 아이템이 들어있다.</returns>
+    bool IsSlotSetted(uint index)
+    {
+        // 적절한 인덱스이고 슬롯에 아이템이 들어있다.
         return ((index < slots.Length) && (slots[index].SlotItem != null));
     }
 
