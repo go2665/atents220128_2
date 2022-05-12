@@ -18,4 +18,4 @@ MonoBehaviour:
   itemDesc: "\uC544\uC774\uD15C\uC124\uBA85"
   price: 300
   prefab: {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
-  triggerSize: 0.1
+  triggerSize: 0.3

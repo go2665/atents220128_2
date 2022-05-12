@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class TestItem : MonoBehaviour
 {
     public ItemIDCode itemID = ItemIDCode.DUMMY;
     // Start is called before the first frame update
@@ -11,6 +11,9 @@ public class Test : MonoBehaviour
         //ItemData item = GameManager.Inst.ItemDatas[0];
         GameObject obj = ItemFactory.GetItem(itemID);
         obj.transform.position = this.transform.position;
+
+
+        Inventory inven = new Inventory();
     }
 
     // Update is called once per frame
