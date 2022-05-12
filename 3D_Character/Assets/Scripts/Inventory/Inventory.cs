@@ -51,7 +51,7 @@ public class Inventory
         if( empty != null )
         {
             // 비어있는 아이템 슬롯을 가져왔다.
-            empty.slotItem = itemData; // 수정 필수
+            empty.AssignSlotItem(itemData); // 수정 요구
             result = true;
             Debug.Log($"{itemData.name}을 인벤토리에 추가.");
         }
@@ -62,6 +62,44 @@ public class Inventory
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// 인벤토리에서 아이템을 제거하는 함수
+    /// </summary>
+    /// <param name="slotIndex">아이템을 제거할 슬롯 인덱스</param>
+    /// <returns>true면 제거 성공. false면 실패</returns>
+    public bool RemoveItem(uint slotIndex)
+    {
+        bool result = false;
+
+        if( IsValidSlotIndex(slotIndex) )   // 적절한 인덱스 번호인지 확인
+        {
+            // 지울 수 있는 slot의 인덱스다. 삭제 처리 진행
+            Debug.Log($"{slots[slotIndex].SlotItem.name}을 인벤토리에서 제거합니다.");
+            slots[slotIndex].ReleaseSlotItem(); // 슬롯에서 아이템 제거
+            result = true;
+        }
+        else
+        {
+            // 적절하지 못한 인덱스다. 
+            Debug.Log($"{slotIndex}는 적절하지 못한 인덱스입니다.");
+        }        
+
+        return result;
+    }
+
+    /// <summary>
+    /// index변수값이 적절한 인덱스인지 확인하는 함수
+    /// </summary>
+    /// <param name="index">확인할 인덱스</param>
+    /// <returns>true면 적절한 인덱스 값. false면 사용할 수 없는 인덱스 값</returns>
+    bool IsValidSlotIndex(uint index)
+    {
+        // 적절하지 못한 인덱스
+        //  - 인덱스 범위를 초과했을 때
+        //  - 해당 슬롯의 itemData가 null인 경우
+        return ((index < slots.Length) && (slots[index].SlotItem != null));
     }
 
     /// <summary>

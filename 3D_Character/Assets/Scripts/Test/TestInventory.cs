@@ -10,6 +10,7 @@ public class TestInventory : MonoBehaviour
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
+        inven.RemoveItem(0);
     }
 
     // Update is called once per frame
