@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory
 {
     //인벤토리의 기능
-    // - 아이템을 가져야 한다. => 아이템 추가, 삭제, 아이템 칸(ItemSlot)이 있어야 한다.
+    // - 아이템을 가져야 한다. => 아이템 추가, 삭제(전부삭제), 아이템 칸(ItemSlot)이 있어야 한다.
     // - 인벤토리에 빈칸이 있는지 확인할 수 있어야 함
     // - 아이템 위치 변경
 
@@ -84,9 +84,19 @@ public class Inventory
         {
             // 적절하지 못한 인덱스다. 
             Debug.Log($"{slotIndex}는 적절하지 못한 인덱스입니다.");
-        }        
-
+        }
         return result;
+    }
+
+    /// <summary>
+    /// 인벤토리의 모든 슬롯을 비우는 함수
+    /// </summary>
+    public void ClearInventory()
+    {
+        for (uint i = 0; i < slots.Length; i++)
+        {
+            RemoveItem(i);
+        }
     }
 
     /// <summary>

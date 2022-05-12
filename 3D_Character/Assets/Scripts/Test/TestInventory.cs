@@ -6,15 +6,27 @@ public class TestInventory : MonoBehaviour
 {   
     void Start()
     {
+        //Test1_AddRemove();
+        //Test2_Move();
         Inventory inven = new Inventory(8);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
-        //inven.RemoveItem(0);
-        //inven.RemoveItem(5);
-        //inven.RemoveItem(0);
+        inven.Test_PrintInventory();
+        inven.ClearInventory();
+        inven.Test_PrintInventory();
+    }
+
+    private static void Test2_Move()
+    {
+        Inventory inven = new Inventory(8);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
         inven.Test_PrintInventory();
         inven.MoveItem(0, 4);
         inven.Test_PrintInventory();
@@ -25,9 +37,16 @@ public class TestInventory : MonoBehaviour
         inven.Test_PrintInventory();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Test1_AddRemove()
     {
-        
+        Inventory inven = new Inventory(8);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.RemoveItem(0);
+        inven.RemoveItem(8);
+        inven.RemoveItem(0);
     }
 }
