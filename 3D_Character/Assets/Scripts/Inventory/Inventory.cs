@@ -24,6 +24,8 @@ public class Inventory
     ItemSlot[] slots = null;                // 아이템 칸 역할을 할 클래스
     const int DEFAULT_INVENTORY_SIZE = 5;   // 기본 아이템 칸 수
 
+    public int SlotCount { get => slots.Length; }
+
     /// <summary>
     /// 인벤토리에 들어갈 슬롯과 빈슬롯 큐 초기화
     /// </summary>
@@ -92,7 +94,7 @@ public class Inventory
     public void ClearInventory()
     {
         Debug.Log("인벤토리 클리어");
-        for (uint i = 0; i < slots.Length; i++)
+        for (uint i = 0; i < SlotCount; i++)
         {
             RemoveItem(i);
         }
@@ -141,7 +143,7 @@ public class Inventory
     public void Test_PrintInventory()
     {
         Debug.Log("Inven---------------------- ");
-        for(int i = 0; i <slots.Length; i++ )
+        for(int i = 0; i <SlotCount; i++ )
         {
             Debug.Log($"{i} : {slots[i].SlotItem?.name}");  // 슬롯의 인덱스와 아이템의 이름 출력(없으면 안함)
         }
@@ -156,7 +158,7 @@ public class Inventory
     bool IsValidSlotIndex(uint index)
     {
         // 적절하지 못한 인덱스 -> 인덱스 범위를 초과했을 때        
-        return (index < slots.Length);
+        return (index < SlotCount);
     }
 
     /// <summary>
@@ -167,7 +169,7 @@ public class Inventory
     bool IsSlotSetted(uint index)
     {
         // 적절한 인덱스이고 슬롯에 아이템이 들어있다.
-        return ((index < slots.Length) && (slots[index].SlotItem != null));
+        return ((index < SlotCount) && (slots[index].SlotItem != null));
     }
 
     /// <summary>
@@ -178,7 +180,7 @@ public class Inventory
     {
         ItemSlot slot = null;
 
-        for(int i=0; i<slots.Length; i++)
+        for(int i=0; i<SlotCount; i++)
         {
             if( slots[i].SlotItem == null ) // 비어있는 슬롯 찾기
             {

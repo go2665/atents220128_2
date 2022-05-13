@@ -9,7 +9,17 @@ public class TestInventory : MonoBehaviour
         //Test1_AddRemove();
         //Test2_Move();
         //Test3_Clear();
-        Test4_ItemUse();
+        //Test4_ItemUse();
+        Test5_InvenUI();
+    }
+
+    private static void Test5_InvenUI()
+    {
+        Inventory inven = new Inventory(8);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealingPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        InventoryUI invenUI = GameObject.FindObjectOfType<InventoryUI>();
+        invenUI.InitializeInventory(inven);
     }
 
     /// <summary>

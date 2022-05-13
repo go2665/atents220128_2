@@ -40,6 +40,11 @@ public class Player : MonoBehaviour, IControllable, IBattle
     // 아이템 사용
     public PickupDelegate onPickupAction = null;
 
+    // 인벤토리
+    private Inventory inven = null;
+    public Inventory Inven { get => inven; }
+    public int invenSlotCount = 8;
+
     // 기타 데이터
     private Animator anim = null;
     private CharacterController controller = null;
@@ -51,6 +56,7 @@ public class Player : MonoBehaviour, IControllable, IBattle
     void Awake()
     {
         myWeapon = weapone.GetComponentInChildren<Weapon>();
+        inven = new Inventory(invenSlotCount);
     }
 
     void Update()
