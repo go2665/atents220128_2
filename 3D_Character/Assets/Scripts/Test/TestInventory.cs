@@ -20,6 +20,7 @@ public class TestInventory : MonoBehaviour
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
         InventoryUI invenUI = GameObject.FindObjectOfType<InventoryUI>();
         invenUI.InitializeInventory(inven);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);        
     }
 
     /// <summary>
