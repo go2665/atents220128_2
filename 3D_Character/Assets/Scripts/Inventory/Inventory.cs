@@ -121,6 +121,21 @@ public class Inventory
     }
 
     /// <summary>
+    /// 인벤토리의 특정 슬롯을 가져오는 함수
+    /// </summary>
+    /// <param name="index">가져올 슬롯의 인덱스</param>
+    /// <returns>index번째에 슬롯이 있으면 해당 슬롯을 리턴</returns>
+    public ItemSlot GetSlot(uint index)
+    {
+        ItemSlot slot = null;
+        if (IsValidSlotIndex(index))
+        {
+            slot = slots[index];
+        }
+        return slot;
+    }
+
+    /// <summary>
     /// 인벤토리의 내용을 콘솔창에 출력해주는 함수
     /// </summary>
     public void Test_PrintInventory()

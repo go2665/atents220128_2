@@ -14,24 +14,24 @@ public class ItemFactory
     static public GameObject GetItem(ItemIDCode code)
     {
         GameObject obj = new GameObject();
-        Item item = null;
-        switch (code)
-        {
-            case ItemIDCode.DUMMY:
-                item = obj.AddComponent<Item>();                
-                break;
-            case ItemIDCode.HealthPotion:
-                item = obj.AddComponent<HeathPotion>();
-                break;
-            case ItemIDCode.ManaPotion:
-                item = obj.AddComponent<ManaPotion>();
-                break;
-            case ItemIDCode.GoldCoin:
-                item = obj.AddComponent<GoldCoin>();
-                break;
-            default:
-                break;
-        }
+        Item item = obj.AddComponent<Item>();
+        //switch (code)
+        //{
+        //    case ItemIDCode.DUMMY:
+        //        item = obj.AddComponent<Item>();                
+        //        break;
+        //    case ItemIDCode.HealthPotion:
+        //        item = obj.AddComponent<HeathPotion>();
+        //        break;
+        //    case ItemIDCode.ManaPotion:
+        //        item = obj.AddComponent<ManaPotion>();
+        //        break;
+        //    case ItemIDCode.GoldCoin:
+        //        item = obj.AddComponent<GoldCoin>();
+        //        break;
+        //    default:
+        //        break;
+        //}
         item.data = GameManager.Inst.ItemDatas[code];
 
         string[] itemName = item.data.name.Split("_");

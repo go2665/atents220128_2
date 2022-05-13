@@ -34,4 +34,22 @@ public class ItemSlot
     {
         slotItem = null;
     }
+
+    /// <summary>
+    /// 슬롯에 들어있는 아이템을 사용
+    /// </summary>
+    /// <param name="target">아이템의 효과를 적용받을 대상</param>
+    public void UseItem(GameObject target = null)
+    {
+        // 슬롯에 아이템이 있을 때만 사용 시도
+        if( slotItem != null )
+        {
+            IUseableItem useable = slotItem as IUseableItem;    // 슬롯에 들어있는 아이템이 사용 가능한지 확인
+            if( useable != null)    
+            {
+                useable.Use(target);    // 사용 가능한 아이템이면 사용
+                slotItem = null;        // 슬롯 비우기
+            }
+        }
+    }
 }
