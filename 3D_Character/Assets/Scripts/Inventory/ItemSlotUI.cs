@@ -10,7 +10,14 @@ public class ItemSlotUI : MonoBehaviour
 {
     private Image itemImage = null;     // 아이템의 이미지를 표시할 UI Image
     private ItemSlot itemSlot = null;   // 표시할 ItemSlot
-    public ItemSlot ItemSlot { set => itemSlot = value; }
+    public ItemSlot ItemSlot 
+    {
+        set
+        {
+            itemSlot = value;
+            itemSlot.onSlotItemChange = Refresh;    // SlotUI에 Slot이 할당되면 델리게이트에 Refresh함수 할당
+        }
+    }
 
 
     private void Awake()

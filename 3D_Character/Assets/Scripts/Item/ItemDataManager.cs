@@ -40,7 +40,8 @@ public class ItemDataManager : MonoBehaviour
         for (int i = 0; i < files.Length; i++)
         {
             string loadFileName = $"{ITEM_DATA_FOLDER_NAME}/{Path.GetFileNameWithoutExtension(files[i].Name)}";
-            itemDatas[i] = Resources.Load<ItemData>(loadFileName);
+            ItemData itemData = Resources.Load<ItemData>(loadFileName);
+            itemDatas[itemData.id] = itemData;
         }
 
         //ItemData[] temp = Resources.FindObjectsOfTypeAll<ItemData>();

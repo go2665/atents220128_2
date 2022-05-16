@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class ItemSlot
 {
+    /// <summary>
+    /// 델리게이트 타입이랑 변수 만들기
+    /// </summary>
+    public delegate void SlotChangeDelegate();
+    public SlotChangeDelegate onSlotItemChange = null;
+
     private ItemData slotItem = null;
     /// <summary>
     /// 슬롯이 가진 아이템 데이터. 읽기전용
@@ -25,6 +31,7 @@ public class ItemSlot
     public void AssignSlotItem(ItemData itemData)
     {
         slotItem = itemData;
+        onSlotItemChange?.Invoke();     // 실제로 슬롯에 아이템이 변경되었을 때 델리게이트 실행
     }
 
     /// <summary>
@@ -33,6 +40,7 @@ public class ItemSlot
     public void ReleaseSlotItem()
     {
         slotItem = null;
+        onSlotItemChange?.Invoke();     // 실제로 슬롯에 아이템이 변경되었을 때 델리게이트 실행
     }
 
     /// <summary>

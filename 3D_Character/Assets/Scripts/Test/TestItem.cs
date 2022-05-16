@@ -11,9 +11,9 @@ public class TestItem : MonoBehaviour
         //ItemData item = GameManager.Inst.ItemDatas[0];
         GameObject obj = ItemFactory.GetItem(itemID);
         obj.transform.position = this.transform.position;
+        obj.transform.parent = this.transform;
 
-
-        Inventory inven = new Inventory();
+        //Inventory inven = new Inventory();
     }
 
     // Update is called once per frame
