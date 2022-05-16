@@ -10,7 +10,7 @@ public class PlayerHealthBar : MonoBehaviour
 
     Slider healthSlider = null;
     Text healthText = null;
-    public IHealth target = null;
+    IHealth target = null;
 
     private void Awake()
     {

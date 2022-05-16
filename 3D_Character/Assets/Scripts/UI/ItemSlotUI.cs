@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// ItemSlot을 표시해주는 클래스
 /// </summary>
-public class ItemSlotUI : MonoBehaviour
+public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
 {
     private Image itemImage = null;     // 아이템의 이미지를 표시할 UI Image
     private ItemSlot itemSlot = null;   // 표시할 ItemSlot
@@ -39,5 +40,10 @@ public class ItemSlotUI : MonoBehaviour
             itemImage.sprite = null;        // 이미지 비우고
             itemImage.color = Color.clear;  // alpha를 0으로 
         }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log($"{this.gameObject.name} 클릭");
     }
 }
