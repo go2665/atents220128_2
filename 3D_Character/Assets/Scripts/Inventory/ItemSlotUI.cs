@@ -19,7 +19,6 @@ public class ItemSlotUI : MonoBehaviour
         }
     }
 
-
     private void Awake()
     {
         itemImage = transform.GetChild(0).GetComponent<Image>();    // 아이템의 이미지를 표시할 UI 찾아놓기
