@@ -14,6 +14,15 @@ public class ItemData_HealingPotion : ItemData, IUseableItem
     /// <param name="target">아이템의 효과를 받을 대상</param>
     public void Use(GameObject target = null)
     {
-        Debug.Log($"{this.itemName}을(를) 사용했습니다");
+        string name;
+        if( target != null )
+        {
+            name = target.name;
+        }
+        else
+        {
+            name = "Player";
+        }
+        Debug.Log($"{this.itemName}을(를) {name}에게 사용했습니다");
     }
 }

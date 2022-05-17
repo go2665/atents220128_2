@@ -56,7 +56,7 @@ public class ItemSlot
             if( useable != null)    
             {
                 useable.Use(target);    // 사용 가능한 아이템이면 사용
-                slotItem = null;        // 슬롯 비우기
+                ReleaseSlotItem();      // 슬롯 비우기
             }
         }
     }

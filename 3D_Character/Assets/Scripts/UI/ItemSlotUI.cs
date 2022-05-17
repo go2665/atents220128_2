@@ -45,5 +45,6 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log($"{this.gameObject.name} 클릭");
+        itemSlot.UseItem();
     }
 }
