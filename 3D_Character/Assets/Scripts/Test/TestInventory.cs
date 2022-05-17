@@ -45,10 +45,10 @@ public class TestInventory : MonoBehaviour
     {
         Inventory inven = new Inventory(8);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
         inven.Test_PrintInventory();
         inven.ClearInventory();
         inven.Test_PrintInventory();
@@ -64,10 +64,10 @@ public class TestInventory : MonoBehaviour
     {
         Inventory inven = new Inventory(8);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
         inven.Test_PrintInventory();
         inven.MoveItem(0, 4);
         inven.Test_PrintInventory();
@@ -85,10 +85,10 @@ public class TestInventory : MonoBehaviour
     {
         Inventory inven = new Inventory(8);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
         inven.RemoveItem(0);
         inven.RemoveItem(8);
         inven.RemoveItem(0);

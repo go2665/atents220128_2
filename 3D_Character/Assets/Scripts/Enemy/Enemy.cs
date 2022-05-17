@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour, IBattle, IDie, IHealth
         {
             return hp;
         }
-        private set
+        set
         {
             hp = value;
             onHealthChange?.Invoke();

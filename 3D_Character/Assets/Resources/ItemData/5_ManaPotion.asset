@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c15f08480756e8c48b11bd13a3430215, type: 3}
-  m_Name: 2_ManaPosion
+  m_Script: {fileID: 11500000, guid: 02409d27b02cd7841a4932502fb517da, type: 3}
+  m_Name: 5_ManaPotion
   m_EditorClassIdentifier: 
-  id: 2
-  itemName: "\uB9C8\uB098 \uD3EC\uC158(\uC7A5\uC2DD\uC6A9)"
-  itemImage: {fileID: 21300000, guid: ace8a02646afeda4880fc3cb14cad705, type: 3}
-  itemDesc: "\uC7A5\uC2DD\uC6A9 \uB9C8\uB098\uD3EC\uC158"
-  price: 200
+  id: 5
+  itemName: "\uB9C8\uB098 \uD3EC\uC158"
+  itemImage: {fileID: 21300000, guid: 2d7d9ae02b7159843ac7d5ead0f8b89a, type: 3}
+  itemDesc: "\uB9C8\uB098\uB97C \uD68C\uBCF5\uC2DC\uCF1C\uC8FC\uB294 \uD3EC\uC158"
+  price: 300
   prefab: {fileID: 1000013317980782, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
   triggerSize: 1

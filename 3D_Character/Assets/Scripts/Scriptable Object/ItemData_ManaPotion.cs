@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 힐링 포션 아이템용 ItemData. 
+/// 마나 포션 아이템용 ItemData. 
 /// </summary>
-[CreateAssetMenu(fileName = "New Healing Potion", menuName = "Scriptable Object/Item Data - Healing Potion", order = 2)]
-public class ItemData_HealingPotion : ItemData, IUseableItem
+[CreateAssetMenu(fileName = "New Mana Potion", menuName = "Scriptable Object/Item Data - Mana Potion", order = 3)]
+public class ItemData_ManaPotion : ItemData, IUseableItem
 {
-    float healRecoveryPoint = 20.0f;
-
+    public float manaRecoveryPoint = 15.0f;
     /// <summary>
-    /// 이 아이템을 사용할 경우 대상의 피가 회복된다.
+    /// 이 아이템을 사용할 경우 대상의 마나가 회복된다.
     /// </summary>
     /// <param name="target">아이템의 효과를 받을 대상</param>
     public void Use(GameObject target = null)
@@ -27,11 +26,11 @@ public class ItemData_HealingPotion : ItemData, IUseableItem
             target = GameManager.Inst.MainPlayer.gameObject;
         }
 
-        IHealth health = target.GetComponent<IHealth>();
-        if (health != null)
+        IMana mana = target.GetComponent<IMana>();
+        if (mana != null)
         {
-            health.HP += healRecoveryPoint;
-            Debug.Log($"{this.itemName}을(를) {name}에게 사용해서 HP를 {healRecoveryPoint}만큼 회복을 시도합니다.");
+            mana.MP += manaRecoveryPoint;
+            Debug.Log($"{this.itemName}을(를) {name}에게 사용해서 MP를 {manaRecoveryPoint}만큼 회복을 시도합니다.");
         }
         else
         {

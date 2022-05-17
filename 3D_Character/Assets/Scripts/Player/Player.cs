@@ -10,7 +10,7 @@ public enum MoveMode : byte
     RUN
 }
 
-public class Player : MonoBehaviour, IControllable, IBattle, IHealth
+public class Player : MonoBehaviour, IControllable, IBattle, IHealth, IMana
 {
     // 이동용 데이터
     public float walkSpeed = 3.0f;
@@ -29,12 +29,12 @@ public class Player : MonoBehaviour, IControllable, IBattle, IHealth
 
     // 방어용 데이터
     private float defencePower = 10.0f;
-    private float hp = 100.0f;
+    private float hp = 70.0f;
     private float maxHP = 100.0f;
     public float HP
     {
         get => hp;
-        /*private */set
+        set
         {
             hp = Mathf.Clamp(value, 0, MaxHP);
             onHealthChange?.Invoke();
@@ -54,6 +54,23 @@ public class Player : MonoBehaviour, IControllable, IBattle, IHealth
     // 인벤토리
     private Inventory inven = null;
     public Inventory Inven { get => inven; }
+
+    // 마나
+    private float mp = 50.0f;
+    private float maxMP = 100.0f;
+    public float MP
+    {
+        get => mp;
+        set
+        {
+            mp = Mathf.Clamp(value, 0, MaxMP);
+            onManaChange?.Invoke();
+        }
+    }
+    public float MaxMP { get => maxMP; }
+    public ManaDelegate onManaChange { get; set; }
+ 
+
     public int invenSlotCount = 8;
 
     // 기타 데이터
