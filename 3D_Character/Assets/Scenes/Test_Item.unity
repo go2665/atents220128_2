@@ -1467,6 +1467,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6718815968749774014, guid: f6b09e6692702814da9e3aa1ea0f3c1f, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718815968749774014, guid: f6b09e6692702814da9e3aa1ea0f3c1f, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: e79bd358a95d81940aa7a94f611c10c9, type: 2}
+    - target: {fileID: 6718815968749774014, guid: f6b09e6692702814da9e3aa1ea0f3c1f, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: e79bd358a95d81940aa7a94f611c10c9, type: 2}
+    - target: {fileID: 6718815968749774014, guid: f6b09e6692702814da9e3aa1ea0f3c1f, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: e79bd358a95d81940aa7a94f611c10c9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6b09e6692702814da9e3aa1ea0f3c1f, type: 3}
 --- !u!1001 &1385717702270395039
@@ -1506,11 +1522,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1385717702401781275, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 694.3781
+      value: 683.3782
       objectReference: {fileID: 0}
     - target: {fileID: 1385717702401781275, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 478.002
+      value: 485.002
       objectReference: {fileID: 0}
     - target: {fileID: 1385717702401781275, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1542,11 +1558,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1385717702401781275, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -412.8109
+      value: -407.3109
       objectReference: {fileID: 0}
     - target: {fileID: 1385717702401781275, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 316.143
+      value: 319.64294
       objectReference: {fileID: 0}
     - target: {fileID: 1385717702401781275, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1870,6 +1886,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 817014929}
     m_Modifications:
+    - target: {fileID: 5328024785263291456, guid: e4c8efd348f671b45b1aa4952a508ee0, type: 3}
+      propertyPath: m_Alpha
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5328024785263291458, guid: e4c8efd348f671b45b1aa4952a508ee0, type: 3}
       propertyPath: m_Name
       value: PlayerHealthBar
