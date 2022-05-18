@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// 인벤토리를 화면상에 표시해주는 클래스
 /// </summary>
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     public GameObject slotPrefab = null;    // 인벤토리 칸(Slot)의 프리팹
 
@@ -31,6 +32,7 @@ public class InventoryUI : MonoBehaviour
             GameObject obj = Instantiate(slotPrefab, this.transform);   // slot을 생성
             obj.name = $"{slotPrefab.name}_{i}";                        // slot 이름 변경
             slotUIs[i] = obj.GetComponent<ItemSlotUI>();                // ItemSlotUI 컴포넌트 찾아서 캐싱
+            slotUIs[i].SlotID = i;
             slotUIs[i].ItemSlot = inven.GetSlot((uint)i);               // slot과 slotUI를 연결
         }
         Refresh();  // 인벤토리 내부를 다시 그리기
@@ -57,5 +59,21 @@ public class InventoryUI : MonoBehaviour
         {
             slot.Refresh();
         }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        //Debug.Log($"드래그 중 : {eventData.position}");        
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        Debug.Log($"드래그 시작 : {eventData.pointerCurrentRaycast.gameObject.name}");
+        
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        Debug.Log($"드래그 종료 : {eventData.pointerCurrentRaycast.gameObject.name}");
     }
 }
