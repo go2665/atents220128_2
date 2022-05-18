@@ -13,6 +13,9 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     private ItemSlotUI[] slotUIs = null;    // 생성된 인벤토리 칸(Slot)들
     private Inventory inven = null;         // 이 클래스가 표시할 인벤토리
 
+    private int dragStartIndex = NOT_DRAG_START;        // 드래그 시작한 슬롯의 인덱스
+    private const int NOT_DRAG_START = -1;
+
     private void Start()
     {
         InitializeInventory(GameManager.Inst.MainPlayer.Inven);     //플레이어가 가지고 있는 인벤토리를 표시하도록 설정
@@ -65,15 +68,31 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     {
         //Debug.Log($"드래그 중 : {eventData.position}");        
     }
-
+    
     public void OnBeginDrag(PointerEventData eventData)
     {
         Debug.Log($"드래그 시작 : {eventData.pointerCurrentRaycast.gameObject.name}");
-        
+
+        GameObject startObj = eventData.pointerCurrentRaycast.gameObject;
+        ItemSlotUI slotUI = startObj.GetComponent<ItemSlotUI>();
+        if(slotUI != null)
+        {
+            dragStartIndex = slotUI.SlotID;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log($"드래그 종료 : {eventData.pointerCurrentRaycast.gameObject.name}");
+        GameObject endObj = eventData.pointerCurrentRaycast.gameObject;
+        if (endObj != null)
+        {
+            Debug.Log($"드래그 종료 : {eventData.pointerCurrentRaycast.gameObject.name}");
+            ItemSlotUI slotUI = endObj.GetComponent<ItemSlotUI>();
+            if (slotUI != null && dragStartIndex != NOT_DRAG_START)
+            {
+                inven.MoveItem((uint)dragStartIndex, (uint)slotUI.SlotID);
+                dragStartIndex = NOT_DRAG_START;
+            }
+        }
     }
 }
