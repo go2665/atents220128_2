@@ -10,6 +10,7 @@ using UnityEngine.EventSystems;
 public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
 {
     private Image itemImage = null;     // 아이템의 이미지를 표시할 UI Image
+    public Image ItemImage { get => itemImage; }
     private ItemSlot itemSlot = null;   // 표시할 ItemSlot
     public ItemSlot ItemSlot 
     {
@@ -20,8 +21,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    int slotID = 0;
-    public int SlotID { get; set; }
+    private int id = 0;
+    public int ID { get => id; set => id = value; }
 
     private void Awake()
     {
