@@ -109,7 +109,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         {
             // UI 바깥쪽에서 드래그를 끝냄
             ItemSlot itemSlot = inven.GetSlot((uint)dragStartIndex);            // 드래그 시작 위치에 있는 아이템 슬롯 가져오기
-            if (itemSlot.SlotItem != null)  // 슬롯에 아이템이 있는 경우만 처리
+            if (itemSlot != null && itemSlot.SlotItem != null)                  // 아이템 슬롯에서 시작했고 슬롯에 아이템이 있는 경우만 처리
             {
                 GameObject obj = ItemFactory.GetItem(itemSlot.SlotItem.id);                 // 아이템 슬롯에 들어있는 아이템 데이터를 이용해 아이템 생성
                 obj.transform.position = GameManager.Inst.MainPlayer.transform.position;    // 위치를 플레이어 위치로 변경
