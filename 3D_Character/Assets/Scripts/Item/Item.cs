@@ -24,8 +24,9 @@ public class Item : MonoBehaviour
     public void Pickuped()
     {
         Player player = GameManager.Inst.MainPlayer;
-        player.onPickupAction -= Pickuped;
-        Destroy(this.gameObject);   //나중에 인벤토리로 들어가는 것으로 바뀔 예정
+        player.onPickupAction -= Pickuped;   // 아래에서 Destroy가 실행되면 Pickuped 함수도 사라지므로 제거
+        player.Inven.AddItem(data);
+        Destroy(this.gameObject);   
     }
 
     private void OnTriggerEnter(Collider other)

@@ -83,7 +83,7 @@ public class Inventory
         else
         {
             // 적절하지 못한 인덱스다. 
-            Debug.Log($"{slotIndex}는 적절하지 못한 인덱스입니다.");
+            Debug.Log($"{slotIndex}는 적절하지 못한 인덱스이거나 비어 있습입니다.");
         }
         return result;
     }

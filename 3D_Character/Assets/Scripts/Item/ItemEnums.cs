@@ -1,7 +1,7 @@
 public enum ItemIDCode
 {
     DUMMY = 0,
-    HealthPotion = 1,
+    FakeHealthPotion = 1,
     FakeManaPotion = 2,
     GoldCoin = 3,
     HealingPotion = 4,

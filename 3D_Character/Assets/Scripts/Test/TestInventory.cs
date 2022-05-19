@@ -10,7 +10,16 @@ public class TestInventory : MonoBehaviour
         //Test2_Move();
         //Test3_Clear();
         //Test4_ItemUse();
-        Test5_InvenUI();
+        //Test5_InvenUI();
+        Test6_PlayerInvenUI();
+    }
+
+    private static void Test6_PlayerInvenUI()
+    {
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealingPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
+
     }
 
     private static void Test5_InvenUI()
@@ -44,7 +53,7 @@ public class TestInventory : MonoBehaviour
     private static void Test3_Clear()
     {
         Inventory inven = new Inventory(8);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeHealthPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
@@ -53,7 +62,7 @@ public class TestInventory : MonoBehaviour
         inven.ClearInventory();
         inven.Test_PrintInventory();
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeHealthPotion]);
         inven.Test_PrintInventory();
     }
 
@@ -63,7 +72,7 @@ public class TestInventory : MonoBehaviour
     private static void Test2_Move()
     {
         Inventory inven = new Inventory(8);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeHealthPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
@@ -84,7 +93,7 @@ public class TestInventory : MonoBehaviour
     void Test1_AddRemove()
     {
         Inventory inven = new Inventory(8);
-        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealthPotion]);
+        inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeHealthPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
