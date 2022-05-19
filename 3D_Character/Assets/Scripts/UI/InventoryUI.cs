@@ -18,6 +18,12 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     private int dragStartIndex = NOT_DRAG_START;        // 드래그 시작한 슬롯의 인덱스
     private const int NOT_DRAG_START = -1;
     private Image dragImage = null;
+    private Transform slotParent = null;
+
+    void Awake()
+    {
+        slotParent = transform.Find("SlotParent");
+    }
 
     private void Start()
     {
@@ -35,7 +41,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         slotUIs = new ItemSlotUI[inven.SlotCount];  // inven의 크기에 맞춰 slotUI들이 들어갈 공간 확보
         for ( int i=0;i< inven.SlotCount; i++)      // 슬롯 갯수만큼 for 실행
         {
-            GameObject obj = Instantiate(slotPrefab, this.transform);   // slot을 생성
+            GameObject obj = Instantiate(slotPrefab, slotParent);       // slot을 생성
             obj.name = $"{slotPrefab.name}_{i}";                        // slot 이름 변경
             slotUIs[i] = obj.GetComponent<ItemSlotUI>();                // ItemSlotUI 컴포넌트 찾아서 캐싱
             slotUIs[i].ID = i;
