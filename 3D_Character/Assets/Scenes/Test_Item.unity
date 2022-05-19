@@ -1423,6 +1423,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 6718815968749774000, guid: f6b09e6692702814da9e3aa1ea0f3c1f, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718815968749774000, guid: f6b09e6692702814da9e3aa1ea0f3c1f, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 6718815968749774012, guid: f6b09e6692702814da9e3aa1ea0f3c1f, type: 3}
       propertyPath: m_RootOrder
       value: 2

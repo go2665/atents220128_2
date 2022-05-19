@@ -53,7 +53,7 @@ public class Inventory
             // 비어있는 아이템 슬롯을 가져왔다.
             empty.AssignSlotItem(itemData); // 수정 요구
             result = true;
-            Debug.Log($"{itemData.name}을 인벤토리에 추가.");
+            //Debug.Log($"{itemData.name}을 인벤토리에 추가.");
         }
         else
         {
@@ -110,7 +110,7 @@ public class Inventory
         if (IsSlotSetted(from) && IsValidSlotIndex(to))
         {
             // from은 적합한 인덱스이고 아이템이 할당되어 있다. 그리고 to는 적합한 인덱스이다.
-            Debug.Log($"{from}에 있는 {slots[from].SlotItem.name} 아이템을 {to}로 이동합니다.");
+            //Debug.Log($"{from}에 있는 {slots[from].SlotItem.name} 아이템을 {to}로 이동합니다.");
             ItemData temp = slots[from].SlotItem;               // from과 to의 아이템을 스왑
             slots[from].AssignSlotItem(slots[to].SlotItem);
             slots[to].AssignSlotItem(temp);

@@ -22,7 +22,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
     }
 
     private int id = 0;
-    public int ID { get => id; set => id = value; }
+    public int ID { get => id; set => id = value; }     // 몇번째 슬롯인가
 
     private void Awake()
     {
