@@ -23,6 +23,9 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     void Awake()
     {
         slotParent = transform.Find("SlotParent");
+
+        Button closeButton = transform.Find("CloseButton").GetComponent<Button>();
+        closeButton.onClick.AddListener(Close);
     }
 
     private void Start()
@@ -165,5 +168,10 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             dragStartIndex = NOT_DRAG_START;                                    // 드래그 끝났다고 표시
             dragImage = null;                                                   // 움직일 이미지도 null로 표시
         }
+    }
+
+    public void Close()
+    {
+        this.gameObject.SetActive(false);
     }
 }
