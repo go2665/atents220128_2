@@ -82,4 +82,12 @@ public class PlayerController : MonoBehaviour
             targetControl?.PickupInput();
         }
     }
+
+    public void OnInventoryOnOff(InputAction.CallbackContext context)
+    {
+        if( context.started )
+        {
+            targetControl?.InventoryOnOffInput();
+        }
+    }
 }

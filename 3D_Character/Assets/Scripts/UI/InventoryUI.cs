@@ -31,6 +31,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     private void Start()
     {
         InitializeInventory(GameManager.Inst.MainPlayer.Inven);     //플레이어가 가지고 있는 인벤토리를 표시하도록 설정
+        GameManager.Inst.MainPlayer.onInventoryOnOff = InventoryOnOffSwitch;
     }
 
     /// <summary>
@@ -170,8 +171,25 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         }
     }
 
-    public void Close()
+    void Close()
     {
         this.gameObject.SetActive(false);
+    }
+
+    void Open()
+    {
+        this.gameObject.SetActive(true);
+    }
+
+    void InventoryOnOffSwitch()
+    {
+        if( this.gameObject.activeSelf )
+        {
+            Close();
+        }
+        else
+        {
+            Open();
+        }
     }
 }

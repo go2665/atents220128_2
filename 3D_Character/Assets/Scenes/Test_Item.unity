@@ -1054,6 +1054,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: be8c9d1b-c266-4501-aec3-0469ea406f30
     m_ActionName: Player/Pickup[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1068674133}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnInventoryOnOff
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9c6ec812-08f8-455f-9506-e225c0056f44
+    m_ActionName: Player/InventoryOnOff[/Keyboard/i]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1787,6 +1803,10 @@ PrefabInstance:
     - target: {fileID: 5329299493885197325, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568443985348611202, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
+      propertyPath: m_Name
+      value: SlotParent
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}

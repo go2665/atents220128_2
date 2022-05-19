@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void PickupDelegate();
+public delegate void InvenOnOffDelegate();
 
 public enum MoveMode : byte
 {
@@ -54,6 +55,7 @@ public class Player : MonoBehaviour, IControllable, IBattle, IHealth, IMana
     // 인벤토리
     private Inventory inven = null;
     public Inventory Inven { get => inven; }
+    public InvenOnOffDelegate onInventoryOnOff = null;
 
     // 마나
     private float mp = 50.0f;
@@ -278,5 +280,10 @@ public class Player : MonoBehaviour, IControllable, IBattle, IHealth, IMana
     public void PickupInput()
     {
         onPickupAction?.Invoke();
+    }
+
+    public void InventoryOnOffInput()
+    {
+        onInventoryOnOff?.Invoke();
     }
 }
