@@ -22,6 +22,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 인벤토리 UI에 접근 가능하도록 변수와 프로퍼티 작성
+    private InventoryUI inventoryUI = null; 
+    public InventoryUI InventoryUI
+    {
+        get => inventoryUI;
+    }
+
     private static GameManager instance = null;
     public static GameManager Inst
     {
@@ -51,8 +58,10 @@ public class GameManager : MonoBehaviour
 
     private void Initialize()
     {
-        mainPlayer = FindObjectOfType<Player>();
         itemDatas = GetComponent<ItemDataManager>();
         itemDatas.Initialize();
+
+        mainPlayer = FindObjectOfType<Player>();        // 문제의 소지가 있음
+        inventoryUI = FindObjectOfType<InventoryUI>();  // 문제의 소지가 있음
     }
 }

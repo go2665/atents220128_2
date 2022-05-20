@@ -20,6 +20,10 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     private Image dragImage = null;
     private Transform slotParent = null;
 
+    public delegate void InventoryDelegate();
+    public InventoryDelegate onInventoryOpen = null;    // 인벤토리가 열릴 때 실행될 델리게이트
+    public InventoryDelegate onInventoryClose = null;   // 인벤토리가 닫힐 때 실행될 델리게이트
+
     void Awake()
     {
         slotParent = transform.Find("SlotParent");
@@ -32,6 +36,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     {
         InitializeInventory(GameManager.Inst.MainPlayer.Inven);     //플레이어가 가지고 있는 인벤토리를 표시하도록 설정
         GameManager.Inst.MainPlayer.onInventoryOnOff = InventoryOnOffSwitch;
+        this.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -173,12 +178,14 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     void Close()
     {
+        onInventoryClose?.Invoke();         // 닫힐 때 델리게이트 실행
         this.gameObject.SetActive(false);
     }
 
     void Open()
     {
         this.gameObject.SetActive(true);
+        onInventoryOpen?.Invoke();          // 열릴 때 델리게이트 실행
     }
 
     void InventoryOnOffSwitch()

@@ -1612,6 +1612,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Inventory
       objectReference: {fileID: 0}
+    - target: {fileID: 1385717702401781276, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1385717702614986846, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
