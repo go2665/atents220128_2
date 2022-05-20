@@ -16,7 +16,7 @@ public class Player : MonoBehaviour, IControllable, IBattle, IHealth, IMana
     // 이동용 데이터
     public float walkSpeed = 3.0f;
     public float runSpeed = 6.0f;
-    public float turnSpeed = 5.0f;
+    public float turnSpeed = 5.0f;    
 
     // 장비 데이터
     public GameObject weapone = null;
