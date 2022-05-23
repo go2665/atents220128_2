@@ -8,29 +8,25 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    public GameObject targetObject = null;
+    public GameObject targetPlayer = null;
+    public GameObject targetCar = null;
     private IControllable targetControl = null;
     private PlayerInput pi = null;              // PlayerInput 컴포넌트 캐싱용
-    private PlayerInputActions pia = null;      // Input Action Asset 파일을 클래스로 자동 생성한 것
+    //private PlayerInputActions pia = null;      // Input Action Asset 파일을 클래스로 자동 생성한 것
 
     private void Awake()
     {
         pi = GetComponent<PlayerInput>();       // 찾고
-        pia = new PlayerInputActions();         // 만들고
     }
 
     private void OnEnable()
-    {        
-        pia.Player.Enable();    // 보험용
-        pia.UI.Disable();
+    {
         GameManager.Inst.InventoryUI.onInventoryOpen += ActionMapChange_ToUI;       // 엑션맵 변경하는 델리게이트 추가
         GameManager.Inst.InventoryUI.onInventoryClose += ActionMapChange_ToPlayer;
     }
 
     private void OnDisable()
     {
-        pia.UI.Disable();
-        pia.Player.Disable();
         GameManager.Inst.InventoryUI.onInventoryOpen -= ActionMapChange_ToUI;       // 델리게이트에서 추가했던 함수 삭제
         GameManager.Inst.InventoryUI.onInventoryClose -= ActionMapChange_ToPlayer;
     }
@@ -38,47 +34,43 @@ public class PlayerController : MonoBehaviour
     void ActionMapChange_ToPlayer()
     {
         pi.SwitchCurrentActionMap("Player");        // PlayerInput 컴포넌트를 이용해 액션맵 스위치
-        pia.Player.Enable();
-        pia.UI.Disable();
     }
 
     void ActionMapChange_ToUI()
     {
         pi.SwitchCurrentActionMap("UI");            // PlayerInput 컴포넌트를 이용해 액션맵 스위치
-        pia.UI.Enable();
-        pia.Player.Disable();
     }
 
     private void Start()
     {
-        SetTarget(targetObject);
+        SetTarget(targetPlayer);
     }
 
     public void SetTarget(GameObject _newTarget)
     {
         if (_newTarget != null)
         {
-            targetObject = _newTarget;
-            targetControl = targetObject.GetComponent<IControllable>();
+            targetPlayer = _newTarget;
+            targetControl = _newTarget.GetComponent<IControllable>();
             if (targetControl != null)
             {
                 targetControl.ControllerConnect();
             }
             else
             {
-                targetObject = null;
+                targetPlayer = null;
             }
         }
         else
         {
-            targetObject = null;
+            targetPlayer = null;
             targetControl = null;
         }
     }
 
     private void OnValidate()
     {
-        SetTarget(targetObject);
+        SetTarget(targetPlayer);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -87,8 +79,19 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Update()
-    {        
-        targetControl?.MoveUpdate();        
+    {
+        if (targetControl?.UseRigidbody == false)
+        {
+            targetControl?.MoveUpdate();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (targetControl?.UseRigidbody == true)
+        {
+            targetControl?.MoveUpdate();
+        }
     }
 
     public void OnMoveModeChange(InputAction.CallbackContext context)
@@ -129,6 +132,24 @@ public class PlayerController : MonoBehaviour
         if( context.started )
         {
             targetControl?.InventoryOnOffInput();
+        }
+    }
+
+    public void OnGetIn(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            pi.SwitchCurrentActionMap("Car");
+            SetTarget(targetCar);
+        }
+    }
+
+    public void OnGetOff(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            pi.SwitchCurrentActionMap("Player");
+            SetTarget(targetPlayer);
         }
     }
 }

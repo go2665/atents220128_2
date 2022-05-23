@@ -76,6 +76,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "GetIn",
+                    "type": "Button",
+                    "id": "817ed5bf-c67b-4468-9526-562c90494e85",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -351,6 +360,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "InventoryOnOff",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e26ef98-81db-4fe7-a8f8-44df4d510fd8",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "GetIn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -893,7 +913,7 @@
             ]
         },
         {
-            "name": "Player2",
+            "name": "Car",
             "id": "595b5189-abf2-4572-99cd-27703f8c9ba5",
             "actions": [
                 {
@@ -904,6 +924,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "GetOff",
+                    "type": "Button",
+                    "id": "74595a04-4438-4bce-a48b-fe6d61f35689",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -961,6 +990,17 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "57b1ce6e-7137-4542-8c3a-0f043cb7f43b",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "GetOff",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

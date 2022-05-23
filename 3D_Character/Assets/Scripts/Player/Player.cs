@@ -71,7 +71,7 @@ public class Player : MonoBehaviour, IControllable, IBattle, IHealth, IMana
     }
     public float MaxMP { get => maxMP; }
     public ManaDelegate onManaChange { get; set; }
- 
+    public bool UseRigidbody { get => false; }
 
     public int invenSlotCount = 8;
 

@@ -1087,9 +1087,53 @@ MonoBehaviour:
     m_ActionId: df8b3d24-a389-4b02-823d-b6067a395b3a
     m_ActionName: UI/InventoryOnOff[/Keyboard/i]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1068674133}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 70af748a-9f89-4bc0-9e08-afec2e542131
     m_ActionName: Player2/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1068674133}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnGetIn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 817ed5bf-c67b-4468-9526-562c90494e85
+    m_ActionName: Player/GetIn[/Keyboard/g]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1068674133}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnGetOff
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 74595a04-4438-4bce-a48b-fe6d61f35689
+    m_ActionName: Car/GetOff[/Keyboard/g]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1107,7 +1151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6482123f82d5973499225b1b455bfb92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 771631108}
+  targetPlayer: {fileID: 771631108}
+  targetCar: {fileID: 1997082623}
 --- !u!4 &1068674134
 Transform:
   m_ObjectHideFlags: 0
@@ -1461,6 +1506,7 @@ GameObject:
   - component: {fileID: 1997082625}
   - component: {fileID: 1997082624}
   - component: {fileID: 1997082628}
+  - component: {fileID: 1997082629}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -1558,6 +1604,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3d090f0fa0f0244f8236a99414329b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 10
+  turnSpeed: 100
+--- !u!54 &1997082629
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997082623}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &2130527024
 PrefabInstance:
   m_ObjectHideFlags: 0

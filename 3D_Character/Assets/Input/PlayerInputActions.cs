@@ -98,6 +98,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GetIn"",
+                    ""type"": ""Button"",
+                    ""id"": ""817ed5bf-c67b-4468-9526-562c90494e85"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -373,6 +382,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""InventoryOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e26ef98-81db-4fe7-a8f8-44df4d510fd8"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""GetIn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -915,7 +935,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Player2"",
+            ""name"": ""Car"",
             ""id"": ""595b5189-abf2-4572-99cd-27703f8c9ba5"",
             ""actions"": [
                 {
@@ -926,6 +946,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""GetOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""74595a04-4438-4bce-a48b-fe6d61f35689"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -983,6 +1012,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57b1ce6e-7137-4542-8c3a-0f043cb7f43b"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""GetOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1060,6 +1100,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_LockOn = m_Player.FindAction("LockOn", throwIfNotFound: true);
         m_Player_Pickup = m_Player.FindAction("Pickup", throwIfNotFound: true);
         m_Player_InventoryOnOff = m_Player.FindAction("InventoryOnOff", throwIfNotFound: true);
+        m_Player_GetIn = m_Player.FindAction("GetIn", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1073,9 +1114,10 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_InventoryOnOff = m_UI.FindAction("InventoryOnOff", throwIfNotFound: true);
-        // Player2
-        m_Player2 = asset.FindActionMap("Player2", throwIfNotFound: true);
-        m_Player2_Move = m_Player2.FindAction("Move", throwIfNotFound: true);
+        // Car
+        m_Car = asset.FindActionMap("Car", throwIfNotFound: true);
+        m_Car_Move = m_Car.FindAction("Move", throwIfNotFound: true);
+        m_Car_GetOff = m_Car.FindAction("GetOff", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1143,6 +1185,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_LockOn;
     private readonly InputAction m_Player_Pickup;
     private readonly InputAction m_Player_InventoryOnOff;
+    private readonly InputAction m_Player_GetIn;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1155,6 +1198,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @LockOn => m_Wrapper.m_Player_LockOn;
         public InputAction @Pickup => m_Wrapper.m_Player_Pickup;
         public InputAction @InventoryOnOff => m_Wrapper.m_Player_InventoryOnOff;
+        public InputAction @GetIn => m_Wrapper.m_Player_GetIn;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1188,6 +1232,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @InventoryOnOff.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventoryOnOff;
                 @InventoryOnOff.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventoryOnOff;
                 @InventoryOnOff.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventoryOnOff;
+                @GetIn.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGetIn;
+                @GetIn.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGetIn;
+                @GetIn.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGetIn;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1216,6 +1263,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @InventoryOnOff.started += instance.OnInventoryOnOff;
                 @InventoryOnOff.performed += instance.OnInventoryOnOff;
                 @InventoryOnOff.canceled += instance.OnInventoryOnOff;
+                @GetIn.started += instance.OnGetIn;
+                @GetIn.performed += instance.OnGetIn;
+                @GetIn.canceled += instance.OnGetIn;
             }
         }
     }
@@ -1334,38 +1384,46 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     }
     public UIActions @UI => new UIActions(this);
 
-    // Player2
-    private readonly InputActionMap m_Player2;
-    private IPlayer2Actions m_Player2ActionsCallbackInterface;
-    private readonly InputAction m_Player2_Move;
-    public struct Player2Actions
+    // Car
+    private readonly InputActionMap m_Car;
+    private ICarActions m_CarActionsCallbackInterface;
+    private readonly InputAction m_Car_Move;
+    private readonly InputAction m_Car_GetOff;
+    public struct CarActions
     {
         private @PlayerInputActions m_Wrapper;
-        public Player2Actions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Player2_Move;
-        public InputActionMap Get() { return m_Wrapper.m_Player2; }
+        public CarActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Car_Move;
+        public InputAction @GetOff => m_Wrapper.m_Car_GetOff;
+        public InputActionMap Get() { return m_Wrapper.m_Car; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(Player2Actions set) { return set.Get(); }
-        public void SetCallbacks(IPlayer2Actions instance)
+        public static implicit operator InputActionMap(CarActions set) { return set.Get(); }
+        public void SetCallbacks(ICarActions instance)
         {
-            if (m_Wrapper.m_Player2ActionsCallbackInterface != null)
+            if (m_Wrapper.m_CarActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMove;
+                @Move.started -= m_Wrapper.m_CarActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_CarActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_CarActionsCallbackInterface.OnMove;
+                @GetOff.started -= m_Wrapper.m_CarActionsCallbackInterface.OnGetOff;
+                @GetOff.performed -= m_Wrapper.m_CarActionsCallbackInterface.OnGetOff;
+                @GetOff.canceled -= m_Wrapper.m_CarActionsCallbackInterface.OnGetOff;
             }
-            m_Wrapper.m_Player2ActionsCallbackInterface = instance;
+            m_Wrapper.m_CarActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @GetOff.started += instance.OnGetOff;
+                @GetOff.performed += instance.OnGetOff;
+                @GetOff.canceled += instance.OnGetOff;
             }
         }
     }
-    public Player2Actions @Player2 => new Player2Actions(this);
+    public CarActions @Car => new CarActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1421,6 +1479,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnLockOn(InputAction.CallbackContext context);
         void OnPickup(InputAction.CallbackContext context);
         void OnInventoryOnOff(InputAction.CallbackContext context);
+        void OnGetIn(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1436,8 +1495,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnInventoryOnOff(InputAction.CallbackContext context);
     }
-    public interface IPlayer2Actions
+    public interface ICarActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnGetOff(InputAction.CallbackContext context);
     }
 }
