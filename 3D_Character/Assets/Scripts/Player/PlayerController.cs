@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 {
     public GameObject targetPlayer = null;
     public GameObject targetCar = null;
+    GameObject targetObject = null;
     private IControllable targetControl = null;
     private PlayerInput pi = null;              // PlayerInput 컴포넌트 캐싱용
     //private PlayerInputActions pia = null;      // Input Action Asset 파일을 클래스로 자동 생성한 것
@@ -50,7 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_newTarget != null)
         {
-            targetPlayer = _newTarget;
+            targetObject = _newTarget;
             targetControl = _newTarget.GetComponent<IControllable>();
             if (targetControl != null)
             {
@@ -58,12 +59,12 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                targetPlayer = null;
+                targetObject = null;
             }
         }
         else
         {
-            targetPlayer = null;
+            targetObject = null;
             targetControl = null;
         }
     }
