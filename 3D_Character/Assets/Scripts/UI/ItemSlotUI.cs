@@ -7,9 +7,10 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// ItemSlot을 표시해주는 클래스
 /// </summary>
-public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     private DetailInfoUI detail = null;
+    private RectTransform detailRect = null;
 
     private Image itemImage = null;     // 아이템의 이미지를 표시할 UI Image
     public Image ItemImage { get => itemImage; }
@@ -25,11 +26,12 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private int id = 0;
     public int ID { get => id; set => id = value; }     // 몇번째 슬롯인가
-
+        
     private void Awake()
     {
         itemImage = transform.GetChild(0).GetComponent<Image>();    // 아이템의 이미지를 표시할 UI 찾아놓기
         detail = transform.parent.parent.Find("DetailInfo").GetComponent<DetailInfoUI>();
+        detailRect = detail.transform as RectTransform;
     }
 
     /// <summary>
@@ -71,5 +73,16 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         {
             detail.Close();
         }
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {        
+        Vector2 mousePos = eventData.position;
+        if( (mousePos.x + detailRect.sizeDelta.x) > Screen.width )
+        {
+            mousePos.x -= detailRect.sizeDelta.x;
+        }
+
+        detail.transform.position = mousePos;
     }
 }
