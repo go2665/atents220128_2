@@ -878,7 +878,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GUI_28
+      name: Detail
       rect:
         serializedVersion: 2
         x: 2166
@@ -1630,11 +1630,10 @@ TextureImporter:
       GUI_7: 21300014
       GUI_8: 21300016
       GUI_60: 21300106
-      GUI_28: 21300056
+      GUI_42: 21300074
       GUI_5: 21300010
       GUI_0: 21300000
       GUI_61: 21300108
-      GUI_42: 21300074
       GUI_34: 21300068
       GUI_32: 21300064
       GUI_33: 21300066
@@ -1660,6 +1659,7 @@ TextureImporter:
       GUI_48: 21300086
       InventoryBackground: 21300054
       GUI_65: 21300116
+      Detail: 21300056
       GUI_25: 21300050
       SlotBackground: 21300090
       GUI_18: 21300036

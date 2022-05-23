@@ -7,8 +7,10 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// ItemSlot을 표시해주는 클래스
 /// </summary>
-public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
+public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    private DetailInfoUI detail = null;
+
     private Image itemImage = null;     // 아이템의 이미지를 표시할 UI Image
     public Image ItemImage { get => itemImage; }
     private ItemSlot itemSlot = null;   // 표시할 ItemSlot
@@ -27,6 +29,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
     private void Awake()
     {
         itemImage = transform.GetChild(0).GetComponent<Image>();    // 아이템의 이미지를 표시할 UI 찾아놓기
+        detail = transform.parent.parent.Find("DetailInfo").GetComponent<DetailInfoUI>();
     }
 
     /// <summary>
@@ -50,5 +53,23 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
     {
         Debug.Log($"{this.gameObject.name} 클릭");
         itemSlot.UseItem();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        //Debug.Log($"Enter : {itemSlot.SlotItem}");
+        if (itemSlot.SlotItem != null)
+        {
+            detail.Open(itemSlot.SlotItem);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        //Debug.Log($"Exit : {itemSlot.SlotItem}");
+        if (itemSlot.SlotItem != null)
+        {
+            detail.Close();
+        }
     }
 }
