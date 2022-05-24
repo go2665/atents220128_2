@@ -21,6 +21,12 @@ public class DetailInfoUI : MonoBehaviour
         itemPrice = transform.Find("Price").GetComponent<Text>();
     }
 
+    private void Start()
+    {
+        GameManager.Inst.InventoryUI.onInventoryClose += Close;
+        this.gameObject.SetActive(false);
+    }
+
     //기능
     void Refresh()
     {
