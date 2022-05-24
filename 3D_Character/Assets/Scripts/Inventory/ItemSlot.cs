@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemSlot
 {
-    private int itemCount = 0;
+    private int itemCount = 0;                  // 이 인벤토리 칸에 들어있는 아이템 개수(같은 종류일 때만)
     public int ItemCount { get => itemCount; }
 
     /// <summary>
@@ -48,16 +48,22 @@ public class ItemSlot
         onSlotItemChange?.Invoke();     // 실제로 슬롯에 아이템이 변경되었을 때 델리게이트 실행
     }
 
+    /// <summary>
+    /// 같은 종류의 아이템을 추가해서 아이템 갯수가 증가하는 상황에 사용
+    /// </summary>
     public void IncreaseSlotItem()
     {
-        itemCount++;
-        onSlotItemChange?.Invoke();
+        itemCount++;                // 갯수 증가시킴
+        onSlotItemChange?.Invoke(); // 슬롯 UI를 리프레쉬
     }
 
+    /// <summary>
+    /// 같은 종류의 아이템을 삭제해서 아이템 갯수가 감소하는 상황에 사용
+    /// </summary>
     public void DecreaseSlotItem()
     {
-        itemCount--;
-        onSlotItemChange?.Invoke();
+        itemCount--;                // 갯수 감소시킴
+        onSlotItemChange?.Invoke(); // 슬롯 UI를 리프레쉬
     }
 
     /// <summary>
@@ -71,9 +77,7 @@ public class ItemSlot
         {
             IUseableItem useable = slotItem as IUseableItem;    // 슬롯에 들어있는 아이템이 사용 가능한지 확인
             if( useable != null)    
-            {
-                useable.Use(target);    // 사용 가능한 아이템이면 사용
-                
+            {   
                 if (itemCount > 1)      // 개수가 2개 이상일 때 
                 {
                     DecreaseSlotItem();                    
@@ -82,6 +86,7 @@ public class ItemSlot
                 {
                     ReleaseSlotItem();  // 0개가 남으므로 슬롯 비우기
                 }
+                useable.Use(target);    // 사용 가능한 아이템이면 사용
             }
         }
     }

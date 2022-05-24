@@ -48,11 +48,11 @@ public class Inventory
     {
         bool result = false;
 
-        ItemSlot target = FindSameItem(itemData);
+        ItemSlot target = FindSameItem(itemData);   // 추가될 아이템과 같은 종류의 아이템이 있는지 확인
         if( target != null )
         {
             //같은 종류의 아이템이 있다.
-            target.IncreaseSlotItem();
+            target.IncreaseSlotItem();  // 추가될 아이템과 같은 종류의 아이템이 있으면 갯수만 증가
         }
         else
         {
