@@ -12,6 +12,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public GameObject slotPrefab = null;    // 인벤토리 칸(Slot)의 프리팹
     public float dropRange = 2.0f;
 
+    private DetailInfoUI detail = null;
     private ItemSlotUI[] slotUIs = null;    // 생성된 인벤토리 칸(Slot)들
     private Inventory inven = null;         // 이 클래스가 표시할 인벤토리
 
@@ -27,6 +28,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     void Awake()
     {
         slotParent = transform.Find("SlotParent");
+        detail = GetComponentInChildren<DetailInfoUI>();
 
         Button closeButton = transform.Find("CloseButton").GetComponent<Button>();
         closeButton.onClick.AddListener(Close);
@@ -118,6 +120,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             {
                 // 의도되로 사용된 케이스
                 inven.MoveItem((uint)dragStartIndex, (uint)slotUI.ID);  // 두 슬롯의 아이템 서로 변경
+                detail.Open(slotUI.ItemSlot.SlotItem);
             }
         }
         else

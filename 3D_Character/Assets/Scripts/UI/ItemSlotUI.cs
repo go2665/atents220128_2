@@ -18,6 +18,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private ItemSlot itemSlot = null;   // 표시할 ItemSlot
     public ItemSlot ItemSlot 
     {
+        get => itemSlot;
         set
         {
             itemSlot = value;
