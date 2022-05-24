@@ -123,8 +123,9 @@ public class Inventory
             // from은 적합한 인덱스이고 아이템이 할당되어 있다. 그리고 to는 적합한 인덱스이다.
             //Debug.Log($"{from}에 있는 {slots[from].SlotItem.name} 아이템을 {to}로 이동합니다.");
             ItemData temp = slots[from].SlotItem;               // from과 to의 아이템을 스왑
-            slots[from].AssignSlotItem(slots[to].SlotItem);
-            slots[to].AssignSlotItem(temp);
+            int tempCount = slots[from].ItemCount;
+            slots[from].AssignSlotItem(slots[to].SlotItem, slots[to].ItemCount);
+            slots[to].AssignSlotItem(temp, tempCount);
         }
         else
         {

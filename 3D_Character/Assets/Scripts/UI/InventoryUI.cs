@@ -167,17 +167,23 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         }
 
         // 다 끝났으니 원상복구
+        RollbackDragImage();                                                   // 움직일 이미지도 null로 표시        
+    }
+
+    private void RollbackDragImage()
+    {
         if (dragImage != null && dragStartIndex != NOT_DRAG_START)
         {
             dragImage.transform.SetParent(slotUIs[dragStartIndex].transform);   // 부모를 원래 슬롯으로 조정하기
             dragImage.transform.localPosition = Vector3.zero;                   // 로컬 포지션으로 (0,0)으로 설정(원래 위치)
             dragStartIndex = NOT_DRAG_START;                                    // 드래그 끝났다고 표시
-            dragImage = null;                                                   // 움직일 이미지도 null로 표시
+            dragImage = null;
         }
     }
 
     void Close()
     {
+        RollbackDragImage();
         onInventoryClose?.Invoke();         // 닫힐 때 델리게이트 실행
         this.gameObject.SetActive(false);
     }

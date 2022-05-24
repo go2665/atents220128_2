@@ -31,10 +31,10 @@ public class ItemSlot
     /// 슬롯에 아이템을 설정할 때 사용
     /// </summary>
     /// <param name="itemData">슬롯에 설정할 아이템</param>
-    public void AssignSlotItem(ItemData itemData)
+    public void AssignSlotItem(ItemData itemData, int count = 1)
     {
         slotItem = itemData;
-        itemCount = 1;
+        itemCount = count;
         onSlotItemChange?.Invoke();     // 실제로 슬롯에 아이템이 변경되었을 때 델리게이트 실행
     }
 
@@ -44,12 +44,19 @@ public class ItemSlot
     public void ReleaseSlotItem()
     {
         slotItem = null;
+        itemCount = 0;
         onSlotItemChange?.Invoke();     // 실제로 슬롯에 아이템이 변경되었을 때 델리게이트 실행
     }
 
     public void IncreaseSlotItem()
     {
         itemCount++;
+        onSlotItemChange?.Invoke();
+    }
+
+    public void DecreaseSlotItem()
+    {
+        itemCount--;
         onSlotItemChange?.Invoke();
     }
 
@@ -66,7 +73,15 @@ public class ItemSlot
             if( useable != null)    
             {
                 useable.Use(target);    // 사용 가능한 아이템이면 사용
-                ReleaseSlotItem();      // 슬롯 비우기
+                
+                if (itemCount > 1)      // 개수가 2개 이상일 때 
+                {
+                    DecreaseSlotItem();                    
+                }
+                else
+                {
+                    ReleaseSlotItem();  // 0개가 남으므로 슬롯 비우기
+                }
             }
         }
     }

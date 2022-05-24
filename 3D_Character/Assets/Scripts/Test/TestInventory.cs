@@ -17,9 +17,10 @@ public class TestInventory : MonoBehaviour
     private static void Test6_PlayerInvenUI()
     {
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealingPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealingPotion]);
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
-        GameManager.Inst.MainPlayer.Inven.Test_PrintInventory();
+        //GameManager.Inst.MainPlayer.Inven.Test_PrintInventory();        
 
     }
 
