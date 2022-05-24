@@ -58,11 +58,14 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log($"{this.gameObject.name} 클릭");
-        itemSlot.UseItem();
-        if (itemSlot.ItemCount <= 0)
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
-            detail.Close();
+            Debug.Log($"{this.gameObject.name} 클릭");
+            itemSlot.UseItem();
+            if (itemSlot.ItemCount <= 0)
+            {
+                detail.Close();
+            }
         }
     }
 
