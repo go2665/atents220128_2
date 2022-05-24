@@ -1710,6 +1710,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 817014929}
     m_Modifications:
+    - target: {fileID: 1385717702278845259, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1385717702401781275, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1820,6 +1824,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1385717702614986846, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1385717703192248921, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1385717703348098321, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1385717703531932169, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5329299492265428267, guid: 418bb91c91447d14a9aaa0e08d2d16fb, type: 3}
