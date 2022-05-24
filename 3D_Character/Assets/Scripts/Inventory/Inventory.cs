@@ -47,19 +47,30 @@ public class Inventory
     public bool AddItem(ItemData itemData)
     {
         bool result = false;
-        ItemSlot empty = FindEmptySlot();       // 빈슬롯큐에서 비어있는 슬롯 가져오기 시도
-        if( empty != null )
+
+        ItemSlot target = FindSameItem(itemData);
+        if( target != null )
         {
-            // 비어있는 아이템 슬롯을 가져왔다.
-            empty.AssignSlotItem(itemData); // 수정 요구
-            result = true;
-            //Debug.Log($"{itemData.name}을 인벤토리에 추가.");
+            //같은 종류의 아이템이 있다.
+            target.IncreaseSlotItem();
         }
         else
         {
-            // 비어있는 아이템 슬롯이 없다(인벤토리가 가득찼다)
-            Debug.Log($"인벤토리가 가득 차있다. {itemData.name}을 인벤토리에 추가할 수 없다.");
-        }
+            //같은 종류의 아이템이 없다.
+            ItemSlot empty = FindEmptySlot();       // 빈슬롯큐에서 비어있는 슬롯 가져오기 시도
+            if (empty != null)
+            {
+                // 비어있는 아이템 슬롯을 가져왔다.
+                empty.AssignSlotItem(itemData); // 수정 요구
+                result = true;
+                //Debug.Log($"{itemData.name}을 인벤토리에 추가.");
+            }
+            else
+            {
+                // 비어있는 아이템 슬롯이 없다(인벤토리가 가득찼다)
+                Debug.Log($"인벤토리가 가득 차있다. {itemData.name}을 인벤토리에 추가할 수 없다.");
+            }
+        }       
 
         return result;
     }
@@ -83,7 +94,7 @@ public class Inventory
         else
         {
             // 적절하지 못한 인덱스다. 
-            Debug.Log($"{slotIndex}는 적절하지 못한 인덱스이거나 비어 있습입니다.");
+            Debug.Log($"{slotIndex}는 적절하지 못한 인덱스이거나 비어 있습니다.");
         }
         return result;
     }
@@ -145,7 +156,7 @@ public class Inventory
         Debug.Log("Inven---------------------- ");
         for(int i = 0; i <SlotCount; i++ )
         {
-            Debug.Log($"{i} : {slots[i].SlotItem?.name}");  // 슬롯의 인덱스와 아이템의 이름 출력(없으면 안함)
+            Debug.Log($"{i} : {slots[i].SlotItem?.name}, {slots[i].ItemCount}");  // 슬롯의 인덱스와 아이템의 이름 출력(없으면 안함)
         }
         Debug.Log("---------------------------- ");
     }
@@ -190,5 +201,21 @@ public class Inventory
         }
 
         return slot;    // null 또는 빈 슬롯을 리턴
+    }
+
+    ItemSlot FindSameItem(ItemData itemData)
+    {
+        ItemSlot slot = null;
+
+        for (int i = 0; i < SlotCount; i++)
+        {
+            if (slots[i].SlotItem == itemData) // 같은 아이템이 있는 슬롯 찾기
+            {
+                slot = slots[i];
+                break;
+            }
+        }
+
+        return slot;    // null 또는 같은 아이템이 있는 슬롯을 리턴
     }
 }

@@ -12,6 +12,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private DetailInfoUI detail = null;
     private RectTransform detailRect = null;
 
+    private Text itemText = null;
     private Image itemImage = null;     // 아이템의 이미지를 표시할 UI Image
     public Image ItemImage { get => itemImage; }
     private ItemSlot itemSlot = null;   // 표시할 ItemSlot
@@ -29,7 +30,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         
     private void Awake()
     {
-        itemImage = transform.GetChild(0).GetComponent<Image>();    // 아이템의 이미지를 표시할 UI 찾아놓기
+        itemImage = transform.Find("ItemImage").GetComponent<Image>();    // 아이템의 이미지를 표시할 UI 찾아놓기
+        itemText = transform.Find("ItemCount").GetComponent<Text>();
         detail = transform.parent.parent.Find("DetailInfo").GetComponent<DetailInfoUI>();
         detailRect = detail.transform as RectTransform;
     }
@@ -43,11 +45,13 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         {
             itemImage.sprite = itemSlot.SlotItem.itemImage; // 이미지 변경
             itemImage.color = Color.white;                  // Alpha를 1로
+            itemText.text = $"{itemSlot.ItemCount}";
         }
         else    //현재 슬롯에 아이템이 없을 때
         {
             itemImage.sprite = null;        // 이미지 비우고
             itemImage.color = Color.clear;  // alpha를 0으로 
+            itemText.text = "";
         }
     }
 

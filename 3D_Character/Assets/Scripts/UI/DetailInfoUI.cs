@@ -23,7 +23,7 @@ public class DetailInfoUI : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Inst.InventoryUI.onInventoryClose += Close;
+        GameManager.Inst.InventoryUI.onInventoryClose += Close; // 디테일 창이 떠있는체로 인벤토리가 닫히면 다시 열렸을 때 그대로 남아있는 버그 수정
         this.gameObject.SetActive(false);
     }
 

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ItemSlot
 {
+    private int itemCount = 0;
+    public int ItemCount { get => itemCount; }
+
     /// <summary>
     /// 델리게이트 타입이랑 변수 만들기
     /// </summary>
@@ -31,6 +34,7 @@ public class ItemSlot
     public void AssignSlotItem(ItemData itemData)
     {
         slotItem = itemData;
+        itemCount = 1;
         onSlotItemChange?.Invoke();     // 실제로 슬롯에 아이템이 변경되었을 때 델리게이트 실행
     }
 
@@ -41,6 +45,12 @@ public class ItemSlot
     {
         slotItem = null;
         onSlotItemChange?.Invoke();     // 실제로 슬롯에 아이템이 변경되었을 때 델리게이트 실행
+    }
+
+    public void IncreaseSlotItem()
+    {
+        itemCount++;
+        onSlotItemChange?.Invoke();
     }
 
     /// <summary>
