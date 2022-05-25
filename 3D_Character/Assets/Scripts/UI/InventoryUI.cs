@@ -185,6 +185,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         {
             dragImage.transform.SetParent(slotUIs[dragStartIndex].transform);   // 부모를 원래 슬롯으로 조정하기
             dragImage.transform.localPosition = Vector3.zero;                   // 로컬 포지션으로 (0,0)으로 설정(원래 위치)
+            dragImage.transform.SetAsFirstSibling();                            // drag 이미지를 첫번째 자식으로 변경
             dragStartIndex = NOT_DRAG_START;                                    // 드래그 끝났다고 표시
             dragImage = null;
         }
