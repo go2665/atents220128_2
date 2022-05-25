@@ -73,12 +73,23 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             }
             else
             {
-                Debug.Log($"{this.gameObject.name} 클릭");
-                itemSlot.UseItem();
-                if (itemSlot.ItemCount <= 0)
+                //일반 클릭일 때
+                if (invenUI.SplittedItem.isActiveAndEnabled)
                 {
-                    invenUI.Detail.Close();
+                    // 아이템 쪼개기를 하고 있을 때
+                    itemSlot.AssignSlotItem(invenUI.SplittedItem.ItemSlot.SlotItem, invenUI.SplittedItem.ItemCount);
+                    invenUI.SplittedItem.Close();
                 }
+                else
+                {
+                    // 아이템 사용 목적
+                    Debug.Log($"{this.gameObject.name} 클릭");
+                    itemSlot.UseItem();
+                    if (itemSlot.ItemCount <= 0)
+                    {
+                        invenUI.Detail.Close();
+                    }
+                }                
             }
         }
     }

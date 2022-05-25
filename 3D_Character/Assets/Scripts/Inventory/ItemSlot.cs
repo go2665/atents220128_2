@@ -60,9 +60,9 @@ public class ItemSlot
     /// <summary>
     /// 같은 종류의 아이템을 삭제해서 아이템 갯수가 감소하는 상황에 사용
     /// </summary>
-    public void DecreaseSlotItem()
+    public void DecreaseSlotItem(int count = 1)
     {
-        itemCount--;                // 갯수 감소시킴
+        itemCount -= count;             // 갯수 감소시킴
         onSlotItemChange?.Invoke(); // 슬롯 UI를 리프레쉬
     }
 

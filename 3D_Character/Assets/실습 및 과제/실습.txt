@@ -177,6 +177,6 @@ Enemy가 Player를 공격해서 Player를 사망하게 만들기
 
 5/25
 1. ItemSpliter OK버튼 완성하기
- 1.1. OK 버튼을 누르면 slot에 들어있는 아이템의 아이콘이 SplitredItem에 나타난다.
- 1.2. SplitredItem은 enable되면 마우스를 따라다닌다.
+ 1.1. OK 버튼을 누르면 slot에 들어있는 아이템의 아이콘이 SplittedItem에 나타난다.
+ 1.2. SplittedItem은 enable되면 마우스를 따라다닌다.
  시간 : 1시 20분까지

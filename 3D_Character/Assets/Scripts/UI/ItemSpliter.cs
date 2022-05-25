@@ -22,6 +22,7 @@ public class ItemSpliter : MonoBehaviour
     }
     private ItemSlot slot = null;
     private InputField inputField = null;
+    private SplittedItem splittedItem = null;
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class ItemSpliter : MonoBehaviour
         ok.onClick.AddListener(SelectOK);
         Button cancel = transform.Find("Button_Cancel").GetComponent<Button>();
         cancel.onClick.AddListener(SelectCancel);
+        splittedItem = transform.parent.GetComponentInChildren<SplittedItem>();
     }
 
     private void Start()
@@ -44,7 +46,7 @@ public class ItemSpliter : MonoBehaviour
 
     private void OnEnable()
     {
-        ItemSplitCount = itemSplitCount;
+        ItemSplitCount = 1;
     }
 
     void OnInputChage(string change)
@@ -64,6 +66,7 @@ public class ItemSpliter : MonoBehaviour
 
     void SelectOK()
     {
+        splittedItem.Open(slot, ItemSplitCount);
         this.gameObject.SetActive(false);
         // slot에 있는 아이템 아이콘이 보인다. -> 마우스를 따라간다.
             // -> 빈슬롯을 클릭 -> 그 슬롯에 들어간다.
@@ -77,6 +80,7 @@ public class ItemSpliter : MonoBehaviour
 
     void SelectCancel()
     {
+        slot = null;
         this.gameObject.SetActive(false);
     }
 

@@ -47,11 +47,11 @@ public class Inventory
     public bool AddItem(ItemData itemData)
     {
         bool result = false;
-
+        
         ItemSlot target = FindSameItem(itemData);   // 추가될 아이템과 같은 종류의 아이템이 있는지 확인
 
-        if( target != null )
-        {            
+        if (target != null)
+        {
             //같은 종류의 아이템이 있다.
             target.IncreaseSlotItem();  // 추가될 아이템과 같은 종류의 아이템이 있으면 갯수만 증가
             result = true;
@@ -72,7 +72,7 @@ public class Inventory
                 // 비어있는 아이템 슬롯이 없다(인벤토리가 가득찼다)
                 Debug.Log($"인벤토리가 가득 차있다. {itemData.name}을 인벤토리에 추가할 수 없다.");
             }
-        }       
+        }        
 
         return result;
     }
