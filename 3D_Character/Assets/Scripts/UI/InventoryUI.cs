@@ -13,6 +13,9 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public float dropRange = 2.0f;
 
     private DetailInfoUI detail = null;
+    public DetailInfoUI Detail { get => detail; }
+    private ItemSpliter spliter = null;
+    public ItemSpliter Spliter { get => spliter; }
     private ItemSlotUI[] slotUIs = null;    // 생성된 인벤토리 칸(Slot)들
     private Inventory inven = null;         // 이 클래스가 표시할 인벤토리
 
@@ -29,6 +32,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     {
         slotParent = transform.Find("SlotParent");
         detail = GetComponentInChildren<DetailInfoUI>();
+        spliter = GetComponentInChildren<ItemSpliter>();
 
         Button closeButton = transform.Find("CloseButton").GetComponent<Button>();
         closeButton.onClick.AddListener(Close);

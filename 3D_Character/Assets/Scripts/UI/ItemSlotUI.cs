@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// ItemSlot을 표시해주는 클래스
 /// </summary>
 public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
-    private DetailInfoUI detail = null;
+    private InventoryUI invenUI = null;
     private RectTransform detailRect = null;
 
     private Text itemText = null;
@@ -33,8 +34,12 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         itemImage = transform.Find("ItemImage").GetComponent<Image>();    // 아이템의 이미지를 표시할 UI 찾아놓기
         itemText = transform.Find("ItemCount").GetComponent<Text>();
-        detail = transform.parent.parent.Find("DetailInfo").GetComponent<DetailInfoUI>();
-        detailRect = detail.transform as RectTransform;
+        invenUI = transform.parent.parent.GetComponent<InventoryUI>();        
+    }
+
+    void Start()
+    {
+        detailRect = invenUI.Detail.transform as RectTransform;
     }
 
     /// <summary>
@@ -60,11 +65,20 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Debug.Log($"{this.gameObject.name} 클릭");
-            itemSlot.UseItem();
-            if (itemSlot.ItemCount <= 0)
+            if (Keyboard.current.leftShiftKey.ReadValue() > 0.0f)
             {
-                detail.Close();
+                //쉬프트 키가 눌러져있다.
+                Debug.Log($"{this.gameObject.name} 쉬프트 클릭");
+                invenUI.Spliter.Open(ItemSlot);
+            }
+            else
+            {
+                Debug.Log($"{this.gameObject.name} 클릭");
+                itemSlot.UseItem();
+                if (itemSlot.ItemCount <= 0)
+                {
+                    invenUI.Detail.Close();
+                }
             }
         }
     }
@@ -74,7 +88,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         //Debug.Log($"Enter : {itemSlot.SlotItem}");
         if (itemSlot.SlotItem != null)
         {
-            detail.Open(itemSlot.SlotItem);
+            invenUI.Detail.Open(itemSlot.SlotItem);
         }
     }
 
@@ -83,7 +97,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         //Debug.Log($"Exit : {itemSlot.SlotItem}");
         if (itemSlot.SlotItem != null)
         {
-            detail.Close();
+            invenUI.Detail.Close();
         }
     }
 
@@ -95,6 +109,6 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             mousePos.x -= detailRect.sizeDelta.x;
         }
 
-        detail.transform.position = mousePos;
+        invenUI.Detail.transform.position = mousePos;
     }
 }
