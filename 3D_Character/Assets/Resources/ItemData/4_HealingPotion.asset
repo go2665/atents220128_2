@@ -18,4 +18,5 @@ MonoBehaviour:
   itemDesc: "HP\uB97C 100 \uD68C\uBCF5\uC2DC\uCF1C\uC900\uB2E4."
   price: 100
   prefab: {fileID: 1000012970591572, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 3}
+  maxStackCount: 3
   triggerSize: 1

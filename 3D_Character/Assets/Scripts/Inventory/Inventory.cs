@@ -49,10 +49,12 @@ public class Inventory
         bool result = false;
 
         ItemSlot target = FindSameItem(itemData);   // 추가될 아이템과 같은 종류의 아이템이 있는지 확인
+
         if( target != null )
-        {
+        {            
             //같은 종류의 아이템이 있다.
             target.IncreaseSlotItem();  // 추가될 아이템과 같은 종류의 아이템이 있으면 갯수만 증가
+            result = true;
         }
         else
         {
@@ -210,8 +212,10 @@ public class Inventory
 
         for (int i = 0; i < SlotCount; i++)
         {
-            if (slots[i].SlotItem == itemData) // 같은 아이템이 있는 슬롯 찾기
-            {
+            // 같은 아이템이 있는 슬롯 찾기
+            // 그 슬롯에 빈 공간이 있는지도 확인
+            if ((slots[i].SlotItem == itemData) && (slots[i].ItemCount < slots[i].SlotItem.maxStackCount)) 
+            {                
                 slot = slots[i];
                 break;
             }

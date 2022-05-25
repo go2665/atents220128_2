@@ -18,4 +18,5 @@ MonoBehaviour:
   itemDesc: "\uAE08\uD654(\uC7A1\uD0EC)"
   price: 300
   prefab: {fileID: 1000011365394840, guid: 5142a683d65bbf84abea6f07db9099c7, type: 3}
+  maxStackCount: 2
   triggerSize: 1

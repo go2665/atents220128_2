@@ -12,6 +12,7 @@ public class ItemData : ScriptableObject
     public string itemDesc = "아이템설명";
     public int price = 0;
     public GameObject prefab = null;
+    public int maxStackCount = 1;
 
     [Header("컬라이더 정보")]
     public float triggerSize = 1.0f;
