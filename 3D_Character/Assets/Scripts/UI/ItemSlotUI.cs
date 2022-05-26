@@ -63,9 +63,9 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left)  // 왼쪽 마우스 클릭할 때만
         {
-            if (Keyboard.current.leftShiftKey.ReadValue() > 0.0f)
+            if (Keyboard.current.leftShiftKey.ReadValue() > 0.0f)   // 왼쪽 쉬프트키가 눌러져 있다면
             {
                 //쉬프트 키가 눌러져있다.
                 Debug.Log($"{this.gameObject.name} 쉬프트 클릭");
@@ -74,15 +74,15 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             else
             {
                 //일반 클릭일 때
-                if (invenUI.SplittedItem.isActiveAndEnabled)
+                if (invenUI.SplittedItem.isActiveAndEnabled)        // SplittedItem 게임 오브젝트가 활성화 되어있다면
                 {
-                    // 아이템 쪼개기를 하고 있을 때
+                    // 아이템 분리작업을 마무리 하는 상황
                     itemSlot.AssignSlotItem(invenUI.SplittedItem.ItemSlot.SlotItem, invenUI.SplittedItem.ItemCount);
                     invenUI.SplittedItem.Close();
                 }
                 else
                 {
-                    // 아이템 사용 목적
+                    // 아이템을 사용하는 상황
                     Debug.Log($"{this.gameObject.name} 클릭");
                     itemSlot.UseItem();
                     if (itemSlot.ItemCount <= 0)

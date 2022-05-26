@@ -51,10 +51,10 @@ public class ItemSlot
     /// <summary>
     /// 같은 종류의 아이템을 추가해서 아이템 갯수가 증가하는 상황에 사용
     /// </summary>
-    public void IncreaseSlotItem()
+    public void IncreaseSlotItem(int count = 1)
     {
-        itemCount++;                // 갯수 증가시킴
-        onSlotItemChange?.Invoke(); // 슬롯 UI를 리프레쉬
+        itemCount += count;             // 갯수 증가시킴
+        onSlotItemChange?.Invoke();     // 슬롯 UI를 리프레쉬
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class ItemSlot
     public void DecreaseSlotItem(int count = 1)
     {
         itemCount -= count;             // 갯수 감소시킴
-        onSlotItemChange?.Invoke(); // 슬롯 UI를 리프레쉬
+        onSlotItemChange?.Invoke();     // 슬롯 UI를 리프레쉬
     }
 
     /// <summary>
