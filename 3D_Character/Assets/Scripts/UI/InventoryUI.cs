@@ -27,6 +27,9 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     private Image dragImage = null;
     private Transform slotParent = null;
 
+    private PlayerInputActions inputActions = null;
+    public PlayerInputActions InputActions { get => inputActions; set => inputActions = value; }
+
     public delegate void InventoryDelegate();
     public InventoryDelegate onInventoryOpen = null;    // 인벤토리가 열릴 때 실행될 델리게이트
     public InventoryDelegate onInventoryClose = null;   // 인벤토리가 닫힐 때 실행될 델리게이트
@@ -40,6 +43,8 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
         Button closeButton = transform.Find("CloseButton").GetComponent<Button>();
         closeButton.onClick.AddListener(Close);
+
+        inputActions = new PlayerInputActions();
     }
 
     private void Start()
@@ -210,7 +215,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
                             obj.transform.Translate(randDrop.x, 0, randDrop.z);         // 높이를 제외하고 랜덤한 위치를 적용하기
                         }
 
-                        Vector3 randNoise = Random.insideUnitSphere * dropRange;
+                        Vector3 randNoise = Random.insideUnitSphere * dropRange * 0.25f;
                         obj.transform.Translate(randNoise.x, 0, randNoise.z);       // 정확한 지점말고 약간 노이즈를 주는 느낌
                     }
 

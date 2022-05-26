@@ -29,6 +29,7 @@ public class SplittedItem : MonoBehaviour
     {
         itemIcon = GetComponentInChildren<Image>(); // 이미지 컴포넌트 찾기
         itemCountText = GetComponentInChildren<Text>(); //텍스트 컴포넌트 찾기
+        GameManager.Inst.InventoryUI.InputActions.UI.Click.performed += OnClick;
     }
 
     private void OnEnable()
@@ -37,11 +38,61 @@ public class SplittedItem : MonoBehaviour
         {
             itemIcon.sprite = itemSlot.SlotItem.itemImage;  // itemSlot에 데이터가 있으면 슬롯에 있는 스프라이트를 사용하여 표시
         }
+        GameManager.Inst.InventoryUI.InputActions.UI.Click.Enable();
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Inst.InventoryUI.InputActions.UI.Click.Disable();
     }
 
     private void Start()
     {
-        this.gameObject.SetActive(false);   // 시작할 때 닫기
+        this.gameObject.SetActive(false);   // 시작할 때 닫기        
+    }
+
+    private void OnClick(InputAction.CallbackContext context)
+    {
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        float dropRange = 2.0f;
+        for (int i = 0; i < itemCount; i++)
+        {
+            GameObject obj = ItemFactory.GetItem(itemSlot.SlotItem.id);                 // 아이템 슬롯에 들어있는 아이템 데이터를 이용해 아이템 생성
+            obj.transform.position = GameManager.Inst.MainPlayer.transform.position;    // 위치를 플레이어 위치로 변경
+
+            Ray ray = Camera.main.ScreenPointToRay(mousePosition); // 마우스 포인터의 스크린 좌표를 이용해 레이를 구한다.
+            RaycastHit[] hits = null;
+            hits = Physics.RaycastAll(ray, 1000.0f, LayerMask.GetMask("Ground"));  // Ground 레이어로 설정된 오브젝트와 레이를 충돌검사한다.
+            if (hits.Length > 0)
+            {
+                // 최소 하나 이상 피킹 되었을 때
+                Vector3 playerToDrop = hits[0].point - GameManager.Inst.MainPlayer.transform.position;  // 플레이어 위치에서 드랍지점으로 가는 방향 백터 구하기
+                if (dropRange * dropRange < playerToDrop.sqrMagnitude) // 방향백터의 길이를 이용해서 dropRange 안인지 밖인지 확인
+                {
+                    // dropRange 바깥에 아이템을 드랍했다.
+
+                    // 방향백터를 단위백터로 만들고 dropRange를 곱해서 dropRange를 반지름으로 가지는 원의 표면에 아이템을 배치시킨다.
+                    obj.transform.Translate(playerToDrop.normalized * dropRange);
+                }
+                else
+                {
+                    // dropRange 안에 아이템을 드랍했다.
+
+                    // 그냥 드랍한 위치에 아이템을 배치한다.
+                    obj.transform.position = hits[0].point;
+                }
+            }
+            else
+            {
+                // Ground가 하나도 피킹되지 않았을 때
+                Vector3 randDrop = Random.insideUnitSphere * dropRange;     // 반지름이 dropRange인 구안의 랜덤한 위치 구하기
+                obj.transform.Translate(randDrop.x, 0, randDrop.z);         // 높이를 제외하고 랜덤한 위치를 적용하기
+            }
+
+            Vector3 randNoise = Random.insideUnitSphere * dropRange * 0.25f;
+            obj.transform.Translate(randNoise.x, 0, randNoise.z);
+        }
+        Close();
     }
 
     private void Update()
