@@ -131,18 +131,24 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
                 ItemSlotUI endSlotUI = endObj.GetComponent<ItemSlotUI>();  // ItemSlotUI를 가지는 아이템 슬롯인지 확인 및 데이터 가져오기
                 if (endSlotUI != null && dragStartIndex != NOT_DRAG_START) // ItemSlotUI가 있고 드래그를 시작한 상황이면
                 {
-                    // 의도되로 사용된 케이스
-                    ItemSlot startSlot = inven.GetSlot((uint)dragStartIndex);
-                    if( startSlot.SlotItem == endSlotUI.ItemSlot.SlotItem )
+                    // 드래그가 성공적으로 완료된 경우
+
+                    ItemSlot startSlot = inven.GetSlot((uint)dragStartIndex);   // 드래그를 시작한 슬롯
+                    if( startSlot.SlotItem == endSlotUI.ItemSlot.SlotItem ) // 시작슬롯과 도착슬롯의 아이템이 같은 경우
                     {
-                        if( startSlot.ItemCount + endSlotUI.ItemSlot.ItemCount > endSlotUI.ItemSlot.SlotItem.maxStackCount )
+                        // 시작슬롯과 도착슬롯의 아이템을 합치면 최대치를 넘어서는지 확인
+                        if ( startSlot.ItemCount + endSlotUI.ItemSlot.ItemCount > endSlotUI.ItemSlot.SlotItem.maxStackCount )
                         {
-                            // 일부만 옮기기
+                            // 시작슬롯과 도착슬롯의 아이템을 합치면 슬롯의 최대 스택 사이즈를 넘어서는경우
+                            // 도착슬롯의 아이템 개수가 최대치가 될때까지만 옮기기
                             if( endSlotUI.ItemSlot.ItemCount < endSlotUI.ItemSlot.SlotItem.maxStackCount )
                             {
-                                int overCount = endSlotUI.ItemSlot.SlotItem.maxStackCount - endSlotUI.ItemSlot.ItemCount;
-                                endSlotUI.ItemSlot.IncreaseSlotItem(overCount);
-                                startSlot.DecreaseSlotItem(overCount);
+                                // 도착슬롯의 아이템 개수가 아직 추가될 수 있는 상황일 때
+
+                                // 도착지점의 아이템 개수가 최대치가 되는 값 구하기
+                                int toMax = endSlotUI.ItemSlot.SlotItem.maxStackCount - endSlotUI.ItemSlot.ItemCount;   
+                                endSlotUI.ItemSlot.IncreaseSlotItem(toMax); // 도착 슬롯은 최대치까지 올리고
+                                startSlot.DecreaseSlotItem(toMax);          // 시작 슬롯은 추가한만큼 제거
                             }
                         }
                         else
@@ -156,7 +162,6 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
                     {
                         inven.MoveItem((uint)dragStartIndex, (uint)endSlotUI.ID);  // 두 슬롯의 아이템 서로 변경
                     }
-
                     detail.Open(endSlotUI.ItemSlot.SlotItem);
                 }
             }
