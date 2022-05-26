@@ -128,12 +128,36 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             {
                 // UI위에서 드래그를 끝냄
                 //Debug.Log($"드래그 종료 : {eventData.pointerCurrentRaycast.gameObject.name}");
-                ItemSlotUI slotUI = endObj.GetComponent<ItemSlotUI>();  // ItemSlotUI를 가지는 아이템 슬롯인지 확인 및 데이터 가져오기
-                if (slotUI != null && dragStartIndex != NOT_DRAG_START) // ItemSlotUI가 있고 드래그를 시작한 상황이면
+                ItemSlotUI endSlotUI = endObj.GetComponent<ItemSlotUI>();  // ItemSlotUI를 가지는 아이템 슬롯인지 확인 및 데이터 가져오기
+                if (endSlotUI != null && dragStartIndex != NOT_DRAG_START) // ItemSlotUI가 있고 드래그를 시작한 상황이면
                 {
                     // 의도되로 사용된 케이스
-                    inven.MoveItem((uint)dragStartIndex, (uint)slotUI.ID);  // 두 슬롯의 아이템 서로 변경
-                    detail.Open(slotUI.ItemSlot.SlotItem);
+                    ItemSlot startSlot = inven.GetSlot((uint)dragStartIndex);
+                    if( startSlot.SlotItem == endSlotUI.ItemSlot.SlotItem )
+                    {
+                        if( startSlot.ItemCount + endSlotUI.ItemSlot.ItemCount > endSlotUI.ItemSlot.SlotItem.maxStackCount )
+                        {
+                            // 일부만 옮기기
+                            if( endSlotUI.ItemSlot.ItemCount < endSlotUI.ItemSlot.SlotItem.maxStackCount )
+                            {
+                                int overCount = endSlotUI.ItemSlot.SlotItem.maxStackCount - endSlotUI.ItemSlot.ItemCount;
+                                endSlotUI.ItemSlot.IncreaseSlotItem(overCount);
+                                startSlot.DecreaseSlotItem(overCount);
+                            }
+                        }
+                        else
+                        {
+                            // 전부 옮기기
+                            endSlotUI.ItemSlot.IncreaseSlotItem(startSlot.ItemCount);
+                            startSlot.ReleaseSlotItem();
+                        }                        
+                    }
+                    else
+                    {
+                        inven.MoveItem((uint)dragStartIndex, (uint)endSlotUI.ID);  // 두 슬롯의 아이템 서로 변경
+                    }
+
+                    detail.Open(endSlotUI.ItemSlot.SlotItem);
                 }
             }
             else
