@@ -79,6 +79,7 @@ public class ItemSpliter : MonoBehaviour
     /// </summary>
     void SelectOK()
     {
+        slot.DecreaseSlotItem(itemSplitCount);      // 분리되는 슬롯도 아이템 개수 갱신
         splittedItem.Open(slot, itemSplitCount);    // splittedItem에 아이템을 분리하는 슬롯과 분리하는 갯수 넘겨주며 열기
         this.gameObject.SetActive(false);           // 열었으면 자신은 닫는다.
     }

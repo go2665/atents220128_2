@@ -10,13 +10,25 @@ using UnityEngine.InputSystem;
 public class SplittedItem : MonoBehaviour
 {
     Image itemIcon = null;      // 아이콘 표시용 이미지
+    Text itemCountText = null;  // 분리하는 아이템 개수 표시용 텍스트
     ItemSlot itemSlot = null;   // 분리작업을 시작한 슬롯
     public ItemSlot ItemSlot { get => itemSlot; }
-    public int ItemCount { get; set; }
+
+    private int itemCount = 0;
+    public int ItemCount 
+    {
+        get => itemCount;
+        set
+        {
+            itemCount = value;
+            itemCountText.text = itemCount.ToString();
+        }
+    }
 
     private void Awake()
     {
         itemIcon = GetComponentInChildren<Image>(); // 이미지 컴포넌트 찾기
+        itemCountText = GetComponentInChildren<Text>(); //텍스트 컴포넌트 찾기
     }
 
     private void OnEnable()
@@ -52,7 +64,6 @@ public class SplittedItem : MonoBehaviour
 
     public void Close()
     {
-        itemSlot.DecreaseSlotItem(ItemCount);   // 아이템 분리를 시작했던 슬롯의 아이템 개수를 감소시키고
         itemSlot = null;                        // 널로 초기화
         this.gameObject.SetActive(false);       // 게임 오브젝트 비활성화
     }

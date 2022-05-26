@@ -77,8 +77,51 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                 if (invenUI.SplittedItem.isActiveAndEnabled)        // SplittedItem 게임 오브젝트가 활성화 되어있다면
                 {
                     // 아이템 분리작업을 마무리 하는 상황
-                    itemSlot.AssignSlotItem(invenUI.SplittedItem.ItemSlot.SlotItem, invenUI.SplittedItem.ItemCount);
-                    invenUI.SplittedItem.Close();
+
+                    if( ItemSlot.SlotItem == null )
+                    {
+                        // 비어있는 슬롯인 경우
+                        //Debug.Log("비어있는 슬롯");
+                        itemSlot.AssignSlotItem(invenUI.SplittedItem.ItemSlot.SlotItem, invenUI.SplittedItem.ItemCount);
+                        invenUI.SplittedItem.Close();
+                    }
+                    else
+                    {
+                        // 아이템이 들어있는 슬롯인 경우
+                        //Debug.Log("아이템이 있는 슬롯");
+                        if(itemSlot.SlotItem == invenUI.SplittedItem.ItemSlot.SlotItem)
+                        {
+                            // 같은 종류의 아이템이다.
+                            //Debug.Log("같은 종류의 아이템이 있는 슬롯");
+
+                            if(itemSlot.SlotItem.maxStackCount < (itemSlot.ItemCount + invenUI.SplittedItem.ItemCount))
+                            {
+                                // 새 슬롯에 있는 개수 + 분리된 아이템 개수가 최대치를 넘겼을 때
+                                // 최대 수치를 넘김
+                                //Debug.Log("개수가 넘쳤다.");
+                                if (itemSlot.ItemCount < itemSlot.SlotItem.maxStackCount)
+                                {
+                                    int overCount = itemSlot.ItemCount + invenUI.SplittedItem.ItemCount - itemSlot.SlotItem.maxStackCount;
+                                    itemSlot.IncreaseSlotItem(overCount);           // 대상에 남은 공간만큼 채우고
+                                    invenUI.SplittedItem.ItemCount -= overCount;    // 그 나머지는 그대로 SplittedItem에 남아있도록 처리
+                                }
+                            }
+                            else
+                            {
+                                // 합이 최대치보다 작거나 같을 때
+                                //Debug.Log("그냥 합치면 된다.");
+                                itemSlot.IncreaseSlotItem(invenUI.SplittedItem.ItemCount);  // 그냥 ItemCount만큼 더하기
+                                invenUI.SplittedItem.Close();
+                            }
+                        }
+                        else
+                        {
+                            // 다른 종류의 아이템이다.
+                            //Debug.Log("다른 종류의 아이템이 있는 슬롯");
+
+                            // 일단은 무시
+                        }
+                    }                    
                 }
                 else
                 {
