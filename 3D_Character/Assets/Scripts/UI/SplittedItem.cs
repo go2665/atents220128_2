@@ -10,8 +10,6 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class SplittedItem : MonoBehaviour
 {
-    GraphicRaycaster raycaster = null;
-    EventSystem eventSystem = null;
     PointerEventData eventData = null;
 
     Image itemIcon = null;      // 아이콘 표시용 이미지
@@ -53,9 +51,7 @@ public class SplittedItem : MonoBehaviour
 
     private void Start()
     {
-        raycaster = FindObjectOfType<GraphicRaycaster>();
-        eventSystem = FindObjectOfType<EventSystem>();
-        eventData = new PointerEventData(eventSystem);
+        eventData = new PointerEventData(EventSystem.current);
 
         this.gameObject.SetActive(false);   // 시작할 때 닫기        
     }
@@ -65,9 +61,9 @@ public class SplittedItem : MonoBehaviour
         Vector2 mousePosition = Mouse.current.position.ReadValue();        
         eventData.position = mousePosition;
         List<RaycastResult> results = new List<RaycastResult>();
-        raycaster.Raycast(eventData, results);  // UI 레이케스트
-                
-        if (results.Count <= 0)
+        EventSystem.current.RaycastAll(eventData, results); // UI 레이케스트 사용하여 충돌되는 UI가 있는지 확인
+
+        if (results.Count <= 0) // results.Count가 1개 이상이면 UI가 클릭된 것   
         {
             // UI를 클릭하지 않은 경우. 바닥에 버리기
             float dropRange = 2.0f;
