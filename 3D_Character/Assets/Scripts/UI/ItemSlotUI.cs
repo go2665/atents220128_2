@@ -13,7 +13,9 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private InventoryUI invenUI = null;
     private RectTransform detailRect = null;
 
-    private Text itemText = null;
+    private Text itemCountText = null;
+    private Text itemEquipText = null;
+    public bool EquipThisItem { get; set; }
     private Image itemImage = null;     // 아이템의 이미지를 표시할 UI Image
     public Image ItemImage { get => itemImage; }
     private ItemSlot itemSlot = null;   // 표시할 ItemSlot
@@ -33,7 +35,8 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private void Awake()
     {
         itemImage = transform.Find("ItemImage").GetComponent<Image>();    // 아이템의 이미지를 표시할 UI 찾아놓기
-        itemText = transform.Find("ItemCount").GetComponent<Text>();
+        itemCountText = transform.Find("ItemCount").GetComponent<Text>();
+        itemEquipText = transform.Find("ItemEquip").GetComponent<Text>();
         invenUI = transform.parent.parent.GetComponent<InventoryUI>();        
     }
 
@@ -51,13 +54,16 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         {
             itemImage.sprite = itemSlot.SlotItem.itemImage; // 이미지 변경
             itemImage.color = Color.white;                  // Alpha를 1로
-            itemText.text = $"{itemSlot.ItemCount}";
+            itemCountText.text = $"{itemSlot.ItemCount}";            
+            itemEquipText.gameObject.SetActive(itemSlot.ItemEquiped);
+            
         }
         else    //현재 슬롯에 아이템이 없을 때
         {
             itemImage.sprite = null;        // 이미지 비우고
             itemImage.color = Color.clear;  // alpha를 0으로 
-            itemText.text = "";
+            itemCountText.text = "";
+            itemEquipText.gameObject.SetActive(false);
         }
     }
 
@@ -127,7 +133,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                 {
                     // 아이템을 사용하는 상황
                     Debug.Log($"{this.gameObject.name} 클릭");
-                    itemSlot.UseItem();
+                    itemSlot.UseSlot();
                     if (itemSlot.ItemCount <= 0)
                     {
                         invenUI.Detail.Close();

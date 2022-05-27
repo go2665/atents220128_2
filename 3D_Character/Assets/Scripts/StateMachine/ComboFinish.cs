@@ -10,7 +10,7 @@ public class ComboFinish : StateMachineBehaviour
     {
         if (ps == null)
         {
-            ps = GameManager.Inst.MainPlayer.weapone.GetComponentInChildren<ParticleSystem>();
+            ps = GameManager.Inst.MainPlayer.weaponAttachTarget.GetComponentInChildren<ParticleSystem>();
         }
         ps.Play();
     }

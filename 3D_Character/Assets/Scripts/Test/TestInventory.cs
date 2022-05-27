@@ -55,7 +55,7 @@ public class TestInventory : MonoBehaviour
         ItemSlot slot = inven.GetSlot(0);
         //ItemData_HealingPotion potion = slot.SlotItem as ItemData_HealingPotion;    // ItemData_HealingPotion로 캐스팅 할 수 있으면 진행하고 못하면 null을 할당한다.
         //ItemData_HealingPotion potion2 = (ItemData_HealingPotion)slot.SlotItem;        
-        slot?.UseItem();
+        slot?.UseSlot();
         inven.Test_PrintInventory();
     }
 

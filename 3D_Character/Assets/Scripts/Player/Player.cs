@@ -19,9 +19,11 @@ public class Player : MonoBehaviour, IControllable, IBattle, IHealth, IMana
     public float turnSpeed = 5.0f;    
 
     // 장비 데이터
-    public GameObject weapone = null;
+    public GameObject weaponAttachTarget = null;
     public GameObject shield = null;
     Weapon myWeapon = null;
+    ItemData_Weapon weaponData = null;
+    public ItemData_Weapon WeaponData { get => weaponData; }
 
     // 공격용 데이터
     public float attackPower = 15.0f;
@@ -85,17 +87,20 @@ public class Player : MonoBehaviour, IControllable, IBattle, IHealth, IMana
 
     void Awake()
     {
-        myWeapon = weapone.GetComponentInChildren<Weapon>();
+        myWeapon = weaponAttachTarget.GetComponentInChildren<Weapon>();
         inven = new Inventory(invenSlotCount);
     }
 
     void Update()
     {
-        // 무기에 닿았던 적들 전부 데미지 주기
-        while(myWeapon.HitTargetCount() > 0)
+        if (myWeapon != null)
         {
-            IBattle target = myWeapon.GetHitTarget();
-            Attack(target);
+            // 무기에 닿았던 적들 전부 데미지 주기
+            while (myWeapon.HitTargetCount() > 0)
+            {
+                IBattle target = myWeapon.GetHitTarget();
+                Attack(target);
+            }
         }
 
         // 록온을 했을 때 대상을 계속 바라보기
@@ -176,29 +181,32 @@ public class Player : MonoBehaviour, IControllable, IBattle, IHealth, IMana
     public void ShowArms(bool isShow)
     {
         // equip이 true면 무기와 방패가 보인다. false 보이지 않는다.
-        weapone.SetActive(isShow);
+        weaponAttachTarget.SetActive(isShow);
         shield.SetActive(isShow);
     }
 
-    public void EquipWeapon(GameObject weaponPrefab)
+    public void EquipWeapon(ItemData_Weapon weapon)
     {
-        //weapone
-        Instantiate(weaponPrefab, weapone.transform);
+        weaponData = weapon;
+        Instantiate(weapon.prefab, weaponAttachTarget.transform);
+        myWeapon = weaponAttachTarget.GetComponentInChildren<Weapon>();
     }
 
     public void UnEquipWeapon()
     {
-        while( weapone.transform.childCount > 0 )
+        while( weaponAttachTarget.transform.childCount > 0 )
         {
-            Transform del = weapone.transform.GetChild(0);
+            Transform del = weaponAttachTarget.transform.GetChild(0);
             del.parent = null;
             Destroy(del.gameObject);
         }
+        weaponData = null;
+        myWeapon = null;
     }
 
     public bool IsEquipWeapon()
     {
-        return (weapone.transform.childCount > 0);  // 장비중이면 true, 아니면 false
+        return (weaponAttachTarget.transform.childCount > 0);  // 장비중이면 true, 아니면 false
     }
 
     public void AttackInput()
