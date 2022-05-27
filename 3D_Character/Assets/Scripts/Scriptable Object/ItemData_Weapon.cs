@@ -11,5 +11,13 @@ public class ItemData_Weapon : ItemData, IUseableItem, IEquipableItem
     public void Use(GameObject target = null)
     {
         Debug.Log($"프레이어에게 {this.itemName} 장비");
+        if(GameManager.Inst.MainPlayer.IsEquipWeapon())
+        {
+            GameManager.Inst.MainPlayer.UnEquipWeapon();
+        }
+        else
+        {
+            GameManager.Inst.MainPlayer.EquipWeapon(prefab);
+        }        
     }
 }

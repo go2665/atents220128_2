@@ -7,6 +7,6 @@ public class ArmsEquipState : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         //Debug.Log($"Enter : {stateInfo.shortNameHash}");
-        GameManager.Inst.MainPlayer.ArmsEquip(true);
+        GameManager.Inst.MainPlayer.ShowArms(true);
     }
 }

@@ -27,6 +27,9 @@ public class TestInventory : MonoBehaviour
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.Sword]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.Sword_Test]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.Sword_Test]);
         //GameManager.Inst.MainPlayer.Inven.Test_PrintInventory();        
 
     }

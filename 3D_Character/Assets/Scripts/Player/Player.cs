@@ -173,11 +173,32 @@ public class Player : MonoBehaviour, IControllable, IBattle, IHealth, IMana
         }
     }
 
-    public void ArmsEquip(bool equip)
+    public void ShowArms(bool isShow)
     {
         // equip이 true면 무기와 방패가 보인다. false 보이지 않는다.
-        weapone.SetActive(equip);
-        shield.SetActive(equip);
+        weapone.SetActive(isShow);
+        shield.SetActive(isShow);
+    }
+
+    public void EquipWeapon(GameObject weaponPrefab)
+    {
+        //weapone
+        Instantiate(weaponPrefab, weapone.transform);
+    }
+
+    public void UnEquipWeapon()
+    {
+        while( weapone.transform.childCount > 0 )
+        {
+            Transform del = weapone.transform.GetChild(0);
+            del.parent = null;
+            Destroy(del.gameObject);
+        }
+    }
+
+    public bool IsEquipWeapon()
+    {
+        return (weapone.transform.childCount > 0);  // 장비중이면 true, 아니면 false
     }
 
     public void AttackInput()

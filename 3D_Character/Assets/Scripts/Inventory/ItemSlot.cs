@@ -76,15 +76,19 @@ public class ItemSlot
         if( slotItem != null )
         {
             IUseableItem useable = slotItem as IUseableItem;    // 슬롯에 들어있는 아이템이 사용 가능한지 확인
+            IEquipableItem equipable = slotItem as IEquipableItem;
             if( useable != null)    
-            {   
-                if (itemCount > 1)      // 개수가 2개 이상일 때 
+            {
+                if (equipable == null)  // 장비 아이템이 아닐 때만 소비
                 {
-                    DecreaseSlotItem();                    
-                }
-                else
-                {
-                    ReleaseSlotItem();  // 0개가 남으므로 슬롯 비우기
+                    if (itemCount > 1)      // 개수가 2개 이상일 때 
+                    {
+                        DecreaseSlotItem();
+                    }
+                    else
+                    {
+                        ReleaseSlotItem();  // 0개가 남으므로 슬롯 비우기
+                    }
                 }
                 useable.Use(target);    // 사용 가능한 아이템이면 사용
             }
