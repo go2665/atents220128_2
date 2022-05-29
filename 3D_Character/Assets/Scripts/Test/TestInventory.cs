@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TestInventory : MonoBehaviour
-{   
+{
     void Start()
     {
         //Test1_AddRemove();
@@ -11,7 +13,40 @@ public class TestInventory : MonoBehaviour
         //Test3_Clear();
         //Test4_ItemUse();
         //Test5_InvenUI();
-        Test6_PlayerInvenUI();
+        //Test6_PlayerInvenUI();
+        Test7_Inventory();
+    }
+
+    private void Update()
+    {        
+        if( Keyboard.current.zKey.wasPressedThisFrame )
+        {
+            //GameManager.Inst.MainPlayer.Inven.MoveItem(0, 1);
+            ItemFactory.GetItems(ItemIDCode.HealingPotion, GameManager.Inst.MainPlayer.transform.position, 3);
+        }
+    }
+
+    private void Test7_Inventory()
+    {
+        // 힐포5, 금화2, 마포3, 칼, 테스트칼
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealingPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealingPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealingPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealingPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.HealingPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.ManaPotion]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.Sword]);
+        GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.Sword_Test]);
+
+        GameManager.Inst.MainPlayer.Inven.SplitItem(0, 1, 1);
+        GameManager.Inst.MainPlayer.Inven.SplitItem(0, 6, 2);
+        GameManager.Inst.MainPlayer.Inven.SplitItem(1, 7, 2);
+
+        GameManager.Inst.MainPlayer.onInventoryOnOff();
     }
 
     private static void Test6_PlayerInvenUI()
@@ -30,8 +65,7 @@ public class TestInventory : MonoBehaviour
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.Sword]);
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.Sword_Test]);
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.Sword_Test]);
-        //GameManager.Inst.MainPlayer.Inven.Test_PrintInventory();        
-
+        //GameManager.Inst.MainPlayer.Inven.Test_PrintInventory(); 
     }
 
     private static void Test5_InvenUI()
@@ -110,8 +144,8 @@ public class TestInventory : MonoBehaviour
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.GoldCoin]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
         inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.FakeManaPotion]);
-        inven.RemoveItem(0);
-        inven.RemoveItem(8);
-        inven.RemoveItem(0);
+        inven.ClearSlot(0);
+        inven.ClearSlot(8);
+        inven.ClearSlot(0);
     }
 }

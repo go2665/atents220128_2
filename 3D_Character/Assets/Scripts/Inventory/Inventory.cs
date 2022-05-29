@@ -4,39 +4,54 @@ using UnityEngine;
 
 public class Inventory
 {
-    //인벤토리의 기능
-    // - 아이템을 가져야 한다.
-    //   => 아이템 추가, 삭제(전부삭제), 아이템 칸(ItemSlot)이 있어야 한다.
-    // - 인벤토리에 빈칸이 있는지 확인
-    // - valid한 인덱스 확인
-    // - 아이템 위치 변경
-
-    // - 같은 종류의 아이템 쌓기(stacking)
-    // - 아이템 사용하기
-    // - 아이템 버리기
+    // 변수들--------------------------------------------------------------------------------------
+    /// <summary>
+    /// 아이템 슬롯(아이템 칸)의 배열
+    /// </summary>
+    ItemSlot[] slots = null;    
 
 
-    // ItemSlot들을 담을 자료구조가 요구하는 조건
-    // 1. 갯수 변화가 없다.
-    // 2. 각 항목에 빠르게 접근할 수 있어야 한다.
-    //  => 배열이 가장 적합하다.
+    // 상수들--------------------------------------------------------------------------------------
+    /// <summary>
+    /// 상수 : 기본 아이템 슬롯 수
+    /// </summary>
+    const int DEFAULT_INVENTORY_SIZE = 5;
 
-    ItemSlot[] slots = null;                // 아이템 칸 역할을 할 클래스
-    const int DEFAULT_INVENTORY_SIZE = 5;   // 기본 아이템 칸 수
 
+    // 프로퍼티들-----------------------------------------------------------------------------------
+    /// <summary>
+    /// 현재 아이템 슬롯 수
+    /// </summary>
     public int SlotCount { get => slots.Length; }
 
+
+    // 함수들--------------------------------------------------------------------------------------
     /// <summary>
     /// 인벤토리에 들어갈 슬롯과 빈슬롯 큐 초기화
     /// </summary>
     /// <param name="size">인벤토리의 칸수. 기본값 5. </param>
     public Inventory(int size = DEFAULT_INVENTORY_SIZE) //생성자
-    {        
+    {
         slots = new ItemSlot[size];                     // size에 지정된 숫자만큼 슬롯을 만든다.
-        for (int i=0; i<size; i++)
+        for (int i = 0; i < size; i++)
         {
             slots[i] = new ItemSlot();                  // 슬롯 생성
         }
+    }
+
+    /// <summary>
+    /// 인벤토리의 특정 슬롯을 가져오는 함수
+    /// </summary>
+    /// <param name="index">가져올 슬롯의 인덱스</param>
+    /// <returns>index번째에 슬롯이 있으면 해당 슬롯을 리턴</returns>
+    public ItemSlot GetSlot(uint index)
+    {
+        ItemSlot slot = null;
+        if (IsValidSlotIndex(index))
+        {
+            slot = slots[index];
+        }
+        return slot;
     }
 
     /// <summary>
@@ -78,19 +93,44 @@ public class Inventory
     }
 
     /// <summary>
-    /// 인벤토리에서 아이템을 제거하는 함수
+    /// 아이템 슬롯에서 아이템을 빼는 함수
+    /// </summary>
+    /// <param name="slotIndex">아이템을 뺄 슬롯 인덱스</param>
+    /// <param name="decreaseCount">아이템을 뺄 개수</param>
+    /// <returns>true면 제거 성공. false면 실패</returns>
+    public bool RemoveItemFromSlot(uint slotIndex, uint decreaseCount = 0)
+    {
+        bool result = false;
+
+        if (IsSlotSetted(slotIndex))   // 적절한 인덱스 번호이면서 아이템이 설정되어있다.
+        {
+            // 지울 수 있는 slot의 인덱스다. 삭제 처리 진행
+            //Debug.Log($"{slots[slotIndex].SlotItemData.name}을 인벤토리에서 제거합니다.");
+            slots[slotIndex].DecreaseSlotItem(decreaseCount); // 슬롯에서 아이템 제거
+            result = true;
+        }
+        else
+        {
+            // 적절하지 못한 인덱스다. 
+            Debug.Log($"{slotIndex}는 적절하지 못한 인덱스이거나 비어 있습니다.");
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 아이템 슬롯 하나를 완전히 비우는 함수
     /// </summary>
     /// <param name="slotIndex">아이템을 제거할 슬롯 인덱스</param>
     /// <returns>true면 제거 성공. false면 실패</returns>
-    public bool RemoveItem(uint slotIndex)
+    public bool ClearSlot(uint slotIndex)
     {
         bool result = false;
 
         if( IsSlotSetted(slotIndex) )   // 적절한 인덱스 번호이면서 아이템이 설정되어있다.
         {
             // 지울 수 있는 slot의 인덱스다. 삭제 처리 진행
-            Debug.Log($"{slots[slotIndex].SlotItem.name}을 인벤토리에서 제거합니다.");
-            slots[slotIndex].ReleaseSlotItem(); // 슬롯에서 아이템 제거
+            //Debug.Log($"{slots[slotIndex].SlotItemData.name}을 인벤토리에서 완전히 제거합니다.");
+            slots[slotIndex].ClearSlotItem(); // 슬롯에서 아이템 제거
             result = true;
         }
         else
@@ -109,12 +149,12 @@ public class Inventory
         Debug.Log("인벤토리 클리어");
         for (uint i = 0; i < SlotCount; i++)
         {
-            RemoveItem(i);
+            ClearSlot(i);
         }
     }
 
     /// <summary>
-    /// 두 아이템 슬롯에 들어있는 아이템을 교환하는 함수
+    /// 시작 아이템 슬롯에서 도착 아이템 슬롯으로 아이템을 이동 시키는 함수
     /// </summary>
     /// <param name="from">시작 슬롯. 반드시 아이템이 있어야 함.</param>
     /// <param name="to">도착 슬롯</param>
@@ -123,11 +163,22 @@ public class Inventory
         if (IsSlotSetted(from) && IsValidSlotIndex(to))
         {
             // from은 적합한 인덱스이고 아이템이 할당되어 있다. 그리고 to는 적합한 인덱스이다.
-            //Debug.Log($"{from}에 있는 {slots[from].SlotItem.name} 아이템을 {to}로 이동합니다.");
-            ItemData temp = slots[from].SlotItem;               // from과 to의 아이템을 스왑
-            int tempCount = slots[from].ItemCount;
-            slots[from].AssignSlotItem(slots[to].SlotItem, slots[to].ItemCount);
-            slots[to].AssignSlotItem(temp, tempCount);
+            // from과 to가 같은 종류의 아이템인지 확인
+            if ( slots[from].SlotItemData == slots[to].SlotItemData )
+            {
+                // 같은 종류의 아이템이면 from에서 to로 채워 넣기. 넘치면 
+                uint overCount = slots[to].IncreaseSlotItem(slots[from].ItemCount);
+                slots[from].DecreaseSlotItem(slots[from].ItemCount - overCount);
+            }
+            else
+            {
+                // 다른 종류의 아이템이면 갈아끼기
+                //Debug.Log($"{from}에 있는 {slots[from].SlotItem.name} 아이템을 {to}로 이동합니다.");
+                ItemData temp = slots[from].SlotItemData;               // from과 to의 아이템을 스왑
+                uint tempCount = slots[from].ItemCount;
+                slots[from].AssignSlotItem(slots[to].SlotItemData, slots[to].ItemCount);
+                slots[to].AssignSlotItem(temp, tempCount);
+            }            
         }
         else
         {
@@ -137,31 +188,34 @@ public class Inventory
     }
 
     /// <summary>
-    /// 인벤토리의 특정 슬롯을 가져오는 함수
+    /// 슬롯에 아이템이 여러개있을 때 분리해서 이동하는 함수
     /// </summary>
-    /// <param name="index">가져올 슬롯의 인덱스</param>
-    /// <returns>index번째에 슬롯이 있으면 해당 슬롯을 리턴</returns>
-    public ItemSlot GetSlot(uint index)
+    /// <param name="from">시작 슬롯 인덱스</param>
+    /// <param name="to">도착 슬롯 인덱스</param>
+    /// <param name="splitCount">나눌 수</param>
+    public void SplitItem(uint from, uint to, uint splitCount)
     {
-        ItemSlot slot = null;
-        if (IsValidSlotIndex(index))
+        if (IsSlotSetted(from) && IsValidSlotIndex(to) && splitCount < slots[from].ItemCount)
         {
-            slot = slots[index];
+            // from은 적합한 인덱스이고 아이템이 할당되어 있다. 그리고 to는 적합한 인덱스이다. 그리고 분리하려는 아이템의 개수는 from이 가지고 있는 아이템 수보다 작아야 한다.
+            if( slots[to].SlotItemData == null )
+            {
+                // to 슬롯이 비었으면 새롭게 할당
+                slots[to].AssignSlotItem(slots[from].SlotItemData, splitCount);
+                slots[from].DecreaseSlotItem(splitCount);
+            }
+            else if (slots[from].SlotItemData == slots[to].SlotItemData)
+            {
+                // to 슬롯이 분할하려는 아이템과 같은 종류라면 그냥 추가
+                uint overCount = slots[to].IncreaseSlotItem(splitCount);
+                slots[from].DecreaseSlotItem(splitCount- overCount);
+            }
+            else
+            {
+                // from과 to가 다른 종류라면 그냥 취소
+                slots[from].onSlotItemChange?.Invoke();
+            }
         }
-        return slot;
-    }
-
-    /// <summary>
-    /// 인벤토리의 내용을 콘솔창에 출력해주는 함수
-    /// </summary>
-    public void Test_PrintInventory()
-    {
-        Debug.Log("Inven---------------------- ");
-        for(int i = 0; i <SlotCount; i++ )
-        {
-            Debug.Log($"{i} : {slots[i].SlotItem?.name}, {slots[i].ItemCount}");  // 슬롯의 인덱스와 아이템의 이름 출력(없으면 안함)
-        }
-        Debug.Log("---------------------------- ");
     }
 
     /// <summary>
@@ -183,11 +237,11 @@ public class Inventory
     bool IsSlotSetted(uint index)
     {
         // 적절한 인덱스이고 슬롯에 아이템이 들어있다.
-        return ((index < SlotCount) && (slots[index].SlotItem != null));
+        return ((index < SlotCount) && (slots[index].SlotItemData != null));
     }
 
     /// <summary>
-    /// 비어있는 아이템 칸을 돌려주는 함수
+    /// 비어있는 아이템 슬롯을 돌려주는 함수
     /// </summary>
     /// <returns>null이면 비어있는 슬롯이 없음. 아닌 경우 비어있는 슬롯. </returns>
     ItemSlot FindEmptySlot()
@@ -196,7 +250,7 @@ public class Inventory
 
         for(int i=0; i<SlotCount; i++)
         {
-            if( slots[i].SlotItem == null ) // 비어있는 슬롯 찾기
+            if( slots[i].SlotItemData == null ) // 비어있는 슬롯 찾기
             {
                 slot = slots[i];
                 break;
@@ -206,6 +260,11 @@ public class Inventory
         return slot;    // null 또는 빈 슬롯을 리턴
     }
 
+    /// <summary>
+    /// 같은 종류의 아이템이 있는 아이템슬롯을 돌려주는 함수
+    /// </summary>
+    /// <param name="itemData">같은지 비교할 아이템 데이터</param>
+    /// <returns>파라메터와 같은 아이템이 들어있는 슬롯을 찾으면 해당 슬롯의 참조 리턴</returns>
     ItemSlot FindSameItem(ItemData itemData)
     {
         ItemSlot slot = null;
@@ -214,7 +273,7 @@ public class Inventory
         {
             // 같은 아이템이 있는 슬롯 찾기
             // 그 슬롯에 빈 공간이 있는지도 확인
-            if ((slots[i].SlotItem == itemData) && (slots[i].ItemCount < slots[i].SlotItem.maxStackCount)) 
+            if ((slots[i].SlotItemData == itemData) && (slots[i].ItemCount < slots[i].SlotItemData.maxStackCount)) 
             {                
                 slot = slots[i];
                 break;
@@ -222,5 +281,18 @@ public class Inventory
         }
 
         return slot;    // null 또는 같은 아이템이 있는 슬롯을 리턴
+    }
+
+    /// <summary>
+    /// 인벤토리의 내용을 콘솔창에 출력해주는 함수
+    /// </summary>
+    public void Test_PrintInventory()
+    {
+        Debug.Log("Inven---------------------- ");
+        for (int i = 0; i < SlotCount; i++)
+        {
+            Debug.Log($"{i} : {slots[i].SlotItemData?.name}, {slots[i].ItemCount}");  // 슬롯의 인덱스와 아이템의 이름 출력(없으면 안함)
+        }
+        Debug.Log("---------------------------- ");
     }
 }
