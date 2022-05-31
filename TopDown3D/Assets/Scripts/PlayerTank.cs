@@ -61,6 +61,6 @@ public class PlayerTank : MonoBehaviour, IControllable
 
         Vector3 targetPosition = new Vector3(ray.origin.x, transform.position.y, ray.origin.z);
         Vector3 look = targetPosition - transform.position;
-        turret.rotation = Quaternion.Slerp(turret.rotation, Quaternion.LookRotation(look), 0.5f);
+        turret.rotation = Quaternion.Slerp(turret.rotation, Quaternion.LookRotation(look), 0.05f);
     }
 }
