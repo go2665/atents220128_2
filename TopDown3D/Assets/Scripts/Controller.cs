@@ -17,15 +17,14 @@ public class Controller : MonoBehaviour
     private void OnEnable()
     {
         actions.Player.Enable();
-        actions.Player.Move.started += OnMoveInput;
+        actions.Player.Move.performed += OnMoveInput;
         actions.Player.Move.canceled += OnMoveInput;
-
         SetTarget(GameManager.Inst.MainPlayer as IControllable);
     }
 
     private void OnDisable()
     {
-        actions.Player.Move.started -= OnMoveInput;
+        actions.Player.Move.performed -= OnMoveInput;
         actions.Player.Move.canceled -= OnMoveInput;
         actions.Player.Disable();
     }
@@ -40,4 +39,5 @@ public class Controller : MonoBehaviour
         //Debug.Log(context.ReadValue<Vector2>());
         target.KeyboardInputDir = context.ReadValue<Vector2>();
     }
+
 }
