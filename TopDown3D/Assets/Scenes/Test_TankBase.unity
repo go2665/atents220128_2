@@ -167,6 +167,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cc059eaa78468d4688db37522d84f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &553806053 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400120, guid: 002e2a607f5b64c48be0b3b0d8b8bfdd, type: 3}
+  m_PrefabInstance: {fileID: 1785042045}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &633102345
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,6 +321,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -389,6 +395,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179f7689825115041943852a6ad9c502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1328588098}
+  maxZ: 25
+  minZ: -25
+  smoothness: 2
 --- !u!1 &1328588094 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100112, guid: 002e2a607f5b64c48be0b3b0d8b8bfdd, type: 3}
@@ -423,6 +445,11 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!4 &1328588098 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400112, guid: 002e2a607f5b64c48be0b3b0d8b8bfdd, type: 3}
+  m_PrefabInstance: {fileID: 1785042045}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1328588099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,6 +464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 15
   spinSpeed: 1
+  turret: {fileID: 553806053}
 --- !u!1001 &1785042045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -501,6 +529,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4076560536734525566, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560536734525566, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560537784850040, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560537784850040, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560537794677168, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560537794677168, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560537893432980, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560537893432980, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560538114521636, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560538114521636, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4076560538163658637, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -548,6 +616,14 @@ PrefabInstance:
     - target: {fileID: 4076560538163658638, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
       propertyPath: m_Name
       value: TerrainBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560538163658638, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076560538163658638, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b44be235f0d0d044fa4f17474ded214c, type: 3}

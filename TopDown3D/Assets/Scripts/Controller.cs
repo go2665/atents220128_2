@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,8 +20,9 @@ public class Controller : MonoBehaviour
         actions.Player.Enable();
         actions.Player.Move.performed += OnMoveInput;
         actions.Player.Move.canceled += OnMoveInput;
+        actions.Player.Look.performed += OnLookInput;
         SetTarget(GameManager.Inst.MainPlayer as IControllable);
-    }
+    }    
 
     private void OnDisable()
     {
@@ -34,10 +36,15 @@ public class Controller : MonoBehaviour
         target = controllTarget;
     }
 
-    void OnMoveInput(InputAction.CallbackContext context)
+    private void OnMoveInput(InputAction.CallbackContext context)
     {
         //Debug.Log(context.ReadValue<Vector2>());
         target.KeyboardInputDir = context.ReadValue<Vector2>();
+    }
+
+    private void OnLookInput(InputAction.CallbackContext context)
+    {
+        target.MouseInputPosition = context.ReadValue<Vector2>();
     }
 
 }
