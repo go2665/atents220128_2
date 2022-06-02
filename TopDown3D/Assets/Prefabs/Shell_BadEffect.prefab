@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3006934070943477505}
   - component: {fileID: 2333102046741441924}
   - component: {fileID: 6612387218100624247}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shell_BadEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}

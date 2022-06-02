@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3006934070943477505}
   - component: {fileID: 2333102046741441924}
   - component: {fileID: -1534229489632027422}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shell_Cluster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,3 +130,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialSpeed: 20
   explosionEffect: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
+  lifeTime: 1
+  upPower: 20
