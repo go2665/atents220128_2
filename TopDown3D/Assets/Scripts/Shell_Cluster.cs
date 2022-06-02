@@ -48,7 +48,6 @@ public class Shell_Cluster : Shell
     IEnumerator TimeOut()
     {
         yield return new WaitForSeconds(lifeTime);
-        //Time.timeScale = 0.0f;
         Explotion(Vector3.up);
     }
 }

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Shell_Submunition : Shell
 {
+    protected override void Start()
+    {
+    }
+
     public void RandomSpread(Vector3 downDir)
     {
         Vector2 random = Random.insideUnitCircle;
