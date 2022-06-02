@@ -24,10 +24,10 @@ public class Shell : MonoBehaviour
     {
         // collision.contacts[0].normal;
         // collision.contacts[0].normal : 충돌한 면에 수직인 백터(노멀백터)
-        Explotion(collision.contacts[0].normal);
+        Explosion(collision.contacts[0].normal);
     }
 
-    protected virtual void Explotion(Vector3 up)
+    protected virtual void Explosion(Vector3 up)
     {
         GameObject effect = Instantiate(explosionEffect);
         effect.transform.position = transform.position;

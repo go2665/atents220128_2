@@ -34,7 +34,7 @@ public class Shell_Cluster : Shell
         rigid.MoveRotation(Quaternion.LookRotation(rigid.velocity));    // 이동 방향을 바라보도록 수정
     }
 
-    protected override void Explotion(Vector3 up)
+    protected override void Explosion(Vector3 up)
     {
         foreach(Shell_Submunition sub in submunitions)
         {
@@ -42,12 +42,12 @@ public class Shell_Cluster : Shell
             sub.gameObject.SetActive(true);            
             sub.RandomSpread(-up);
         }
-        base.Explotion(up);
+        base.Explosion(up);
     }
 
     IEnumerator TimeOut()
     {
         yield return new WaitForSeconds(lifeTime);
-        Explotion(Vector3.up);
+        Explosion(Vector3.up);
     }
 }
