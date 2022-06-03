@@ -44,6 +44,24 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""FireNormal"",
+                    ""type"": ""Button"",
+                    ""id"": ""440b4202-1102-4bd6-b26d-f5f730f7a461"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FireSpecial"",
+                    ""type"": ""Button"",
+                    ""id"": ""787660e3-d050-4ed8-9930-eda87dd5d96a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +130,28 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""00ef91c0-8a77-41ea-8036-e7047a09f47b"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FireNormal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""21e732a0-1948-4865-b045-becf9553832a"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FireSpecial"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -139,6 +179,8 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_FireNormal = m_Player.FindAction("FireNormal", throwIfNotFound: true);
+        m_Player_FireSpecial = m_Player.FindAction("FireSpecial", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -200,12 +242,16 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_FireNormal;
+    private readonly InputAction m_Player_FireSpecial;
     public struct PlayerActions
     {
         private @PlayerTankActions m_Wrapper;
         public PlayerActions(@PlayerTankActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @FireNormal => m_Wrapper.m_Player_FireNormal;
+        public InputAction @FireSpecial => m_Wrapper.m_Player_FireSpecial;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -221,6 +267,12 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
                 @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @FireNormal.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireNormal;
+                @FireNormal.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireNormal;
+                @FireNormal.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireNormal;
+                @FireSpecial.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireSpecial;
+                @FireSpecial.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireSpecial;
+                @FireSpecial.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireSpecial;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -231,6 +283,12 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
+                @FireNormal.started += instance.OnFireNormal;
+                @FireNormal.performed += instance.OnFireNormal;
+                @FireNormal.canceled += instance.OnFireNormal;
+                @FireSpecial.started += instance.OnFireSpecial;
+                @FireSpecial.performed += instance.OnFireSpecial;
+                @FireSpecial.canceled += instance.OnFireSpecial;
             }
         }
     }
@@ -248,5 +306,7 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnFireNormal(InputAction.CallbackContext context);
+        void OnFireSpecial(InputAction.CallbackContext context);
     }
 }

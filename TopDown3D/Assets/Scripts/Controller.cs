@@ -21,6 +21,9 @@ public class Controller : MonoBehaviour
         actions.Player.Move.performed += OnMoveInput;
         actions.Player.Move.canceled += OnMoveInput;
         actions.Player.Look.performed += OnLookInput;
+        actions.Player.FireNormal.performed += OnFireNormalInput;
+        actions.Player.FireSpecial.performed += OnFireSpecialInput;
+
         SetTarget(GameManager.Inst.MainPlayer as IControllable);
     }    
 
@@ -28,6 +31,9 @@ public class Controller : MonoBehaviour
     {
         actions.Player.Move.performed -= OnMoveInput;
         actions.Player.Move.canceled -= OnMoveInput;
+        actions.Player.Look.performed -= OnLookInput;
+        actions.Player.FireNormal.performed -= OnFireNormalInput;
+        actions.Player.FireSpecial.performed -= OnFireSpecialInput;
         actions.Player.Disable();
     }
 
@@ -45,6 +51,16 @@ public class Controller : MonoBehaviour
     private void OnLookInput(InputAction.CallbackContext context)
     {
         target.MouseInputPosition = context.ReadValue<Vector2>();
+    }
+
+    private void OnFireNormalInput(InputAction.CallbackContext context)
+    {
+        target.onFireNormal();
+    }
+
+    private void OnFireSpecialInput(InputAction.CallbackContext context)
+    {
+        target.onFireSpecial();
     }
 
 }

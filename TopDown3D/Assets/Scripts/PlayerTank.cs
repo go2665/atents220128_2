@@ -7,6 +7,8 @@ public class PlayerTank : MonoBehaviour, IControllable
     public float moveSpeed = 5.0f;
     public float spinSpeed = 20.0f;
     public Transform turret = null;
+    public Transform firePos = null;
+    public GameObject[] shells = null;
 
     //RaycastHit[] raycastHits = new RaycastHit[1];
 
@@ -31,11 +33,16 @@ public class PlayerTank : MonoBehaviour, IControllable
         }
     }
 
+    public IControllable.MouseClickAction onFireNormal { get; set; }
+    public IControllable.MouseClickAction onFireSpecial { get; set; }
+
     private Rigidbody rigid = null;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
+        onFireNormal = FireNormal;
+        onFireSpecial = FireSpecial;
     }
 
     void FixedUpdate()
@@ -62,5 +69,24 @@ public class PlayerTank : MonoBehaviour, IControllable
         Vector3 targetPosition = new Vector3(ray.origin.x, transform.position.y, ray.origin.z);
         Vector3 look = targetPosition - transform.position;
         turret.rotation = Quaternion.Slerp(turret.rotation, Quaternion.LookRotation(look), 0.05f);
+    }
+
+    /// <summary>
+    /// 일반 공격. 마우스를 왼클릭 했을 때 실행
+    /// </summary>
+    private void FireNormal()
+    {
+        Debug.Log("Normal");
+        GameObject obj = Instantiate(shells[0]);
+        obj.transform.position = firePos.position;
+        obj.transform.rotation = firePos.rotation;
+    }
+
+    /// <summary>
+    /// 특수 공격. 마우스를 오른클릭했을 때 실행
+    /// </summary>
+    private void FireSpecial()
+    {
+        Debug.Log("Special");
     }
 }
