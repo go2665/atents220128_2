@@ -38,6 +38,15 @@ public class PlayerTank : MonoBehaviour, IControllable
 
     private Rigidbody rigid = null;
 
+    enum ShellType
+    {
+        Normal = 0,
+        Cluster,
+        BadEffect
+    }
+
+    ShellType selectedSpecialShell = ShellType.Cluster;
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -88,5 +97,8 @@ public class PlayerTank : MonoBehaviour, IControllable
     private void FireSpecial()
     {
         Debug.Log("Special");
+        GameObject obj = Instantiate(shells[(int)selectedSpecialShell]);
+        obj.transform.position = firePos.position;
+        obj.transform.rotation = firePos.rotation;
     }
 }
