@@ -62,6 +62,24 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShortCut01"",
+                    ""type"": ""Button"",
+                    ""id"": ""bc404422-b5fc-40c2-b31c-bad37b9a6886"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShortCut02"",
+                    ""type"": ""Button"",
+                    ""id"": ""d00f6c62-6436-43c9-9534-b6ae8416dc7e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -137,7 +155,7 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KeyboardMouse"",
                     ""action"": ""FireNormal"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -148,8 +166,30 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KeyboardMouse"",
                     ""action"": ""FireSpecial"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""266914d3-e297-43a8-8ef0-e5fdaf45bd18"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""ShortCut01"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""108465ef-a7e4-4e00-9865-e54094f628d3"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""ShortCut02"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -181,6 +221,8 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_FireNormal = m_Player.FindAction("FireNormal", throwIfNotFound: true);
         m_Player_FireSpecial = m_Player.FindAction("FireSpecial", throwIfNotFound: true);
+        m_Player_ShortCut01 = m_Player.FindAction("ShortCut01", throwIfNotFound: true);
+        m_Player_ShortCut02 = m_Player.FindAction("ShortCut02", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -244,6 +286,8 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_FireNormal;
     private readonly InputAction m_Player_FireSpecial;
+    private readonly InputAction m_Player_ShortCut01;
+    private readonly InputAction m_Player_ShortCut02;
     public struct PlayerActions
     {
         private @PlayerTankActions m_Wrapper;
@@ -252,6 +296,8 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @FireNormal => m_Wrapper.m_Player_FireNormal;
         public InputAction @FireSpecial => m_Wrapper.m_Player_FireSpecial;
+        public InputAction @ShortCut01 => m_Wrapper.m_Player_ShortCut01;
+        public InputAction @ShortCut02 => m_Wrapper.m_Player_ShortCut02;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -273,6 +319,12 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
                 @FireSpecial.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireSpecial;
                 @FireSpecial.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireSpecial;
                 @FireSpecial.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireSpecial;
+                @ShortCut01.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShortCut01;
+                @ShortCut01.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShortCut01;
+                @ShortCut01.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShortCut01;
+                @ShortCut02.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShortCut02;
+                @ShortCut02.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShortCut02;
+                @ShortCut02.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShortCut02;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -289,6 +341,12 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
                 @FireSpecial.started += instance.OnFireSpecial;
                 @FireSpecial.performed += instance.OnFireSpecial;
                 @FireSpecial.canceled += instance.OnFireSpecial;
+                @ShortCut01.started += instance.OnShortCut01;
+                @ShortCut01.performed += instance.OnShortCut01;
+                @ShortCut01.canceled += instance.OnShortCut01;
+                @ShortCut02.started += instance.OnShortCut02;
+                @ShortCut02.performed += instance.OnShortCut02;
+                @ShortCut02.canceled += instance.OnShortCut02;
             }
         }
     }
@@ -308,5 +366,7 @@ public partial class @PlayerTankActions : IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnFireNormal(InputAction.CallbackContext context);
         void OnFireSpecial(InputAction.CallbackContext context);
+        void OnShortCut01(InputAction.CallbackContext context);
+        void OnShortCut02(InputAction.CallbackContext context);
     }
 }

@@ -23,6 +23,8 @@ public class Controller : MonoBehaviour
         actions.Player.Look.performed += OnLookInput;
         actions.Player.FireNormal.performed += OnFireNormalInput;
         actions.Player.FireSpecial.performed += OnFireSpecialInput;
+        actions.Player.ShortCut01.performed += OnShortCut01;
+        actions.Player.ShortCut02.performed += OnShortCut02;
 
         SetTarget(GameManager.Inst.MainPlayer as IControllable);
     }    
@@ -34,6 +36,8 @@ public class Controller : MonoBehaviour
         actions.Player.Look.performed -= OnLookInput;
         actions.Player.FireNormal.performed -= OnFireNormalInput;
         actions.Player.FireSpecial.performed -= OnFireSpecialInput;
+        actions.Player.ShortCut01.performed -= OnShortCut01;
+        actions.Player.ShortCut02.performed -= OnShortCut02;
         actions.Player.Disable();
     }
 
@@ -55,12 +59,21 @@ public class Controller : MonoBehaviour
 
     private void OnFireNormalInput(InputAction.CallbackContext context)
     {
-        target.onFireNormal();
+        target.onFireNormal?.Invoke();
     }
 
     private void OnFireSpecialInput(InputAction.CallbackContext context)
     {
-        target.onFireSpecial();
+        target.onFireSpecial?.Invoke();
     }
 
+    private void OnShortCut01(InputAction.CallbackContext context)
+    {
+        target.onShortCut01?.Invoke();
+    }
+
+    private void OnShortCut02(InputAction.CallbackContext context)
+    {
+        target.onShortCut02?.Invoke();
+    }
 }

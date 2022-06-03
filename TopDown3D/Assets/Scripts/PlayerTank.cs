@@ -33,8 +33,10 @@ public class PlayerTank : MonoBehaviour, IControllable
         }
     }
 
-    public IControllable.MouseClickAction onFireNormal { get; set; }
-    public IControllable.MouseClickAction onFireSpecial { get; set; }
+    public IControllable.InputActionDelegate onFireNormal { get; set; }
+    public IControllable.InputActionDelegate onFireSpecial { get; set; }
+    public IControllable.InputActionDelegate onShortCut01 { get; set; }
+    public IControllable.InputActionDelegate onShortCut02 { get; set; }
 
     private Rigidbody rigid = null;
 
@@ -52,6 +54,8 @@ public class PlayerTank : MonoBehaviour, IControllable
         rigid = GetComponent<Rigidbody>();
         onFireNormal = FireNormal;
         onFireSpecial = FireSpecial;
+        onShortCut01 = ShortCut1;
+        onShortCut02 = ShortCut2;
     }
 
     void FixedUpdate()
@@ -100,5 +104,15 @@ public class PlayerTank : MonoBehaviour, IControllable
         GameObject obj = Instantiate(shells[(int)selectedSpecialShell]);
         obj.transform.position = firePos.position;
         obj.transform.rotation = firePos.rotation;
+    }
+
+    private void ShortCut1()
+    {
+        selectedSpecialShell = ShellType.Cluster;
+    }
+
+    private void ShortCut2()
+    {
+        selectedSpecialShell = ShellType.BadEffect;
     }
 }
