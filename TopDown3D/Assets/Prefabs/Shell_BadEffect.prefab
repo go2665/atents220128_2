@@ -128,6 +128,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4def26e46fc3184187ec1fa85ad7cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialSpeed: 20
-  explosionEffect: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
-  badEffect: {fileID: 3819175009968734850, guid: 82890d95b7a58f541b149364358a5ca8, type: 3}
+  data: {fileID: 11400000, guid: 8358a99f08a320340828983577735054, type: 2}

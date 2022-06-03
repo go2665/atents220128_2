@@ -138,10 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b4f9aa24ec47743811eb4fed75e841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialSpeed: 20
-  explosionEffect: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
-  lifeTime: 1
-  upPower: 20
+  data: {fileID: 11400000, guid: 292e45beb0d9f6a48a8ef449a84f558b, type: 2}
 --- !u!1001 &250018208
 PrefabInstance:
   m_ObjectHideFlags: 0

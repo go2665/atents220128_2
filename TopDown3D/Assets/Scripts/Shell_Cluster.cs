@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Shell_Cluster : Shell
 {
-    public float lifeTime = 1.0f;
-    public float upPower = 20.0f;
-
     Shell_Submunition[] submunitions = null;
+    ShellData_Cluster clusterData = null;
 
     protected override void Awake()
     {
@@ -17,6 +15,8 @@ public class Shell_Cluster : Shell
         {
             sub.gameObject.SetActive(false);
         }
+        clusterData = data as ShellData_Cluster;
+        onExplosion = (objTransform, up) => clusterData.Explosion(objTransform, up, submunitions);
     }
 
     protected override void Start()
@@ -30,24 +30,14 @@ public class Shell_Cluster : Shell
     // 포탄이 위로 날아간다.
     private void FixedUpdate()
     {
-        rigid.AddForce(Vector3.up * upPower);     // 계속 위쪽으로 힘을 가하고
+        rigid.AddForce(Vector3.up * clusterData.upPower);     // 계속 위쪽으로 힘을 가하고
         rigid.MoveRotation(Quaternion.LookRotation(rigid.velocity));    // 이동 방향을 바라보도록 수정
-    }
-
-    protected override void Explosion(Vector3 up)
-    {
-        foreach(Shell_Submunition sub in submunitions)
-        {
-            sub.transform.parent = null;
-            sub.gameObject.SetActive(true);            
-            sub.RandomSpread(-up);
-        }
-        base.Explosion(up);
-    }
+    }    
 
     IEnumerator TimeOut()
     {
-        yield return new WaitForSeconds(lifeTime);
-        Explosion(Vector3.up);
+        yield return new WaitForSeconds(clusterData.lifeTime);
+        onExplosion?.Invoke(transform, Vector3.up);
+        Destroy(this.gameObject);
     }
 }
