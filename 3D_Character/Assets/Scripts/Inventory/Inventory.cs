@@ -8,7 +8,9 @@ public class Inventory
     /// <summary>
     /// 아이템 슬롯(아이템 칸)의 배열
     /// </summary>
-    ItemSlot[] slots = null;    
+    ItemSlot[] slots = null;
+
+    ItemSlot spliteTempSlot = null;
 
 
     // 상수들--------------------------------------------------------------------------------------
@@ -23,6 +25,7 @@ public class Inventory
     /// 현재 아이템 슬롯 수
     /// </summary>
     public int SlotCount { get => slots.Length; }
+    public ItemSlot SpliteTempSlot { get => spliteTempSlot; }
 
 
     // 함수들--------------------------------------------------------------------------------------
@@ -37,6 +40,7 @@ public class Inventory
         {
             slots[i] = new ItemSlot();                  // 슬롯 생성
         }
+        spliteTempSlot = new ItemSlot();
     }
 
     /// <summary>
@@ -186,34 +190,41 @@ public class Inventory
             Debug.Log($"{from}에서 {to}로 아이템을 옮길 수 없습니다.");
         }
     }
+    
+    /// <summary>
+    /// 아이템을 나누기 위해 시작 슬롯에서 아이템을 덜어내 임시 슬롯에 저장
+    /// </summary>
+    /// <param name="from">시작 슬롯</param>
+    /// <param name="splitCount">나눌 수</param>
+    public void SpliteItem_Start(uint from, uint splitCount)
+    {
+        if (IsSlotSetted(from) && splitCount < slots[from].ItemCount)   //.시작 슬롯 확인하고 아이템 개수 확인
+        {
+            spliteTempSlot.AssignSlotItem(slots[from].SlotItemData, splitCount);
+            slots[from].DecreaseSlotItem(splitCount);
+        }
+    }
 
     /// <summary>
-    /// 슬롯에 아이템이 여러개있을 때 분리해서 이동하는 함수
+    /// 임시 슬롯에 저장되어있는 나눈 아이템을 도착 슬롯에 저장
     /// </summary>
-    /// <param name="from">시작 슬롯 인덱스</param>
-    /// <param name="to">도착 슬롯 인덱스</param>
-    /// <param name="splitCount">나눌 수</param>
-    public void SplitItem(uint from, uint to, uint splitCount)
+    /// <param name="to">도착 슬롯</param>
+    /// <param name="splitCount">나누어진 수</param>
+    public void SpliteItem_End(uint to, uint splitCount)
     {
-        if (IsSlotSetted(from) && IsValidSlotIndex(to) && splitCount < slots[from].ItemCount)
+        if( spliteTempSlot.SlotItemData != null && IsValidSlotIndex(to))    // 임시 슬롯에 데이터가 있는지 확인하고 도착 슬롯 확인
         {
-            // from은 적합한 인덱스이고 아이템이 할당되어 있다. 그리고 to는 적합한 인덱스이다. 그리고 분리하려는 아이템의 개수는 from이 가지고 있는 아이템 수보다 작아야 한다.
-            if( slots[to].SlotItemData == null )
+            if (slots[to].SlotItemData == null)
             {
                 // to 슬롯이 비었으면 새롭게 할당
-                slots[to].AssignSlotItem(slots[from].SlotItemData, splitCount);
-                slots[from].DecreaseSlotItem(splitCount);
+                slots[to].AssignSlotItem(spliteTempSlot.SlotItemData, splitCount);
+                spliteTempSlot.ClearSlotItem();
             }
-            else if (slots[from].SlotItemData == slots[to].SlotItemData)
+            else if (spliteTempSlot.SlotItemData == slots[to].SlotItemData)
             {
                 // to 슬롯이 분할하려는 아이템과 같은 종류라면 그냥 추가
                 uint overCount = slots[to].IncreaseSlotItem(splitCount);
-                slots[from].DecreaseSlotItem(splitCount- overCount);
-            }
-            else
-            {
-                // from과 to가 다른 종류라면 그냥 취소
-                slots[from].onSlotItemChange?.Invoke();
+                spliteTempSlot.DecreaseSlotItem(splitCount - overCount);
             }
         }
     }

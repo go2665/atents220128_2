@@ -115,15 +115,6 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         }
     }
 
-    /// <summary>
-    /// UI에 표시되는 개수만 줄이기
-    /// </summary>
-    public void FakeDecrease(uint count)
-    {
-        itemCountText.text = (ItemCount-count).ToString();
-    }
-
-
     // 유니티 이벤트 함수들-------------------------------------------------------------------------
     private void Awake()
     {
@@ -198,9 +189,10 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             else
             {
                 //일반 클릭일 때
-                if(invenUI.MovingSlot.SplitMode)
+                if(invenUI.MovingSlot.ItemSlot.SlotItemData != null)
                 {
-                    invenUI.SplitItem(invenUI.MovingSlot.SplitStartID, (uint)this.id, invenUI.MovingSlot.SplitCount);
+                    //invenUI.SplitItem(invenUI.MovingSlot.SplitStartID, (uint)this.id, invenUI.MovingSlot.SplitCount);
+                    invenUI.SpliteItem_End((uint)this.id, invenUI.MovingSlot.SplitCount);
                     invenUI.MovingSlot.Close();
                 }
                 else

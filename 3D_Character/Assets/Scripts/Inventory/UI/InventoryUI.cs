@@ -76,6 +76,8 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public InventoryDelegate onInventoryDragStart = null;   // 인벤토리 드래그가 시작될 때 실행될 델리게이트
     public InventoryDelegate onInventoryDragEnd = null;     // 인벤토리 드래그가 끝날 때 실행될 델리게이트
     public InventoryDelegate onInventoryDragOutEnd = null;  // 인벤토리 드래그가 슬롯UI 밖에서 끝났을 때 실행될 델리게이트
+    public InventoryDelegate onInventorySplittingStart = null;   // 인벤토리 드래그가 시작될 때 실행될 델리게이트
+    public InventoryDelegate onInventorySplittingEnd = null;     // 인벤토리 드래그가 끝날 때 실행될 델리게이트
 
 
 
@@ -97,6 +99,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             slotUIs[i].ID = i;
             slotUIs[i].ItemSlot = inven.GetSlot((uint)i);               // slot과 slotUI를 연결
         }
+
         Refresh();  // 인벤토리 내부를 다시 그리기
     }
 
@@ -113,14 +116,26 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     }
 
     /// <summary>
-    /// Inventory의 SplitItem 래핑
+    /// Inventory의 SpliteItem_Start 래핑
     /// </summary>
-    /// <param name="from">시작 슬롯 ID</param>
-    /// <param name="to">도착 슬롯 ID</param>
+    /// <param name="from">시작 슬롯의 아이디</param>
     /// <param name="splitCount">분리할 개수</param>
-    public void SplitItem(uint from, uint to, uint splitCount)
+    public void SpliteItem_Start(uint from, uint splitCount)
     {
-        inven.SplitItem(from, to, splitCount);
+        onInventorySplittingStart();                    // 디테일창 pause
+        inven.SpliteItem_Start(from, splitCount);       // 인벤토리에서 실제 처리
+        movingSlot.SetTargetSlot(inven.SpliteTempSlot); // 무빙 슬롯 표시 위해 슬롯 설정
+    }
+
+    /// <summary>
+    /// Inventory의 SpliteItem_End 래핑
+    /// </summary>
+    /// <param name="to">도착 슬롯의 아이디</param>
+    /// <param name="splitCount">분리된 개수</param>
+    public void SpliteItem_End(uint to, uint splitCount)
+    {
+        inven.SpliteItem_End(to, splitCount);       // 인벤토리에서 실제 처리
+        onInventorySplittingEnd();                  // 디테일창 restart
     }
 
     /// <summary>
@@ -174,11 +189,10 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         // 캐싱용 오브젝트 찾기
         slotParent = transform.Find("SlotParent");
         // 캐싱용 컴포넌트 찾기
-        detail = GetComponentInChildren<DetailInfoUI>();
-        spliter = GetComponentInChildren<ItemSpliterUI>();
-        splittedItem = GetComponentInChildren<SplittedItem>();
-        movingSlot = GetComponentInChildren<MovingSlotUI>();
-        Button closeButton = transform.Find("CloseButton").GetComponent<Button>();
+        detail = GetComponentInChildren<DetailInfoUI>();            // 디테일 창
+        spliter = GetComponentInChildren<ItemSpliterUI>();          // 아이템 나누기 창
+        movingSlot = GetComponentInChildren<MovingSlotUI>();        // 드래그나 아이템 나눌때 보일 임시 슬롯
+        Button closeButton = transform.Find("CloseButton").GetComponent<Button>();  // 닫기 버튼
         closeButton.onClick.AddListener(Close);     // 클릭 이벤트 등록
 
         inputActions = new PlayerInputActions();
@@ -186,8 +200,9 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     private void Start()
     {
-        InitializeInventory(GameManager.Inst.MainPlayer.Inven);     //플레이어가 가지고 있는 인벤토리를 표시하도록 설정
+        InitializeInventory(GameManager.Inst.MainPlayer.Inven);     // 플레이어가 가지고 있는 인벤토리를 표시하도록 설정
         GameManager.Inst.MainPlayer.onInventoryOnOff = InventoryOnOffSwitch;
+        movingSlot.SetTargetSlot(inven.SpliteTempSlot);             // 기본 무빙 슬롯용 슬롯 설정(널 방지용)
         this.gameObject.SetActive(false);
     }
 
@@ -216,8 +231,8 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             ItemSlotUI slotUI = startObj.GetComponent<ItemSlotUI>();            // ItemSlotUI를 가지는 아이템 슬롯인지 확인 및 데이터 가져오기
             if (slotUI != null)
             {
-                dragStartIndex = slotUI.ID;                                     // ItemSlotUI가 있으면 드래그 시작 슬롯으로 인덱스 설정
-                movingSlot.SetDragItemData(slotUI.SlotItemData, slotUI.ItemCount);  // movingSlot 데이터 설정
+                dragStartIndex = slotUI.ID;                                     // ItemSlotUI가 있으면 드래그 시작 슬롯으로 인덱스 설정                
+                movingSlot.SetTargetSlot(slotUI.ItemSlot);                      // movingSlot 데이터 설정
                 onInventoryDragStart();
             }
         }
@@ -236,76 +251,16 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             if (endObj != null)
             {
                 // 슬롯UI 위에서 드래그를 끝냄
-                //Debug.Log($"드래그 종료 : {eventData.pointerCurrentRaycast.gameObject.name}");
+                // Debug.Log($"드래그 종료 : {eventData.pointerCurrentRaycast.gameObject.name}");
                 ItemSlotUI endSlotUI = endObj.GetComponent<ItemSlotUI>();       // ItemSlotUI를 가지는 아이템 슬롯인지 확인 및 데이터 가져오기
                 if (endSlotUI != null && dragStartIndex != NOT_DRAG_START)      // ItemSlotUI가 있고 드래그를 시작한 상황이면
                 {
                     // 드래그가 성공적으로 완료된 경우
                     inven.MoveItem((uint)dragStartIndex, (uint)endSlotUI.ID);   // 아이템 이동(넘치거나 하는 것들은 inven이 알아서 처리)
                 }
-                else
-                {
-                    onInventoryDragOutEnd();
-                }
             }
-            else
-            {
-                // 인벤토리 UI 바깥쪽에서 드래그를 끝냄
-                ItemSlot startSlotUI = inven.GetSlot((uint)dragStartIndex);     // 드래그 시작 위치에 있는 아이템 슬롯 가져오기
-                if (startSlotUI != null && startSlotUI.SlotItemData != null)    // 아이템 슬롯에서 시작했고 슬롯에 아이템이 있는 경우만 처리
-                {
-                    // 아이템 드랍할 위치 계산하기
-                    Vector3 position = new Vector3();
-                    Ray ray = Camera.main.ScreenPointToRay(eventData.position); // 마우스 포인터의 스크린 좌표를 이용해 레이를 구한다.
-                    RaycastHit[] hits = null;
-                    hits = Physics.RaycastAll(ray, 1000.0f, LayerMask.GetMask("Ground"));  // Ground 레이어로 설정된 오브젝트와 레이를 충돌검사한다.
-                    if (hits.Length > 0)
-                    {
-                        Vector3 playerToDrop = hits[hits.Length - 1].point - GameManager.Inst.MainPlayer.transform.position;  // 플레이어 위치에서 드랍지점으로 가는 방향 백터 구하기
-                        if (dropRange * dropRange < playerToDrop.sqrMagnitude) // 방향백터의 길이를 이용해서 dropRange 안인지 밖인지 확인
-                        {
-                            // dropRange 바깥에 아이템을 드랍했다.
-
-                            // 방향백터를 단위백터로 만들고 dropRange를 곱해서 dropRange를 반지름으로 가지는 원의 표면에 아이템을 배치시킨다.
-                            position = playerToDrop.normalized * dropRange;
-                        }
-                        else
-                        {
-                            // dropRange 안에 아이템을 드랍했다.
-
-                            // 그냥 드랍한 위치에 아이템을 배치한다.
-                            position = hits[hits.Length - 1].point;
-                        }
-                    }
-                    ItemFactory.GetItems(startSlotUI.SlotItemData.id, position, startSlotUI.ItemCount);    // 드랍한 개수만큼 아이템 생성
-
-
-                    inven.ClearSlot((uint)dragStartIndex);      // 인벤토리에서 아이템 제거
-                    onInventoryDragOutEnd();                    // 일단은 디테일창 닫기용
-                }
-            }
-
+            onInventoryDragOutEnd();    // 일단은 디테일창 닫기용
             onInventoryDragEnd();       // 인벤토리 드래그 종료
         }
     }
-
-
-
-
-
-    // 리펙토링 전
-
-
-
-
-
-    // 아래 3개는 MovingSlot으로 대체할 것
-    private SplittedItem splittedItem = null;   // 분리된 아이템 -> Moving 슬롯으로 대체할 것
-    public SplittedItem SplittedItem { get => splittedItem; }
-
-
-
-
-
-
 }

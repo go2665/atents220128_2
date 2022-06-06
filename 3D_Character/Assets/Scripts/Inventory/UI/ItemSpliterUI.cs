@@ -18,7 +18,6 @@ public class ItemSpliterUI : MonoBehaviour
 
     // 캐싱용 컴포넌트들 ---------------------------------------------------------------------------
     private InputField inputField = null;
-    private MovingSlotUI movingSlot = null;
 
 
     // 프로퍼티들 ----------------------------------------------------------------------------------
@@ -81,7 +80,6 @@ public class ItemSpliterUI : MonoBehaviour
     private void Start()
     {
         GameManager.Inst.InventoryUI.onInventoryClose += SelectCancel;  // UI 닫힐때 자동으로 캔슬
-        movingSlot = GameManager.Inst.InventoryUI.MovingSlot;   // 오브젝트 캐식
         this.gameObject.SetActive(false);                       // 시작할 때 자동으로 꺼지기
     }
 
@@ -122,10 +120,8 @@ public class ItemSpliterUI : MonoBehaviour
     /// </summary>
     void SelectOK()
     {
-        slotUI.FakeDecrease(itemSplitCount);            // 나누는 슬롯의 개수 표기만 변경(실제 실행될 때 값 적용되게)
-        movingSlot.SetSplitItemData(slotUI.ItemSlot, itemSplitCount, slotUI.ID);    // movingSlot에 아이템데이터와 분리하는 갯수, 슬롯의 ID 넘겨주며 열기
-        onSpliterOK?.Invoke();
-
+        GameManager.Inst.InventoryUI.SpliteItem_Start((uint)slotUI.ID, ItemSplitCount); // 아이템 나누기 시작 함수 실행
+        onSpliterOK?.Invoke();                      // MovingSlot 열기
         this.gameObject.SetActive(false);           // 열었으면 자신은 닫는다.
     }
 

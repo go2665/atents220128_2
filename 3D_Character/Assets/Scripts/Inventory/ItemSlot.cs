@@ -98,6 +98,7 @@ public class ItemSlot
     /// </summary>
     public void ClearSlotItem()
     {
+        slotItemData = null;
         ItemCount = 0;  //slotItemData는 프로퍼티가 비움
     }
         

@@ -98,11 +98,16 @@ public class DetailInfoUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 디테일 창 비우기 용도.
+    /// </summary>
     void Clear()
     {
         itemData = null;
     }
 
+
+    // 유니티 이벤트 함수들---------------------------------------------------------------------------------
     private void Awake()
     {
         // 하부 게임 오브젝트의 컴포넌트 찾기
@@ -118,6 +123,8 @@ public class DetailInfoUI : MonoBehaviour
         GameManager.Inst.InventoryUI.onInventoryDragStart += Pause;     // 드래그가 시작되면 일시 정지
         GameManager.Inst.InventoryUI.onInventoryDragEnd += Restart;     // 드래그가 끝나면 다시 동작
         GameManager.Inst.InventoryUI.onInventoryDragOutEnd += Clear;    // 드래그가 인벤토리 밖에서 끝나면 itemData비워서 안보이게 하기
+        GameManager.Inst.InventoryUI.onInventorySplittingStart += Pause;// 아이템을 나누기 시작하면 일시 정지
+        GameManager.Inst.InventoryUI.onInventorySplittingEnd += Restart;// 아이템을 나누는게 끝나면 다시 동작
         this.gameObject.SetActive(false);
     }
 }

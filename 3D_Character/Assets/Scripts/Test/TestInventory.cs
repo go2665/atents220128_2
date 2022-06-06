@@ -42,9 +42,9 @@ public class TestInventory : MonoBehaviour
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.Sword]);
         GameManager.Inst.MainPlayer.Inven.AddItem(GameManager.Inst.ItemDatas[ItemIDCode.Sword_Test]);
 
-        GameManager.Inst.MainPlayer.Inven.SplitItem(0, 1, 1);
-        GameManager.Inst.MainPlayer.Inven.SplitItem(0, 6, 2);
-        GameManager.Inst.MainPlayer.Inven.SplitItem(1, 7, 2);
+        //GameManager.Inst.MainPlayer.Inven.SplitItem(0, 1, 1);
+        //GameManager.Inst.MainPlayer.Inven.SplitItem(0, 6, 2);
+        //GameManager.Inst.MainPlayer.Inven.SplitItem(1, 7, 2);
 
         GameManager.Inst.MainPlayer.onInventoryOnOff();
     }
