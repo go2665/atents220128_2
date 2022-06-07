@@ -11,6 +11,7 @@ public class PlayerTank : MonoBehaviour, IControllable
     public GameObject[] shells = null;
 
     FireData[] fireDatas = null;
+    SkillBarUI skillBarUI = null;
 
     private Vector3 inputDir = Vector3.zero;
     private Vector2 mousePos = Vector2.zero;
@@ -53,11 +54,14 @@ public class PlayerTank : MonoBehaviour, IControllable
 
     void Start()
     {
+        skillBarUI = FindObjectOfType<SkillBarUI>();
         fireDatas = new FireData[shells.Length];
         for(int i=0; i<shells.Length; i++)
         {
             fireDatas[i] = new FireData(shells[i], shells[i].GetComponent<Shell>().data);
+            skillBarUI[i].BindingCoolTime(fireDatas[i]);
         }
+        skillBarUI.SetSelected((int)selectedSpecialShell);
     }
 
     void Update()
@@ -129,10 +133,12 @@ public class PlayerTank : MonoBehaviour, IControllable
     private void ShortCut1()
     {
         selectedSpecialShell = ShellType.Cluster;
+        skillBarUI.SetSelected((int)selectedSpecialShell);
     }
 
     private void ShortCut2()
     {
         selectedSpecialShell = ShellType.BadEffect;
+        skillBarUI.SetSelected((int)selectedSpecialShell);
     }
 }

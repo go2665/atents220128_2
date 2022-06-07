@@ -5,26 +5,38 @@ using UnityEngine;
 public class FireData
 {
     private GameObject prefab = null;
-    private float currentCoolTime = 0.0f;
     private ShellData data = null;
+    private float currentCoolTime = 0.0f;
+    private float CurrentCoolTime
+    {
+        get => currentCoolTime;
+        set
+        {
+            currentCoolTime = value;
+            onCoolTimeChange?.Invoke(currentCoolTime / data.coolTime);
+        }
+    }
 
     public GameObject ShellPrefab { get => prefab; }
     public bool IsFireReady { get => (currentCoolTime < 0.0f); }
+
+    public delegate void CoolTimeChangeDelegate(float ratio);
+    public CoolTimeChangeDelegate onCoolTimeChange = null;
 
     public FireData(GameObject shellPrefab, ShellData shellData, float startDelay = 0.0f)
     {
         prefab = shellPrefab;
         data = shellData;
-        currentCoolTime = startDelay;
+        CurrentCoolTime = startDelay;
     }
 
     public void DecreaseCoolTime(float delta)
     {
-        currentCoolTime -= delta;
+        CurrentCoolTime -= delta;
     }
 
     public void ResetCoolTime()
     {
-        currentCoolTime = data.coolTime;
+        CurrentCoolTime = data.coolTime;
     }
 }
