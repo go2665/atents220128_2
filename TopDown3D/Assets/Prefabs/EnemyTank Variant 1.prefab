@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 488260925, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
+      propertyPath: waitTime
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7850844108265011339, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
       propertyPath: m_Name
       value: EnemyTank Variant 1
