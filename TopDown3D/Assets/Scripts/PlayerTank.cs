@@ -10,7 +10,7 @@ public class PlayerTank : MonoBehaviour, IControllable
     public Transform firePos = null;
     public GameObject[] shells = null;
 
-    //RaycastHit[] raycastHits = new RaycastHit[1];
+    FireData[] fireDatas = null;
 
     private Vector3 inputDir = Vector3.zero;
     private Vector2 mousePos = Vector2.zero;
@@ -38,14 +38,7 @@ public class PlayerTank : MonoBehaviour, IControllable
     public IControllable.InputActionDelegate onShortCut01 { get; set; }
     public IControllable.InputActionDelegate onShortCut02 { get; set; }
 
-    private Rigidbody rigid = null;
-
-    enum ShellType
-    {
-        Normal = 0,
-        Cluster,
-        BadEffect
-    }
+    private Rigidbody rigid = null;    
 
     ShellType selectedSpecialShell = ShellType.Cluster;
 
@@ -56,6 +49,23 @@ public class PlayerTank : MonoBehaviour, IControllable
         onFireSpecial = FireSpecial;
         onShortCut01 = ShortCut1;
         onShortCut02 = ShortCut2;
+    }
+
+    void Start()
+    {
+        fireDatas = new FireData[shells.Length];
+        for(int i=0; i<shells.Length; i++)
+        {
+            fireDatas[i] = new FireData(shells[i], shells[i].GetComponent<Shell>().data);
+        }
+    }
+
+    void Update()
+    {
+        foreach(FireData fire in fireDatas)
+        {
+            fire.DecreaseCoolTime(Time.deltaTime);
+        }
     }
 
     void FixedUpdate()
@@ -89,10 +99,8 @@ public class PlayerTank : MonoBehaviour, IControllable
     /// </summary>
     private void FireNormal()
     {
-        Debug.Log("Normal");
-        GameObject obj = Instantiate(shells[0]);
-        obj.transform.position = firePos.position;
-        obj.transform.rotation = firePos.rotation;
+        //Debug.Log("Normal");
+        Fire(ShellType.Normal);
     }
 
     /// <summary>
@@ -100,10 +108,22 @@ public class PlayerTank : MonoBehaviour, IControllable
     /// </summary>
     private void FireSpecial()
     {
-        Debug.Log("Special");
-        GameObject obj = Instantiate(shells[(int)selectedSpecialShell]);
-        obj.transform.position = firePos.position;
-        obj.transform.rotation = firePos.rotation;
+        //Debug.Log("Special");
+        Fire(selectedSpecialShell);
+    }
+
+    private void Fire(ShellType type)
+    {
+        FireData data = fireDatas[(int)type];
+        if(data.IsFireReady)
+        {
+            Debug.Log("Fire");
+            GameObject obj = Instantiate(shells[(int)type]);
+            obj.transform.position = firePos.position;
+            obj.transform.rotation = firePos.rotation;
+
+            data.ResetCoolTime();
+        }        
     }
 
     private void ShortCut1()

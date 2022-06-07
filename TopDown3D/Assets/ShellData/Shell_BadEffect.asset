@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Shell_BadEffect
   m_EditorClassIdentifier: 
   initialSpeed: 20
-  coolTime: 1
+  coolTime: 3
   explosionEffect: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
   badEffect: {fileID: 100000, guid: e1b562652860afe48ac94f577c00eddc, type: 3}
