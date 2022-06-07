@@ -121,7 +121,7 @@ public class PlayerTank : MonoBehaviour, IControllable
         FireData data = fireDatas[(int)type];
         if(data.IsFireReady)
         {
-            Debug.Log("Fire");
+            //Debug.Log("Fire");
             GameObject obj = Instantiate(shells[(int)type]);
             obj.transform.position = firePos.position;
             obj.transform.rotation = firePos.rotation;
