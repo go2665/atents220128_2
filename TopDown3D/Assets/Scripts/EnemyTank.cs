@@ -21,6 +21,7 @@ public class EnemyTank : MonoBehaviour, IHealth
 
     float hp = 1.0f;        // 한대만 맞으면 사망하도록
     float maxHp = 1.0f;
+    bool isDead = false;
 
     public float HP 
     { 
@@ -57,7 +58,7 @@ public class EnemyTank : MonoBehaviour, IHealth
 
     private void Update()
     {
-        if(chaseStart)
+        if(chaseStart && !isDead)
         {
             navAgent.SetDestination(GameManager.Inst.MainPlayer.transform.position);
         }
@@ -92,20 +93,25 @@ public class EnemyTank : MonoBehaviour, IHealth
 
     public void Dead()
     {
-        GameObject obj = Instantiate(explosion);        // 탱크 폭팔용 이팩트 생성
-        obj.transform.position = transform.position;    // 탱크 폭팔용 이팩트 배치
-        obj.transform.rotation = transform.rotation;
+        if (isDead == false)                // 한번만 죽을 수 있도록 처리
+        {
+            GameObject obj = Instantiate(explosion);        // 탱크 폭팔용 이팩트 생성
+            obj.transform.position = transform.position;    // 탱크 폭팔용 이팩트 배치
+            obj.transform.rotation = transform.rotation;
 
-        navAgent.isStopped = true;      // 길찾기 중단
-        navAgent.enabled = false;       // 옆으로 구르기 위해 NavMeshAgent 끄기
-        rigid.isKinematic = false;      // 물리 작용으로 움직이게 상태 변환
-        rigid.constraints = RigidbodyConstraints.None;  // 특정 방향으로 이동하고 회전하는 것을 막아놓았던 것을 해제
-        hitPoint.y = -3.0f;              // 폭팔력이 아래에서 위로 향하게 위치를 아래로 설정
-        Vector3 dir = transform.position - hitPoint;    // 맞은 위치에서 맞은 탱크 위치로 가는 방향 백터
-        rigid.AddForceAtPosition(dir * 5.0f, hitPoint, ForceMode.Impulse);  // dir 방향으로 힘 더하기
-        rigid.AddTorque(dir * 10.0f, ForceMode.Impulse);    // dir 방향으로 회전력 더하기
+            navAgent.isStopped = true;      // 길찾기 중단
+            navAgent.enabled = false;       // 옆으로 구르기 위해 NavMeshAgent 끄기
+            rigid.isKinematic = false;      // 물리 작용으로 움직이게 상태 변환
+            rigid.constraints = RigidbodyConstraints.None;  // 특정 방향으로 이동하고 회전하는 것을 막아놓았던 것을 해제
+            hitPoint.y = -3.0f;              // 폭팔력이 아래에서 위로 향하게 위치를 아래로 설정
+            Vector3 dir = transform.position - hitPoint;    // 맞은 위치에서 맞은 탱크 위치로 가는 방향 백터
+            rigid.AddForceAtPosition(dir * 5.0f, hitPoint, ForceMode.Impulse);  // dir 방향으로 힘 더하기
+            Vector3 torque = new Vector3(dir.z, 0, -dir.x);         // dir이 forward라고 할 때 right 백터 구하기
+            rigid.AddTorque(torque * 10.0f, ForceMode.Impulse);     // dir 방향으로 회전력 더하기        
 
-        StartCoroutine(DeadProcess());  // 죽었을 때 일정 시간 이후 가라앉도록
+            isDead = true;
+            StartCoroutine(DeadProcess());  // 죽었을 때 일정 시간 이후 가라앉도록
+        }
     }
 
     IEnumerator DeadProcess()
