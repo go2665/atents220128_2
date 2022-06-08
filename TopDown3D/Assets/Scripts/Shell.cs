@@ -32,8 +32,9 @@ public class Shell : MonoBehaviour
         IHealth health = collision.gameObject.GetComponent<IHealth>();
         if(health != null)
         {
-            health.HP -= data.damage;
             health.HitPoint = collision.GetContact(0).point;
+            health.HP -= data.damage;
+            //Debug.Log($"Shell : {collision.GetContact(0).point}");
         }
 
         Destroy(this.gameObject);

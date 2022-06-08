@@ -98,10 +98,12 @@ public class EnemyTank : MonoBehaviour, IHealth
         obj.transform.rotation = this.transform.rotation;
 
         navAgent.isStopped = true;
+        navAgent.enabled = false;
         rigid.isKinematic = false;
         rigid.constraints = RigidbodyConstraints.None;
         hitPoint.y = 0.0f;
         rigid.AddForceAtPosition((transform.position - hitPoint) * 5.0f, hitPoint, ForceMode.Impulse);
+        rigid.AddTorque(Quaternion.Euler(0, 90, 0) * ((transform.position - hitPoint) * 10.0f), ForceMode.Impulse);
         isDead = true;
 
         StartCoroutine(DeadProcess());
@@ -109,8 +111,7 @@ public class EnemyTank : MonoBehaviour, IHealth
 
     IEnumerator DeadProcess()
     {
-        yield return new WaitForSeconds(3.0f);
-        navAgent.enabled = false;
+        yield return new WaitForSeconds(3.0f);        
         SphereCollider[] spheres = GetComponents<SphereCollider>();
         foreach(var s in spheres)
         {
