@@ -20,6 +20,8 @@ public class ShellData : ScriptableObject
     /// </summary>
     public GameObject explosionEffect = null;
 
+    public float damage = 10.0f;
+
     /// <summary>
     /// 폭팔용 함수
     /// </summary>

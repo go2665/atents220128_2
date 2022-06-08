@@ -354,6 +354,7 @@ MonoBehaviour:
   shell: {fileID: 2332189101465736238, guid: 425d80541fe30654db8310b2c6b8f21b, type: 3}
   fireTransform: {fileID: 9209339032373096061}
   attackCoolTime: 3
+  explosion: {fileID: 151086, guid: ee49a9a8678ecf8468eb488e1ac8d42b, type: 3}
 --- !u!1 &7850844108265011341
 GameObject:
   m_ObjectHideFlags: 0

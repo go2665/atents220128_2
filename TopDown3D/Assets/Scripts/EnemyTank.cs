@@ -3,21 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyTank : MonoBehaviour
+public class EnemyTank : MonoBehaviour, IHealth
 {
     public float fireAngle = 15.0f;
     public float waitTime = 1.0f;
     public GameObject shell = null;
     public Transform fireTransform = null;
     public float attackCoolTime = 3.0f;
+    public GameObject explosion = null;
+
+    NavMeshAgent navAgent = null;
+    Rigidbody rigid = null;
 
     float halfFireAngle = 7.5f;
-    NavMeshAgent navAgent = null;    
     bool chaseStart = false;
     float coolTime = 0.0f;
 
+    float hp = 1.0f;
+    float maxHp = 1.0f;
+    bool isDead = false;
+
+    public float HP 
+    { 
+        get => hp; 
+        set
+        {
+            hp = value;
+            if( hp <= 0.0f )
+            {
+                Dead();
+            }
+        }
+    }
+
+    public float MaxHP { get => maxHp; }
+
+    Vector3 hitPoint = Vector3.zero;
+    public Vector3 HitPoint { set => hitPoint = value; }
+
+    public IHealth.HealthDelegate onHealthChange { get; set; }
+
     private void Awake()
     {
+        rigid = GetComponent<Rigidbody>();
         navAgent = GetComponent<NavMeshAgent>();
         halfFireAngle = fireAngle * 0.5f;
     }
@@ -30,7 +58,7 @@ public class EnemyTank : MonoBehaviour
 
     private void Update()
     {
-        if(chaseStart)
+        if(chaseStart && !isDead)
         {
             navAgent.SetDestination(GameManager.Inst.MainPlayer.transform.position);
         }
@@ -61,5 +89,32 @@ public class EnemyTank : MonoBehaviour
                 }
             }
         }        
+    }
+
+    public void Dead()
+    {
+        GameObject obj = Instantiate(explosion);
+        obj.transform.position = this.transform.position;
+        obj.transform.rotation = this.transform.rotation;
+
+        navAgent.isStopped = true;
+        rigid.isKinematic = false;
+        rigid.constraints = RigidbodyConstraints.None;
+        hitPoint.y = 0.0f;
+        rigid.AddForceAtPosition((transform.position - hitPoint) * 5.0f, hitPoint, ForceMode.Impulse);
+        isDead = true;
+
+        StartCoroutine(DeadProcess());
+    }
+
+    IEnumerator DeadProcess()
+    {
+        yield return new WaitForSeconds(3.0f);
+        navAgent.enabled = false;
+        SphereCollider[] spheres = GetComponents<SphereCollider>();
+        foreach(var s in spheres)
+        {
+            s.enabled = false;
+        }
     }
 }

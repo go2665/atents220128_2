@@ -28,6 +28,14 @@ public class Shell : MonoBehaviour
         // collision.contacts[0].normal;
         // collision.contacts[0].normal : 충돌한 면에 수직인 백터(노멀백터)
         onExplosion?.Invoke(transform, collision.contacts[0].normal);
+
+        IHealth health = collision.gameObject.GetComponent<IHealth>();
+        if(health != null)
+        {
+            health.HP -= data.damage;
+            health.HitPoint = collision.GetContact(0).point;
+        }
+
         Destroy(this.gameObject);
     }
 }
