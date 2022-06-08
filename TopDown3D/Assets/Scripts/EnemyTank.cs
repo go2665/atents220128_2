@@ -19,9 +19,8 @@ public class EnemyTank : MonoBehaviour, IHealth
     bool chaseStart = false;
     float coolTime = 0.0f;
 
-    float hp = 1.0f;
+    float hp = 1.0f;        // 한대만 맞으면 사망하도록
     float maxHp = 1.0f;
-    bool isDead = false;
 
     public float HP 
     { 
@@ -29,7 +28,7 @@ public class EnemyTank : MonoBehaviour, IHealth
         set
         {
             hp = value;
-            if( hp <= 0.0f )
+            if( hp <= 0.0f )    // hp에 값을 설정할 때 hp가 0보다 작아지면 사망처리 함수 실행
             {
                 Dead();
             }
@@ -58,7 +57,7 @@ public class EnemyTank : MonoBehaviour, IHealth
 
     private void Update()
     {
-        if(chaseStart && !isDead)
+        if(chaseStart)
         {
             navAgent.SetDestination(GameManager.Inst.MainPlayer.transform.position);
         }
@@ -93,29 +92,29 @@ public class EnemyTank : MonoBehaviour, IHealth
 
     public void Dead()
     {
-        GameObject obj = Instantiate(explosion);
-        obj.transform.position = this.transform.position;
-        obj.transform.rotation = this.transform.rotation;
+        GameObject obj = Instantiate(explosion);        // 탱크 폭팔용 이팩트 생성
+        obj.transform.position = transform.position;    // 탱크 폭팔용 이팩트 배치
+        obj.transform.rotation = transform.rotation;
 
-        navAgent.isStopped = true;
-        navAgent.enabled = false;
-        rigid.isKinematic = false;
-        rigid.constraints = RigidbodyConstraints.None;
-        hitPoint.y = 0.0f;
-        rigid.AddForceAtPosition((transform.position - hitPoint) * 5.0f, hitPoint, ForceMode.Impulse);
-        rigid.AddTorque(Quaternion.Euler(0, 90, 0) * ((transform.position - hitPoint) * 10.0f), ForceMode.Impulse);
-        isDead = true;
+        navAgent.isStopped = true;      // 길찾기 중단
+        navAgent.enabled = false;       // 옆으로 구르기 위해 NavMeshAgent 끄기
+        rigid.isKinematic = false;      // 물리 작용으로 움직이게 상태 변환
+        rigid.constraints = RigidbodyConstraints.None;  // 특정 방향으로 이동하고 회전하는 것을 막아놓았던 것을 해제
+        hitPoint.y = -3.0f;              // 폭팔력이 아래에서 위로 향하게 위치를 아래로 설정
+        Vector3 dir = transform.position - hitPoint;    // 맞은 위치에서 맞은 탱크 위치로 가는 방향 백터
+        rigid.AddForceAtPosition(dir * 5.0f, hitPoint, ForceMode.Impulse);  // dir 방향으로 힘 더하기
+        rigid.AddTorque(dir * 10.0f, ForceMode.Impulse);    // dir 방향으로 회전력 더하기
 
-        StartCoroutine(DeadProcess());
+        StartCoroutine(DeadProcess());  // 죽었을 때 일정 시간 이후 가라앉도록
     }
 
     IEnumerator DeadProcess()
     {
-        yield return new WaitForSeconds(3.0f);        
+        yield return new WaitForSeconds(2.5f);  // 2.5초 동안 대기  
         SphereCollider[] spheres = GetComponents<SphereCollider>();
         foreach(var s in spheres)
         {
-            s.enabled = false;
+            s.enabled = false;  // 컬라이더 꺼서 바닥에 가라앉도록 처리
         }
     }
 }
