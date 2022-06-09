@@ -15,6 +15,12 @@ public class HealthBar : MonoBehaviour
         target.onHealthChange = Refresh;
     }
 
+    private void Start()
+    {
+        transform.LookAt(transform.parent.position - transform.parent.up);
+        transform.Translate(Vector3.forward * 4.3f, Space.World);
+    }
+
     void Refresh()
     {
         healthImage.fillAmount = target.HP / target.MaxHP;
