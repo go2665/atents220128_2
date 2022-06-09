@@ -107,6 +107,9 @@ GameObject:
   - component: {fileID: 1329618867}
   - component: {fileID: 13295769044486359}
   - component: {fileID: 1329618873}
+  - component: {fileID: 7957822415340490796}
+  - component: {fileID: 5889754254455852853}
+  - component: {fileID: 4146339726913451212}
   m_Layer: 0
   m_Name: EnemyBase
   m_TagString: Untagged
@@ -215,10 +218,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyTank: {fileID: 8242867029151480828, guid: 2aea5e3ca94ee1149af1327506127f6d, type: 3}
-  waveInterval: 10
-  waveSpawnCount: 3
   spawnInterval: 0.5
   spawnTransform: {fileID: 804690512086168469}
+  restartTime: 100
 --- !u!65 &1329618873
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -232,3 +234,42 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6.484039, y: 0.35, z: 6.570986}
   m_Center: {x: 0.33732486, y: 0.175, z: 0.021927834}
+--- !u!65 &7957822415340490796
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751915261176794866}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.441247, y: 3.2226903, z: 7.805425}
+  m_Center: {x: 3.81528, y: 1.1467246, z: -0.029645205}
+--- !u!65 &5889754254455852853
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751915261176794866}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.40964317, y: 3.254294, z: 7.931838}
+  m_Center: {x: -3.374445, y: 1.1625264, z: -0.50369215}
+--- !u!65 &4146339726913451212
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751915261176794866}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.773186, y: 3.2542934, z: 1.1371531}
+  m_Center: {x: 0.18091464, y: 1.1625264, z: -3.9010346}
