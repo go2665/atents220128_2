@@ -7,6 +7,7 @@ public class HealthBar : MonoBehaviour
 {
     IHealth target = null;
     Image healthImage = null;
+    Image repairImage = null;
 
     public enum Mode
     {
@@ -17,6 +18,7 @@ public class HealthBar : MonoBehaviour
     private void Awake()
     {
         healthImage = transform.Find("Health").gameObject.GetComponent<Image>();
+        repairImage = transform.Find("Repair").gameObject.GetComponent<Image>();
         target = transform.parent.parent.GetComponent<IHealth>();
         target.onHealthChange = Refresh;
         target.onDead = () => SetHealthBarMode(Mode.Charging);
@@ -39,16 +41,16 @@ public class HealthBar : MonoBehaviour
     {
         switch (mode)
         {
-            case Mode.Normal:
-                // 일반 모드(데미지를 입는 상황)
-                healthImage.color = Color.red;
-                break;
             case Mode.Charging:
                 // 충전 모드(복구되는 상황)
                 healthImage.color = Color.green;
+                repairImage.color = Color.white;
                 break;
+            case Mode.Normal:
             default:
+                // 일반 모드(데미지를 입는 상황)
                 healthImage.color = Color.red;
+                repairImage.color = Color.clear;
                 break;
         }
     }
