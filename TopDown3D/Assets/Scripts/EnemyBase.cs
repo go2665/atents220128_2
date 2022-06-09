@@ -21,12 +21,15 @@ public class EnemyBase : MonoBehaviour, IHealth
         get => hp;
         set
         {
-            hp = value;
+            hp = value;            
             //Debug.Log($"Base HP : {hp}");
-            if(hp<0.0f && !isDead)
+            if (hp<0.0f && !isDead)
             {
+                hp = 0.0f;
                 Dead();
             }
+
+            onHealthChange?.Invoke();
         }
     }
 
@@ -88,5 +91,7 @@ public class EnemyBase : MonoBehaviour, IHealth
         yield return waitRestartInteval;
         isDead = false;
         //Debug.Log("Base restart");
+
+        //Camera.main.WorldToScreenPoint()
     }
 }
