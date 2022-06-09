@@ -42,6 +42,8 @@ public class EnemyTank : MonoBehaviour, IHealth
     public Vector3 HitPoint { set => hitPoint = value; }
 
     public IHealth.HealthDelegate onHealthChange { get; set; }
+    public IHealth.HealthDelegate onDead { get; set; }
+    public IHealth.HealthDelegate onResurrection { get; set; }
 
     private void Awake()
     {
@@ -110,6 +112,7 @@ public class EnemyTank : MonoBehaviour, IHealth
             rigid.AddTorque(torque * 10.0f, ForceMode.Impulse);     // dir 방향으로 회전력 더하기        
 
             isDead = true;
+            onDead?.Invoke();
             StartCoroutine(DeadProcess());  // 죽었을 때 일정 시간 이후 가라앉도록
         }
     }

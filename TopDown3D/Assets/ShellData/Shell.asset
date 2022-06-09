@@ -15,3 +15,4 @@ MonoBehaviour:
   initialSpeed: 20
   coolTime: 1
   explosionEffect: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
+  damage: 70

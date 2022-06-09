@@ -19,6 +19,8 @@ public interface IHealth
 
     delegate void HealthDelegate();
     HealthDelegate onHealthChange { get; set; }
+    HealthDelegate onDead { get; set; }
+    HealthDelegate onResurrection { get; set; }
 
     /// <summary>
     /// 사망 처리
