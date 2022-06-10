@@ -10,6 +10,8 @@ public class EnemyBase : MonoBehaviour, IHealth
     public Transform spawnTransform = null; // 시작 집결지
     public float restartTime = 10.0f;
 
+    private CountDown countDownUI = null;
+
     WaitForSeconds waitSpawnInteval = null; // WaitForSeconds 재활용 용도
     WaitForSeconds waitRestartInteval = null;
 
@@ -41,11 +43,19 @@ public class EnemyBase : MonoBehaviour, IHealth
     public IHealth.HealthDelegate onDead { get; set; }
     public IHealth.HealthDelegate onResurrection { get; set; }
 
+    public CountDown CountDownUI { get => countDownUI; }
+
+    void Awake()
+    {
+        countDownUI = GetComponentInChildren<CountDown>();
+    }
+
     private void Start()
     {
         HP = MaxHP;
         waitSpawnInteval = new WaitForSeconds(spawnInterval);
         waitRestartInteval = new WaitForSeconds(restartTime);
+        countDownUI.gameObject.SetActive(false);
     }
 
     void Update()
@@ -63,6 +73,7 @@ public class EnemyBase : MonoBehaviour, IHealth
     /// <param name="spawnCount">한 웨이브에서 생성할 개수</param>
     public void SpawnStart(int spawnCount)
     {
+        countDownUI.gameObject.SetActive(false);
         StartCoroutine(SpawnEnemy(spawnCount));
     }
 
@@ -106,5 +117,11 @@ public class EnemyBase : MonoBehaviour, IHealth
         //Debug.Log("Base restart");
 
         //Camera.main.WorldToScreenPoint()
+    }
+
+    public void SpawnReady(float waitTime)
+    {
+        countDownUI.gameObject.SetActive(true);
+        countDownUI.CountTime = waitTime;
     }
 }

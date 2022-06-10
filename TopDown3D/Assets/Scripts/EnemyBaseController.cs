@@ -26,6 +26,7 @@ public class EnemyBaseController : MonoBehaviour
         enemyBases[waveBaseIndex].SpawnStart(waveSpawnCount);       // 적 기지에 웨이브 시작 신호 보냄
         waveBaseIndex = (waveBaseIndex + 1) % enemyBases.Length;    // waveBaseIndex를 순환시키기
         waveSpawnCount++;   // 다음 웨이브에서 생성될 적 수 추가
+        enemyBases[waveBaseIndex].SpawnReady(waveInterval);
     }
 
     IEnumerator StartWave()
