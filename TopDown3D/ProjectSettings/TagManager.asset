@@ -16,8 +16,8 @@ TagManager:
   - Bullets
   - Enemy
   - Player
-  - 
-  - 
+  - Indicator
+  - EnemyBase
   - 
   - 
   - 
