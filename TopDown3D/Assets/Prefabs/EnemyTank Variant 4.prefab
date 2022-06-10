@@ -7,9 +7,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 488260925, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
+      propertyPath: shell
+      value: 
+      objectReference: {fileID: 2332189101465736238, guid: f95314786732696418bfa42f721ce424, type: 3}
+    - target: {fileID: 5276239913767506188, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850844108265011331, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850844108265011335, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850844108265011337, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7850844108265011339, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
       propertyPath: m_Name
       value: EnemyTank Variant 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850844108265011339, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850844108265011341, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850844108265011343, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7850844108265170283, guid: 26e2565e4b2e1b943bf312be2c204893, type: 3}
       propertyPath: m_RootOrder

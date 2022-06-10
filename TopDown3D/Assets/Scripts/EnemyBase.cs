@@ -53,7 +53,7 @@ public class EnemyBase : MonoBehaviour, IHealth
         if( isDead )
         {
             HP = HP + 1 / restartTime * Time.deltaTime * MaxHP;
-            Debug.Log($"Base HP : {hp}");
+            //Debug.Log($"Base HP : {hp}");
         }
     }
 

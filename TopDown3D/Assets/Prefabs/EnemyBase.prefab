@@ -110,7 +110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1284049254}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2022573654}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 804690512086168469}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 7957822415340490796}
   - component: {fileID: 5889754254455852853}
   - component: {fileID: 4146339726913451212}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,9 +382,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 445180020}
     m_Modifications:
+    - target: {fileID: 951916479963052613, guid: ca01e226f32400949add8eb8314b0df4, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034007219924030412, guid: ca01e226f32400949add8eb8314b0df4, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034007220316372152, guid: ca01e226f32400949add8eb8314b0df4, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3034007220447058857, guid: ca01e226f32400949add8eb8314b0df4, type: 3}
       propertyPath: m_Name
       value: HealthBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034007220447058857, guid: ca01e226f32400949add8eb8314b0df4, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3034007220447058858, guid: ca01e226f32400949add8eb8314b0df4, type: 3}
       propertyPath: m_Pivot.x

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f6991e2329eb6343ae02aff43b8c79a, type: 3}
   m_Name: Shell
   m_EditorClassIdentifier: 
-  initialSpeed: 20
+  initialSpeed: 30
   coolTime: 1
   explosionEffect: {fileID: 195792, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
   damage: 70
