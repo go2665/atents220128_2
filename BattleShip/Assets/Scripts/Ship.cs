@@ -4,6 +4,38 @@ using UnityEngine;
 
 public class Ship : MonoBehaviour
 {
+    // 주요 데이터 ---------------------------------------------------------------------------------
+    /// <summary>
+    /// 배의 크기 무조건 2~5의 크기여야 함
+    /// </summary>
+    [Range(2,5)]
+    public int size = 2;    
+
+    /// <summary>
+    /// 배가 바라보는 방향. 북쪽을 바라보는 것이 디폴트
+    /// </summary>
+    Direction direction = Direction.NORTH;
+
+    /// <summary>
+    /// 피격당한 위치(맞았으면 true, 아니면 false)
+    /// </summary>
+    bool[] hittedPoint = null;
+
+    /// <summary>
+    /// 배의 필드 상 위치
+    /// </summary>
+    Vector2Int position = Vector2Int.zero;
+
+    // 읽기 전용 -----------------------------------------------------------------------------------
+    /// <summary>
+    /// 회전 중심축 위치(뱃머리 위치)
+    /// </summary>
+    readonly int pivotIndex = 0;       
+
+    // enum ---------------------------------------------------------------------------------------
+    /// <summary>
+    /// 배의 방향을 나타낼 enum
+    /// </summary>
     enum Direction : byte   // 4개만 필요해서 최소 단위인 byte로
     {
         EAST = 0,
@@ -12,18 +44,12 @@ public class Ship : MonoBehaviour
         NORTH = 3
     }
 
-    [Range(2,5)]
-    public int size = 2;                    // 배의 크기
-    
-    readonly int pivotIndex = 0;            // 회전 중심축 위치(뱃머리)
+    /// <summary>
+    /// enum Direction의 개수 
+    /// </summary>
+    int dirCount = 4;
 
-    Direction direction = Direction.NORTH;  // 배가 바라보는 방향
-    bool[] hittedPoint = null;              // 피격당한 위치(맞았으면 true, 아니면 false)
-
-    Vector2Int position = Vector2Int.zero;  // 배의 위치
-
-    int dirCount = 4;                       // enum Direction의 개수
-
+    // 프로퍼티 ------------------------------------------------------------------------------------
     /// <summary>
     /// 필드 위에서의 위치
     /// </summary>
@@ -53,6 +79,7 @@ public class Ship : MonoBehaviour
         }
     }
 
+    // 주요 함수 -----------------------------------------------------------------------------------
     /// <summary>
     /// 초기화 함수. start 시점에서 실행
     /// </summary>
@@ -100,6 +127,7 @@ public class Ship : MonoBehaviour
         }
     }
 
+    // 유니티 이벤트 함수 --------------------------------------------------------------------------
     private void Start()
     {
         Initialize();
