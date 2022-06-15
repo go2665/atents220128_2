@@ -8,7 +8,9 @@ public class Ship : MonoBehaviour
     /// <summary>
     /// 배의 크기 무조건 2~5의 크기여야 함
     /// </summary>
-    [Range(2,5)]
+    const int MinSize = 2;
+    const int MaxSize = 5;
+    [Range(MinSize, MaxSize)]
     public int size = 2;    
 
     /// <summary>
@@ -84,15 +86,16 @@ public class Ship : MonoBehaviour
     /// </summary>
     public ShipDirection Direction
     {
-        get => direction;
+        get => direction;   //set은 Rotate로 실행
     }
 
     // 주요 함수 -----------------------------------------------------------------------------------
     /// <summary>
     /// 초기화 함수. start 시점에서 실행
     /// </summary>
-    void Initialize()
+    void Initialize(int newSize = 2)
     {
+        size = Mathf.Clamp(newSize, MinSize, MaxSize);
         hittedPoint = new bool[size];
         dirCount = System.Enum.GetValues(typeof(ShipDirection)).Length;
     }
@@ -138,6 +141,6 @@ public class Ship : MonoBehaviour
     // 유니티 이벤트 함수 --------------------------------------------------------------------------
     private void Start()
     {
-        Initialize();
+        Initialize(size);
     }
 }

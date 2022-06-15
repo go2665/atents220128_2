@@ -7,34 +7,44 @@ using UnityEngine;
 
 public class BattleField : MonoBehaviour
 {
+    // 상수들 --------------------------------------------------------------------------------------
+    /// <summary>
+    /// 필드 한변의 크기.(필드는 항상 정사각형)
+    /// </summary>
     const int FieldSize = 10;
+
+    /// <summary>
+    /// 한 필드에 있을 수 있는 배의 수
+    /// </summary>
     const int ShipCount = 5;
 
+    // enum ---------------------------------------------------------------------------------------
+    /// <summary>
+    /// 필드 한칸에 들어있는 것을 표시할 enum
+    /// </summary>
     [Flags]
-    enum FieldSpace : short
+    enum FieldSpace : byte
     {
         None = 0,
         Ship = 1,
         CannonBall = 2
-        //ShipHead_1 = 1,
-        //ShipBody_1 = 2,
-        //ShipHead_2 = 4,
-        //ShipBody_2 = 8,
-        //ShipHead_3 = 16,
-        //ShipBody_3 = 32,
-        //ShipHead_4 = 64,
-        //ShipBody_4 = 128,
-        //CannonBall = 256
     }
-    //const FieldSpace ShipSpace = FieldSpace.ShipHead_1 | FieldSpace.ShipHead_2 | FieldSpace.ShipHead_3 | FieldSpace.ShipHead_4
-    //    | FieldSpace.ShipBody_1 | FieldSpace.ShipBody_2 | FieldSpace.ShipBody_3 | FieldSpace.ShipBody_4;
-    const FieldSpace ShipSpace = FieldSpace.Ship;
-    FieldSpace[,] field = new FieldSpace[FieldSize, FieldSize];     // 확인용 데이터
 
+    // 주요 변수 -----------------------------------------------------------------------------------
+    /// <summary>
+    /// 필드. 특정 좌표에 배치된 오브젝트 표시(확인용)
+    /// </summary>
+    FieldSpace[,] field = new FieldSpace[FieldSize, FieldSize];
+
+    /// <summary>
+    /// 그래픽 출력용 배와 포탄
+    /// </summary>
     Ship[] ships = new Ship[ShipCount];
     List<Vector2Int> cannonballPosition = new List<Vector2Int>(FieldSize* FieldSize);
     
     
+
+    // 함수들 --------------------------------------------------------------------------------------
     /// <summary>
     /// 해당 위치에 배가 있는지 확인
     /// </summary>
@@ -42,43 +52,25 @@ public class BattleField : MonoBehaviour
     /// <returns>배가 있으면 true, 없으면 false</returns>
     public bool IsShipThere(Vector2Int pos)
     {
-        return ((field[pos.x, pos.y] & ShipSpace) != 0);
+        return ((field[pos.x, pos.y] & FieldSpace.Ship) != 0);
     }
 
-    //- 전함 배치 가능 여부
+    /// <summary>
+    /// 배를 배치 가능한지 확인하는 함수
+    /// </summary>
+    /// <param name="pos">배치할 위치</param>
+    /// <param name="ship">배치할 배</param>
+    /// <param name="positions">배치 가능할 경우 배치되는 좌표들을 기록해 놓을 곳.(out)</param>
+    /// <returns>true면 배치가능, false면 배치불가</returns>
     bool IsShipDeployment(Vector2Int pos, Ship ship, out Vector2Int[] positions)
     {
-        // 배치할 배가 차지하는 위치
-        positions = new Vector2Int[ship.size];
-        //for (int i = 0; i < ship.size; i++)
-        //{
-        //    switch (ship.Direction)
-        //    {
-        //        case Ship.ShipDirection.EAST:
-        //            positions[i].Set(pos.x - i, pos.y);
-        //            break;
-        //        case Ship.ShipDirection.SOUTH:
-        //            positions[i].Set(pos.x, pos.y - i);
-        //            break;
-        //        case Ship.ShipDirection.WEST:
-        //            positions[i].Set(pos.x + i, pos.y);
-        //            break;
-        //        case Ship.ShipDirection.NORTH:
-        //            positions[i].Set(pos.x, pos.y + i);
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
+        positions = new Vector2Int[ship.size];      // 배 크기에 맞게 할당
 
-        //int[] tempX = { -1, 0, 1, 0 };
-        //int[] tempY = { 0, -1, 0, 1 };
-        //int index = (int)ship.Direction;
+        int index = (int)ship.Direction;
         Vector2Int[] temp = { new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, 0), new Vector2Int(0, 1) };
         for ( int i=0 ; i<ship.size ; i++ )
         {
-            //positions[i].Set(pos.x + tempX[index] * i, pos.y + tempY[index] * i);
-            positions[i] = pos + temp[i] * i;
+            positions[i] = pos + temp[index] * i;   // 배가 배치될 좌표들 기록
         }
 
         bool result = true;
@@ -90,18 +82,23 @@ public class BattleField : MonoBehaviour
                 || 0 > positions[i].y || positions[i].y >= FieldSize 
                 || IsShipThere(positions[i]))
             {
+                //한 칸이라도 밖으로 벗어나거나 다른배와 겹칠 경우 안됨.
+                Debug.Log($"{ship.gameObject.name}을 ({pos.x}, {pos.y})에 배치할 수 없습니다.");
                 result = false;
                 break;
             }
-        }
-
+        }        
         return result;
     }
 
-    //- 전함 배치
+    /// <summary>
+    /// 함선 배치. 배치할 수 없을 경우 실행 안함.
+    /// </summary>
+    /// <param name="pos">배치할 위치</param>
+    /// <param name="ship">배치할 배</param>
     public void ShipDeployment(Vector2Int pos, Ship ship)
     {
-        Vector2Int[] positions = new Vector2Int[ship.size];
+        Vector2Int[] positions = null;
         if ( IsShipDeployment(pos, ship, out positions) )
         {
             foreach(Vector2Int position in positions)
@@ -109,14 +106,7 @@ public class BattleField : MonoBehaviour
                 field[position.x, position.y] = FieldSpace.Ship;
             }
             ship.Position = pos;
+            Debug.Log($"{ship.gameObject.name}을 ({pos.x}, {pos.y})에 배치했습니다.");
         }
-    }
-
-
-    //- 게임 종료 여부
-
-    public void Test()
-    {
-
     }
 }
