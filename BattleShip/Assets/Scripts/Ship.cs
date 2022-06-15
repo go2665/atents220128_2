@@ -22,7 +22,7 @@ public class Ship : MonoBehaviour
     bool[] hittedPoint = null;
 
     /// <summary>
-    /// 배의 필드 상 위치
+    /// 배의 필드 상 위치. 
     /// </summary>
     Vector2Int position = Vector2Int.zero;
 
@@ -51,7 +51,7 @@ public class Ship : MonoBehaviour
 
     // 프로퍼티 ------------------------------------------------------------------------------------
     /// <summary>
-    /// 필드 위에서의 위치
+    /// 필드 위에서의 위치(해드부분)
     /// </summary>
     public Vector2Int Position
     {
