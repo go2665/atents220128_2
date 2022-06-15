@@ -32,7 +32,7 @@ public class Ship : MonoBehaviour
     /// <summary>
     /// 회전 중심축 위치(뱃머리 위치)
     /// </summary>
-    readonly int pivotIndex = 0;       
+    //readonly int pivotIndex = 0;       
 
     // enum ---------------------------------------------------------------------------------------
     /// <summary>

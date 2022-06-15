@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    BattleField leftField = null;
+    BattleField rightField = null;
+    public BattleField LeftField
+    {
+        get => leftField;
+    }
+    public BattleField RightField
+    {
+        get => rightField;
+    }
+
     static GameManager instance = null;
     public static GameManager Inst
     {
@@ -18,6 +29,7 @@ public class GameManager : MonoBehaviour
         if( instance == null )
         {
             instance = this;
+            instance.Initialize();
             DontDestroyOnLoad(this.gameObject);
         }
         else
@@ -27,5 +39,13 @@ public class GameManager : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
+    }
+
+    void Initialize()
+    {
+        GameObject field = GameObject.FindGameObjectWithTag("PlayerField");
+        leftField = field.GetComponent<BattleField>();
+        field = GameObject.FindGameObjectWithTag("EnemyField");
+        rightField = field.GetComponent<BattleField>();
     }
 }

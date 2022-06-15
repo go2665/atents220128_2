@@ -11,7 +11,7 @@ public class BattleField : MonoBehaviour
     /// <summary>
     /// 필드 한변의 크기.(필드는 항상 정사각형)
     /// </summary>
-    const int FieldSize = 10;
+    public const int FieldSize = 10;
 
     /// <summary>
     /// 한 필드에 있을 수 있는 배의 수
@@ -37,14 +37,37 @@ public class BattleField : MonoBehaviour
     FieldSpace[,] field = new FieldSpace[FieldSize, FieldSize];
 
     /// <summary>
+    /// 필드에 배치된 배의 피격받지 않은 총 칸 수
+    /// </summary>
+    int fieldHP = 0;
+
+    /// <summary>
     /// 그래픽 출력용 배와 포탄
     /// </summary>
     Ship[] ships = new Ship[ShipCount];
     List<Vector2Int> cannonballPosition = new List<Vector2Int>(FieldSize* FieldSize);
+
+
+    // 프로퍼티 ------------------------------------------------------------------------------------
+    /// <summary>
+    /// 필드의 배가 모두 침몰되었는지 여부. true면 모든 배가 침몰되었다.
+    /// </summary>
+    public bool IsDepeat
+    {
+        get => (fieldHP <= 0);
+    }
     
     
 
     // 함수들 --------------------------------------------------------------------------------------
+    /// <summary>
+    /// 게임이 시작될때 실행될 초기화 함수
+    /// </summary>
+    void Initialize()
+    {
+        fieldHP = 0;
+    }
+
     /// <summary>
     /// 해당 위치에 배가 있는지 확인
     /// </summary>
@@ -78,9 +101,7 @@ public class BattleField : MonoBehaviour
         {
             // 밖으로 벗어나는 위치가 있는지 확인
             // 같은 위치에 배가 있는지 확인
-            if( 0 > positions[i].x || positions[i].x >= FieldSize
-                || 0 > positions[i].y || positions[i].y >= FieldSize 
-                || IsShipThere(positions[i]))
+            if( !IsValidPosition(positions[i]) || IsShipThere(positions[i]))
             {
                 //한 칸이라도 밖으로 벗어나거나 다른배와 겹칠 경우 안됨.
                 Debug.Log($"{ship.gameObject.name}을 ({pos.x}, {pos.y})에 배치할 수 없습니다.");
@@ -106,7 +127,60 @@ public class BattleField : MonoBehaviour
                 field[position.x, position.y] = FieldSpace.Ship;
             }
             ship.Position = pos;
+            fieldHP += ship.size;
             Debug.Log($"{ship.gameObject.name}을 ({pos.x}, {pos.y})에 배치했습니다.");
         }
     }
+
+    /// <summary>
+    /// 위치가 필드 범위 안인지 체크하는 함수
+    /// </summary>
+    /// <param name="pos">체크할 위치</param>
+    /// <returns>true면 필드 안의 위치, false면 필드 밖의 위치</returns>
+    public bool IsValidPosition(Vector2Int pos)
+    {
+        return (-1 < pos.x && pos.x < FieldSize && -1 < pos.y && pos.y < FieldSize);
+    }
+
+    /// <summary>
+    /// 공격 가능한 위치인지 확인
+    /// </summary>
+    /// <param name="pos">공격할 위치</param>
+    /// <returns>공격가능하면 true, 아니면 false</returns>
+    public bool IsAttackable(Vector2Int pos)
+    {
+        return (field[pos.x, pos.y] != FieldSpace.CannonBall);
+    }
+
+    /// <summary>
+    /// 이 필드가 공격을 받음처리
+    /// </summary>
+    /// <param name="pos">공격받은 위치</param>
+    public void Attacked(Vector2Int pos)
+    {
+        if (IsValidPosition(pos))
+        {
+            if (IsAttackable(pos))
+            {
+                if(field[pos.x, pos.y] == FieldSpace.Ship)
+                {
+                    Debug.Log($"{gameObject.name} : 배({pos.x},{pos.y})가 공격받았습니다.");
+                    fieldHP--;
+                }
+                else
+                {
+                    Debug.Log($"{gameObject.name} : 바다({pos.x},{pos.y})가 공격받았습니다.");
+                }
+                field[pos.x, pos.y] = FieldSpace.CannonBall;                
+            }
+        }
+    }
+
+
+    // 유니티 이벤트 함수 --------------------------------------------------------------------------
+    private void Start()
+    {
+        Initialize();
+    }
+
 }
