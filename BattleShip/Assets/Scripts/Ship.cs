@@ -14,7 +14,7 @@ public class Ship : MonoBehaviour
     /// <summary>
     /// 배가 바라보는 방향. 북쪽을 바라보는 것이 디폴트
     /// </summary>
-    Direction direction = Direction.NORTH;
+    ShipDirection direction = ShipDirection.NORTH;
 
     /// <summary>
     /// 피격당한 위치(맞았으면 true, 아니면 false)
@@ -36,7 +36,7 @@ public class Ship : MonoBehaviour
     /// <summary>
     /// 배의 방향을 나타낼 enum
     /// </summary>
-    enum Direction : byte   // 4개만 필요해서 최소 단위인 byte로
+    public enum ShipDirection : byte   // 4개만 필요해서 최소 단위인 byte로
     {
         EAST = 0,
         SOUTH = 1,
@@ -79,6 +79,14 @@ public class Ship : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 배가 바라보는 방향 표시.
+    /// </summary>
+    public ShipDirection Direction
+    {
+        get => direction;
+    }
+
     // 주요 함수 -----------------------------------------------------------------------------------
     /// <summary>
     /// 초기화 함수. start 시점에서 실행
@@ -86,7 +94,7 @@ public class Ship : MonoBehaviour
     void Initialize()
     {
         hittedPoint = new bool[size];
-        dirCount = System.Enum.GetValues(typeof(Direction)).Length;
+        dirCount = System.Enum.GetValues(typeof(ShipDirection)).Length;
     }
 
     /// <summary>
@@ -97,21 +105,21 @@ public class Ship : MonoBehaviour
     {
         if (clockwise)
         {
-            direction = (Direction)(((int)direction + 1) % dirCount);
+            direction = (ShipDirection)(((int)direction + 1) % dirCount);
         }
         else
         {
             int decrease = (int)direction - 1;
             if (decrease < 0)
             {
-                direction = (Direction)(dirCount - 1);
+                direction = (ShipDirection)(dirCount - 1);
             }
             else
             {
-                direction = (Direction)decrease;
+                direction = (ShipDirection)decrease;
             }
         }
-        Debug.Log($"{gameObject.name} 함선은 {System.Enum.GetValues(typeof(Direction)).GetValue((int)direction)}쪽을 바라봅니다.");
+        Debug.Log($"{gameObject.name} 함선은 {System.Enum.GetValues(typeof(ShipDirection)).GetValue((int)direction)}쪽을 바라봅니다.");
     }
 
     /// <summary>
