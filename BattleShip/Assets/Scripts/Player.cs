@@ -5,25 +5,51 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     //const int PlayerShipCount = 5;      // 플레이어가 가지는 배의 수
-
     //Ship[] ships = null;                // 플레이어의 함선
-    BattleField myField = null;         // 나의 필드
-    public BattleField enemyField = null;      // 적의 필드
-    
-    bool isTurnActionFinish = false;    // 턴 동작이 끝났는지 여부
 
-    List<int> randomList = null;        // 다음 랜덤 공격 위치
+    // 주요 데이터 ---------------------------------------------------------------------------------
+    /// <summary>
+    /// 나의 필드
+    /// </summary>
+    BattleField myField = null;
+    /// <summary>
+    /// 적의 필드
+    /// </summary>
+    public BattleField enemyField = null;
 
+    /// <summary>
+    /// 턴 동작 완료 여부
+    /// </summary>
+    bool isTurnActionFinish = false;
+
+    /// <summary>
+    /// 랜덤 공격용 데이터(미리 계산해 놓음)
+    /// </summary>
+    List<int> randomList = null;
+
+    // 프로퍼티 ------------------------------------------------------------------------------------
+    /// <summary>
+    /// 턴 동작 완료 여부 프로퍼티
+    /// </summary>
     public bool IsTurnActionFinish
     {
         get => isTurnActionFinish;
     }
-    
+
+    /// <summary>
+    /// 패배 여부 확인(내 필드에 남은 배가 있는지 확인)
+    /// </summary>
     public bool IsDepeat
     {
         get => myField.IsDepeat;
     }
 
+    // 함수들 --------------------------------------------------------------------------------------
+    /// <summary>
+    /// 초기화용 함수. 필드 설정. 랜덤 리스트 설정
+    /// </summary>
+    /// <param name="my">내 필드</param>
+    /// <param name="enemy">적 필드</param>
     public void Initialize(BattleField my, BattleField enemy)
     {
         myField = my;
@@ -47,6 +73,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 플레이어의 공격 함수
+    /// </summary>
+    /// <param name="pos">공격할 위치</param>
     public void Attack(Vector2Int pos)
     {
         //Debug.Log("일반 공격");
@@ -56,19 +86,11 @@ public class Player : MonoBehaviour
         enemyField.Attacked(pos);       // 적 필드에 공격
     }
 
+    /// <summary>
+    /// 플레이어의 강제 공격. Timeout이나 AI 용도로 사용
+    /// </summary>
     public void ForcedAttack()
     {
-        //bool find = false;
-        //Vector2Int pos = new Vector2Int();
-        //while (!find)
-        //{
-        //    pos.x = Random.Range(0, BattleField.FieldSize);
-        //    pos.y = Random.Range(0, BattleField.FieldSize);
-
-        //    find = enemyField.IsAttackable(pos);
-        //}
-        //enemyField.Attacked(pos);
-
         //Debug.Log("강제 공격");
         int posValue = randomList[0];   // 랜덤 리스트의 첫번째 값 저장
         randomList.RemoveAt(0);         // 랜덤 리스트에서 첫번째 값 삭제
@@ -77,8 +99,9 @@ public class Player : MonoBehaviour
         enemyField.Attacked(pos);       // 해당 위치 공격
     }
 
+    // 유니티 이벤트 함수 --------------------------------------------------------------------------
     private void Start()
     {
-        Initialize(GameManager.Inst.LeftField, GameManager.Inst.RightField);
+        Initialize(GameManager.Inst.LeftField, GameManager.Inst.RightField);    // 초기화 함수 실행
     }
 }

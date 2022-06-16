@@ -85,6 +85,10 @@ public class Ship : MonoBehaviour
             //    }
             //}
             //return sinking;
+            if(hp < 1)
+            {
+                Debug.Log($"{gameObject.name} 배가 가라앉았습니다.");
+            }
             return (hp < 1);    // 배 HP가 0 이하면 침몰
         }
     }
