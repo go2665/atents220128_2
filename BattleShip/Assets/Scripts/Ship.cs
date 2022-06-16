@@ -11,7 +11,12 @@ public class Ship : MonoBehaviour
     const int MinSize = 2;
     const int MaxSize = 5;
     [Range(MinSize, MaxSize)]
-    public int size = 2;    
+    public int size = 2;
+
+    /// <summary>
+    /// 배의 종류. 크기에 맞게 설정되어야 한다.
+    /// </summary>
+    public ShipType shipType = ShipType.Ship2;
 
     /// <summary>
     /// 배가 바라보는 방향. 북쪽을 바라보는 것이 디폴트
@@ -22,6 +27,8 @@ public class Ship : MonoBehaviour
     /// 피격당한 위치(맞았으면 true, 아니면 false)
     /// </summary>
     bool[] hittedPoint = null;
+
+    int hp = 0;
 
     /// <summary>
     /// 배의 필드 상 위치. 
@@ -68,16 +75,17 @@ public class Ship : MonoBehaviour
     {
         get
         {
-            bool sinking = true;
-            foreach(var point in hittedPoint)
-            {
-                if (point == false) // 하나라도 안맞은 위치가 있으면 가라앉는 상태가 아님
-                {
-                    sinking = false;
-                    break;
-                }
-            }
-            return sinking;
+            //bool sinking = true;
+            //foreach(var point in hittedPoint)
+            //{
+            //    if (point == false) // 하나라도 안맞은 위치가 있으면 가라앉는 상태가 아님
+            //    {
+            //        sinking = false;
+            //        break;
+            //    }
+            //}
+            //return sinking;
+            return (hp < 1);    // 배 HP가 0 이하면 침몰
         }
     }
 
@@ -96,6 +104,7 @@ public class Ship : MonoBehaviour
     void Initialize(int newSize = 2)
     {
         size = Mathf.Clamp(newSize, MinSize, MaxSize);
+        hp = size;
         hittedPoint = new bool[size];
         dirCount = System.Enum.GetValues(typeof(ShipDirection)).Length;
     }
@@ -129,13 +138,14 @@ public class Ship : MonoBehaviour
     /// 함선이 맞은 위치를 표시
     /// </summary>
     /// <param name="index">함선이 맞은 위치</param>
-    public void Hit(int index)
+    public void Hit(/*int index*/)
     {
-        if ( -1 < index && index < size)
-        {
-            hittedPoint[index] = true;
-            Debug.Log($"{gameObject.name} 함선은 {index}번 칸을 맞았습니다.");
-        }
+        hp -= 1;
+        //if ( -1 < index && index < size)
+        //{
+        //    hittedPoint[index] = true;
+        //    Debug.Log($"{gameObject.name} 함선은 {index}번 칸을 맞았습니다.");
+        //}
     }
 
     // 유니티 이벤트 함수 --------------------------------------------------------------------------

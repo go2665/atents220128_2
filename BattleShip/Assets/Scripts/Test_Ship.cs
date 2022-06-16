@@ -16,7 +16,7 @@ public class Test_Ship : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
-            ship.Hit(i);
+            ship.Hit();
             Debug.Log($"{ship.gameObject.name}이 침몰했나요? {ship.IsSinking}");
         }        
     }

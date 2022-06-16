@@ -20,24 +20,36 @@ public class BattleField : MonoBehaviour
 
     // enum ---------------------------------------------------------------------------------------
     /// <summary>
-    /// 필드 한칸에 들어있는 것을 표시할 enum
-    /// </summary>
-    [Flags]
-    enum FieldSpace : byte
+    /// 필드 한칸에 배가 있는지 포탄이 있는지에 대한 정보를 표시할 enum
+    /// </summary>    
+    public enum FieldExists : byte
     {
         None = 0,
         Ship = 1,
         CannonBall = 2
+    }    
+
+    public struct FieldCell
+    {
+        /// <summary>
+        /// 필드 한칸에 배가 있는지 포탄이 있는지에 대한 정보를 가짐
+        /// </summary>
+        public FieldExists exists;
+
+        /// <summary>
+        /// 필드 한칸에 어떤 배가 있는지에 대한 정보
+        /// </summary>
+        public Ship ship;
     }
 
     // 주요 변수 -----------------------------------------------------------------------------------
     /// <summary>
     /// 필드. 특정 좌표에 배치된 오브젝트 표시(확인용)
     /// </summary>
-    FieldSpace[,] field = new FieldSpace[FieldSize, FieldSize];
+    FieldCell[,] field = new FieldCell[FieldSize, FieldSize];
 
     /// <summary>
-    /// 필드에 배치된 배의 피격받지 않은 총 칸 수
+    /// 필드에 배치된 가라앉지 않은 배의 수
     /// </summary>
     int fieldHP = 0;
 
@@ -65,7 +77,7 @@ public class BattleField : MonoBehaviour
     /// </summary>
     void Initialize()
     {
-        fieldHP = 0;
+        fieldHP = ShipCount;
     }
 
     /// <summary>
@@ -75,7 +87,7 @@ public class BattleField : MonoBehaviour
     /// <returns>배가 있으면 true, 없으면 false</returns>
     public bool IsShipThere(Vector2Int pos)
     {
-        return ((field[pos.x, pos.y] & FieldSpace.Ship) != 0);
+        return ((field[pos.x, pos.y].exists & FieldExists.Ship) != 0);
     }
 
     /// <summary>
@@ -124,10 +136,10 @@ public class BattleField : MonoBehaviour
         {
             foreach(Vector2Int position in positions)
             {
-                field[position.x, position.y] = FieldSpace.Ship;
+                field[position.x, position.y].exists = FieldExists.Ship;
+                field[position.x, position.y].ship = ship;
             }
             ship.Position = pos;
-            fieldHP += ship.size;
             Debug.Log($"{ship.gameObject.name}을 ({pos.x}, {pos.y})에 배치했습니다.");
         }
     }
@@ -149,7 +161,7 @@ public class BattleField : MonoBehaviour
     /// <returns>공격가능하면 true, 아니면 false</returns>
     public bool IsAttackable(Vector2Int pos)
     {
-        return (field[pos.x, pos.y] != FieldSpace.CannonBall);
+        return (field[pos.x, pos.y].exists != FieldExists.CannonBall);
     }
 
     /// <summary>
@@ -162,16 +174,20 @@ public class BattleField : MonoBehaviour
         {
             if (IsAttackable(pos))
             {
-                if(field[pos.x, pos.y] == FieldSpace.Ship)
+                if(field[pos.x, pos.y].exists == FieldExists.Ship)
                 {
                     Debug.Log($"{gameObject.name} : 배({pos.x},{pos.y})가 공격받았습니다.");
-                    fieldHP--;
+                    field[pos.x, pos.y].ship.Hit();
+                    if (field[pos.x, pos.y].ship.IsSinking)
+                    {
+                        fieldHP--;
+                    }
                 }
                 else
                 {
                     Debug.Log($"{gameObject.name} : 바다({pos.x},{pos.y})가 공격받았습니다.");
                 }
-                field[pos.x, pos.y] = FieldSpace.CannonBall;                
+                field[pos.x, pos.y].exists = FieldExists.CannonBall;                
             }
         }
     }
