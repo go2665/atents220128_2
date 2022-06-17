@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    BattleField leftField = null;
-    BattleField rightField = null;
-    public BattleField LeftField
+    Player playerLeft = null;
+    Player playerRight = null;
+    BattleField fieldLeft = null;
+    BattleField fieldRight = null;
+
+    public Player PlayerLeft
     {
-        get => leftField;
+        get => playerLeft;
     }
-    public BattleField RightField
+    public Player PlayerRight
     {
-        get => rightField;
+        get => playerRight;
+    }
+    public BattleField FieldLeft
+    {
+        get => fieldLeft;
+    }
+    public BattleField FieldRight
+    {
+        get => fieldRight;
     }
 
     static GameManager instance = null;
@@ -43,9 +54,14 @@ public class GameManager : MonoBehaviour
 
     void Initialize()
     {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        playerLeft = player.GetComponent<Player>();
+        player = GameObject.FindGameObjectWithTag("Enemy");
+        playerRight = player.GetComponent<Player>();
+
         GameObject field = GameObject.FindGameObjectWithTag("PlayerField");
-        leftField = field.GetComponent<BattleField>();
+        fieldLeft = field.GetComponent<BattleField>();
         field = GameObject.FindGameObjectWithTag("EnemyField");
-        rightField = field.GetComponent<BattleField>();
+        fieldRight = field.GetComponent<BattleField>();
     }
 }

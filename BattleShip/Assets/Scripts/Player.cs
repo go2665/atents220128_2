@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 적의 필드
     /// </summary>
-    public BattleField enemyField = null;
+    BattleField enemyField = null;
 
     /// <summary>
     /// 턴 동작 완료 여부
@@ -79,11 +79,15 @@ public class Player : MonoBehaviour
     /// <param name="pos">공격할 위치</param>
     public void Attack(Vector2Int pos)
     {
-        //Debug.Log("일반 공격");
-        int posValue = pos.y * BattleField.FieldSize + pos.x;   // 랜덤 리스트에서 공격할 위치를 제거하기 위해 posValue 계산
-        randomList.Remove(posValue);    // 랜덤 리스트에서 이번에 공격할 위치값 제거
+        if (!isTurnActionFinish)
+        {
+            //Debug.Log("일반 공격");
+            int posValue = pos.y * BattleField.FieldSize + pos.x;   // 랜덤 리스트에서 공격할 위치를 제거하기 위해 posValue 계산
+            randomList.Remove(posValue);    // 랜덤 리스트에서 이번에 공격할 위치값 제거
 
-        enemyField.Attacked(pos);       // 적 필드에 공격
+            enemyField.Attacked(pos);       // 적 필드에 공격
+            isTurnActionFinish = true;      // 한턴에 한번만 공격하도록 설정
+        }
     }
 
     /// <summary>
@@ -91,17 +95,29 @@ public class Player : MonoBehaviour
     /// </summary>
     public void ForcedAttack()
     {
-        //Debug.Log("강제 공격");
-        int posValue = randomList[0];   // 랜덤 리스트의 첫번째 값 저장
-        randomList.RemoveAt(0);         // 랜덤 리스트에서 첫번째 값 삭제
+        if (!isTurnActionFinish)
+        {
+            Debug.Log($"{gameObject.name} 강제 공격");
+            int posValue = randomList[0];   // 랜덤 리스트의 첫번째 값 저장
+            randomList.RemoveAt(0);         // 랜덤 리스트에서 첫번째 값 삭제
 
-        Vector2Int pos = new Vector2Int(posValue%BattleField.FieldSize, posValue/BattleField.FieldSize);    // 랜덤 리스트의 값을 이용해 위치로 변환
-        enemyField.Attacked(pos);       // 해당 위치 공격
+            Vector2Int pos = new Vector2Int(posValue % BattleField.FieldSize, posValue / BattleField.FieldSize);    // 랜덤 리스트의 값을 이용해 위치로 변환
+            enemyField.Attacked(pos);       // 해당 위치 공격
+            isTurnActionFinish = true;
+        }
+    }
+
+    /// <summary>
+    /// 턴이 시작될 때 플레이어에서 리셋할 데이터들 리셋
+    /// </summary>
+    public void TurnStartReset()
+    {
+        isTurnActionFinish = false;
     }
 
     // 유니티 이벤트 함수 --------------------------------------------------------------------------
     private void Start()
     {
-        Initialize(GameManager.Inst.LeftField, GameManager.Inst.RightField);    // 초기화 함수 실행
+        //Initialize(GameManager.Inst.LeftField, GameManager.Inst.RightField);    // 초기화 함수 실행
     }
 }

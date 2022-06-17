@@ -29,7 +29,7 @@ public class Test_Player : MonoBehaviour
         enemyField.ShipDeployment(new Vector2Int(2, 0), ships[2]);
         enemyField.ShipDeployment(new Vector2Int(3, 0), ships[3]);
         enemyField.ShipDeployment(new Vector2Int(4, 0), ships[4]);
-        player.enemyField = enemyField;
+        //player.enemyField = enemyField;
 
         player.Attack(new Vector2Int(0, 0));
         player.Attack(new Vector2Int(0, 1));
@@ -71,7 +71,7 @@ public class Test_Player : MonoBehaviour
         ships[4].Rotate();
         enemyField.ShipDeployment(new Vector2Int(9, 9), ships[4]);
 
-        player.enemyField = enemyField;
+        //player.enemyField = enemyField;
         //player.Attack(new Vector2Int(0, 0));    // 공격 받음
         //player.Attack(new Vector2Int(1, 0));    // 바다
         //player.Attack(new Vector2Int(0, 1));    // 공격 받음

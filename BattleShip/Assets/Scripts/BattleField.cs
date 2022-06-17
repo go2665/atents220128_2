@@ -180,7 +180,7 @@ public class BattleField : MonoBehaviour
                 if(field[pos.x, pos.y].exists == FieldExists.Ship)  
                 {
                     // 배를 공격했으면
-                    //Debug.Log($"{gameObject.name} : 배({pos.x},{pos.y})가 공격받았습니다.");
+                    Debug.Log($"{gameObject.name} : 배({pos.x},{pos.y})가 공격받았습니다.");
                     field[pos.x, pos.y].ship.Hit();             // 배에 데미지를 주고
                     if (!field[pos.x, pos.y].ship.IsSinking)    // 배가 가라앉았는지를 확인
                     {
