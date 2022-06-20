@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject[] ships = new GameObject[(int)ShipType.SizeOfShipType];
+
     Player playerLeft = null;
     Player playerRight = null;
     BattleField fieldLeft = null;
@@ -63,5 +65,10 @@ public class GameManager : MonoBehaviour
         fieldLeft = field.GetComponent<BattleField>();
         field = GameObject.FindGameObjectWithTag("EnemyField");
         fieldRight = field.GetComponent<BattleField>();
+    }
+
+    public Ship MakeShip(ShipType shipType)
+    {
+        return Instantiate(ships[(int)shipType]).GetComponent<Ship>();
     }
 }

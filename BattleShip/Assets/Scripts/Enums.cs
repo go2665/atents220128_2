@@ -12,5 +12,6 @@ public enum ShipType : byte
     Ship4 = 1,      // 사이즈4
     Ship3_1 = 2,    // 사이즈3-1
     Ship3_2 = 3,    // 사이즈3-2
-    Ship2 = 4      // 사이즈2    
+    Ship2 = 4,      // 사이즈2    
+    SizeOfShipType
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Ship : MonoBehaviour
 {
@@ -101,6 +102,8 @@ public class Ship : MonoBehaviour
         get => direction;   //set은 Rotate로 실행
     }
 
+    public bool MouseFollowMode { get; set; }
+
     // 주요 함수 -----------------------------------------------------------------------------------
     /// <summary>
     /// 초기화 함수. start 시점에서 실행
@@ -156,5 +159,15 @@ public class Ship : MonoBehaviour
     private void Start()
     {
         Initialize(size);
+    }
+
+    private void Update()
+    {
+        if( MouseFollowMode )
+        {
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+            Vector3 newPos = Camera.main.ScreenToWorldPoint(mousePos);
+            transform.position = new Vector3(newPos.x, 0.0f, newPos.z);
+        }
     }
 }

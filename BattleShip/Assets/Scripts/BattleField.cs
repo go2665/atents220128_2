@@ -2,8 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
+using UnityEngine.InputSystem;
 
 public class BattleField : MonoBehaviour
 {
@@ -61,7 +60,13 @@ public class BattleField : MonoBehaviour
     /// 그래픽 출력용 배와 포탄
     /// </summary>
     Ship[] ships = new Ship[ShipCount];
+    Ship selectedShip = null;
     List<Vector2Int> cannonballPosition = new List<Vector2Int>(FieldSize* FieldSize);
+
+    /// <summary>
+    /// 인풋 시스템 액션 맵
+    /// </summary>
+    InputActionMaps inputActions = null; 
 
 
     // 프로퍼티 ------------------------------------------------------------------------------------
@@ -81,6 +86,12 @@ public class BattleField : MonoBehaviour
     void Initialize()
     {
         aliveShipCount = ShipCount;
+        for(int i=0;i<ShipCount;i++)
+        {
+            ships[i] = GameManager.Inst.MakeShip((ShipType)i);
+            ships[i].gameObject.transform.parent = transform;
+            ships[i].gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -196,11 +207,56 @@ public class BattleField : MonoBehaviour
         }
     }
 
+    public void ShipSelect(ShipType shipType)
+    {
+        if (shipType != ShipType.SizeOfShipType)
+        {
+            selectedShip = ships[(int)shipType];
+            selectedShip.gameObject.SetActive(true);
+            selectedShip.MouseFollowMode = true;
+        }
+    }
 
     // 유니티 이벤트 함수 --------------------------------------------------------------------------
+    private void Awake()
+    {
+        inputActions = new InputActionMaps();
+    }
+
     private void Start()
     {
         Initialize();
     }
+
+    private void OnEnable()
+    {
+        inputActions.BattleField.Enable();
+        inputActions.BattleField.Click.performed += OnBattleFieldClick;
+    }
+
+    private void OnDisable()
+    {
+        inputActions.BattleField.Click.performed -= OnBattleFieldClick;
+        inputActions.BattleField.Disable();
+    }
+
+    private void OnBattleFieldClick(InputAction.CallbackContext context)
+    {
+        Vector2 pos = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(pos);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField"))
+            && hit.collider.gameObject == this.gameObject )
+        {
+            //Debug.Log($"Hit : {hit.point}");
+            //Debug.Log($"Local origin : {transform.position}");
+            //Debug.Log($"Diff :{hit.point - transform.position}");
+
+            Vector3 diff = hit.point - transform.position;
+            Vector2Int coord = new Vector2Int((int)diff.x, (int)-diff.z);
+            Debug.Log($"2D coord : {coord}");
+        }        
+    }
+
 
 }

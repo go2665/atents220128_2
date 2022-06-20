@@ -1,0 +1,51 @@
+{
+    "name": "InputActionMaps",
+    "maps": [
+        {
+            "name": "BattleField",
+            "id": "ad57ac18-4493-46a8-904a-a86933da8649",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "b1e52697-a6e3-4bb7-95b7-f207437265df",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8631c86d-9e6c-4de7-a16f-8233d7398941",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "KeyboardMouse",
+            "bindingGroup": "KeyboardMouse",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
