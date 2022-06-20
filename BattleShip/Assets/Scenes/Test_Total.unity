@@ -426,6 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineBase: {fileID: 3833746639674078424, guid: 583cb4ad22b96da4ca02eb826dbdba86, type: 3}
+  letter: {fileID: 7913543376213413259, guid: 37beadae32353ec4eac11ab00454f8ad, type: 3}
 --- !u!1 &820118455
 GameObject:
   m_ObjectHideFlags: 0
