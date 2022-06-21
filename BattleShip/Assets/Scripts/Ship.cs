@@ -73,7 +73,16 @@ public class Ship : MonoBehaviour
     public Vector2Int Position
     {
         get => position;
-        set => position = value;
+        set
+        {
+            isDeployed = true;
+            position = value;
+        }
+    }
+    bool isDeployed = false;
+    public bool IsDeployed
+    {
+        get => isDeployed;
     }
 
     /// <summary>
