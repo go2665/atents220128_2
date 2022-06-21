@@ -19,9 +19,19 @@ public class Ship : MonoBehaviour
     /// </summary>
     public ShipType shipType = ShipType.Ship2;
 
+    /// <summary>
+    /// 일반적인 상황에 사용할 머티리얼
+    /// </summary>
     public Material normal = null;
+
+    /// <summary>
+    /// 배치 불가능한 상황에서 사용할 머티리얼
+    /// </summary>
     public Material error = null;
 
+    /// <summary>
+    /// 머티리얼 변경 때 사용하기 위해 캐싱해 놓은 것
+    /// </summary>
     MeshRenderer meshRenderer = null;
 
     /// <summary>
@@ -30,10 +40,13 @@ public class Ship : MonoBehaviour
     ShipDirection direction = ShipDirection.NORTH;
 
     /// <summary>
-    /// 피격당한 위치(맞았으면 true, 아니면 false)
+    /// 피격당한 위치(맞았으면 true, 아니면 false). 현재 사용하지 않음
     /// </summary>
     bool[] hittedPoint = null;
 
+    /// <summary>
+    /// 배의 HP.
+    /// </summary>
     int hp = 0;
 
     /// <summary>
@@ -41,7 +54,11 @@ public class Ship : MonoBehaviour
     /// </summary>
     Vector2Int position = Vector2Int.zero;
 
-    
+    /// <summary>
+    /// 배가 배치되었는지 여부. true면 배치된 배라는 의미
+    /// </summary>
+    bool isDeployed = false;
+
 
     // 읽기 전용 -----------------------------------------------------------------------------------
     /// <summary>
@@ -79,7 +96,10 @@ public class Ship : MonoBehaviour
             position = value;
         }
     }
-    bool isDeployed = false;
+    
+    /// <summary>
+    /// 배가 배치되었는지에 대한 프로퍼티. true면 배치되었음
+    /// </summary>
     public bool IsDeployed
     {
         get => isDeployed;
@@ -118,7 +138,6 @@ public class Ship : MonoBehaviour
         get => direction;   //set은 Rotate로 실행
     }
 
-    //public bool MouseFollowMode { get; set; }
 
     // 주요 함수 -----------------------------------------------------------------------------------
     /// <summary>
@@ -129,9 +148,7 @@ public class Ship : MonoBehaviour
         size = Mathf.Clamp(newSize, MinSize, MaxSize);
         hp = size;
         hittedPoint = new bool[size];
-        dirCount = System.Enum.GetValues(typeof(ShipDirection)).Length;
-
-        meshRenderer = GetComponentInChildren<MeshRenderer>();
+        dirCount = System.Enum.GetValues(typeof(ShipDirection)).Length;        
     }
 
     /// <summary>
@@ -140,7 +157,7 @@ public class Ship : MonoBehaviour
     /// <param name="clockwise">회전방향. true면 시계방향</param>
     public void Rotate(bool clockwise = true)
     {
-        float angle = 0.0f;
+        float angle = 0.0f; // 매시 회전용 각도
         if (clockwise)
         {
             direction = (ShipDirection)(((int)direction + 1) % dirCount);
@@ -159,27 +176,30 @@ public class Ship : MonoBehaviour
             }
             angle = -90.0f;
         }
-        this.transform.Rotate(0, angle, 0);
-        Debug.Log($"{gameObject.name} 함선은 {System.Enum.GetValues(typeof(ShipDirection)).GetValue((int)direction)}쪽을 바라봅니다.");
+        this.transform.Rotate(0, angle, 0); // 방향에 맞춰 회전
+        //Debug.Log($"{gameObject.name} 함선은 {System.Enum.GetValues(typeof(ShipDirection)).GetValue((int)direction)}쪽을 바라봅니다.");
     }
         
+    /// <summary>
+    /// 매시 머티리얼 변경 함수
+    /// </summary>
+    /// <param name="isNormal">true면 일반 상황, false면 배치 불가능 상황</param>
     public void SetMaterial(bool isNormal)
     {
-        if (meshRenderer != null)
+        if (isNormal)
         {
-            if (isNormal)
+            // 일반 상황
+            if (meshRenderer.material != normal)    // 변경할 필요가 있을 때만 변경
             {
-                if (meshRenderer.material != normal)
-                {
-                    meshRenderer.material = normal;
-                }
+                meshRenderer.material = normal;
             }
-            else
+        }
+        else
+        {
+            // 배치 불가 상황
+            if (meshRenderer.material != error)     // 변경할 필요가 있을 때만 변경
             {
-                if (meshRenderer.material != error)
-                {
-                    meshRenderer.material = error;
-                }
+                meshRenderer.material = error;
             }
         }
     }
@@ -204,13 +224,8 @@ public class Ship : MonoBehaviour
         Initialize(size);
     }
 
-    //private void Update()
-    //{
-    //    if( MouseFollowMode )
-    //    {
-    //        Vector2 mousePos = Mouse.current.position.ReadValue();
-    //        Vector3 newPos = Camera.main.ScreenToWorldPoint(mousePos);
-    //        transform.position = new Vector3(newPos.x, 0.0f, newPos.z);
-    //    }
-    //}
+    private void Awake()
+    {
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
+    }
 }

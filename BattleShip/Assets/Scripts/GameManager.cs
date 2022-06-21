@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    /// <summary>
+    /// 배의 프리팹
+    /// </summary>
     public GameObject[] ships = new GameObject[(int)ShipType.SizeOfShipType];
 
     Player playerLeft = null;
@@ -54,19 +57,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 초기화 함수
+    /// </summary>
     void Initialize()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");     // 플레이어 찾기
         playerLeft = player.GetComponent<Player>();
-        player = GameObject.FindGameObjectWithTag("Enemy");
+        player = GameObject.FindGameObjectWithTag("Enemy");                 // 적 찾기
         playerRight = player.GetComponent<Player>();
 
-        GameObject field = GameObject.FindGameObjectWithTag("PlayerField");
+        GameObject field = GameObject.FindGameObjectWithTag("PlayerField"); // 아군 필드 찾기
         fieldLeft = field.GetComponent<BattleField>();
-        field = GameObject.FindGameObjectWithTag("EnemyField");
+        field = GameObject.FindGameObjectWithTag("EnemyField");             // 적 필드 찾기
         fieldRight = field.GetComponent<BattleField>();
     }
 
+    /// <summary>
+    /// 함선 생성
+    /// </summary>
+    /// <param name="shipType">생성할 함수의 타입</param>
+    /// <returns>생성한 배</returns>
     public Ship MakeShip(ShipType shipType)
     {
         return Instantiate(ships[(int)shipType]).GetComponent<Ship>();

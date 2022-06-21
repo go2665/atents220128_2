@@ -3,15 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// 처음 그리드 그리기 위한 코드
+/// 지금은 사용 안함.
+/// </summary>
 public class Grid : MonoBehaviour
 {
+    /// <summary>
+    /// 선 프리팹
+    /// </summary>
     public GameObject lineBase = null;
+
+    /// <summary>
+    /// 글자(1개용) 프리팹
+    /// </summary>
     public GameObject letter = null;
 
-    const int gridCount = 10;               // 한 변의 그리드 칸 수
-    const int gridLineCount = gridCount+1;  // 한 변의 그리드 줄 수
-    //const int gridLineTotalCount = gridLineCount * 2;
-    //LineRenderer[] lines = new LineRenderer[gridLineTotalCount];
+    /// <summary>
+    /// 한 변의 그리드 칸 수(10x10)
+    /// </summary>
+    const int gridCount = 10;
+
+    /// <summary>
+    /// 한 변의 그리드 줄 수(칸 수보다 하나 더 많아야 한다.)
+    /// </summary>
+    const int gridLineCount = gridCount+1;
 
     private void Awake()
     {
@@ -35,6 +51,7 @@ public class Grid : MonoBehaviour
             lineRenderer.SetPosition(1, new Vector3(gridLineCount-1, 0.1f, -i));  // 도착점 설정
         }
 
+        // A~J까지 쓰기
         for (int i = 0; i < gridCount; i++)
         {
             GameObject text = Instantiate(letter, transform);
@@ -46,6 +63,7 @@ public class Grid : MonoBehaviour
             textMesh.text = c.ToString();
         }
 
+        // 1~10까지 쓰기
         for (int i = 0; i < gridCount; i++)
         {
             GameObject text = Instantiate(letter, transform);
