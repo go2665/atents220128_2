@@ -92,7 +92,6 @@ public class Ship : MonoBehaviour
         get => position;
         set
         {
-            isDeployed = true;
             position = value;
         }
     }
@@ -101,8 +100,9 @@ public class Ship : MonoBehaviour
     /// 배가 배치되었는지에 대한 프로퍼티. true면 배치되었음
     /// </summary>
     public bool IsDeployed
-    {
+    {        
         get => isDeployed;
+        set => isDeployed = value;
     }
 
     /// <summary>

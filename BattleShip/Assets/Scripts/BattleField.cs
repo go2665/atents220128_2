@@ -127,14 +127,7 @@ public class BattleField : MonoBehaviour
     /// <returns>true면 배치가능, false면 배치불가</returns>
     bool IsShipDeployment(Vector2Int pos, Ship ship, out Vector2Int[] positions)
     {
-        positions = new Vector2Int[ship.size];      // 배 크기에 맞게 할당
-
-        int index = (int)ship.Direction;
-        Vector2Int[] temp = { new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, 0), new Vector2Int(0, 1) };
-        for ( int i=0 ; i<ship.size ; i++ )
-        {
-            positions[i] = pos + temp[index] * i;   // 배가 배치될 좌표들 기록
-        }
+        positions = ShipPositions(ship, pos);   // 배가 존재하게 될 위치들 구함
 
         bool result = true;
         for (int i = 0; i < ship.size; i++)
@@ -182,6 +175,7 @@ public class BattleField : MonoBehaviour
             ship.Position = pos;
             ship.transform.position = GridToWorld(pos.x, pos.y);    // 배를 해당 그리드의 위치로 이동
             ship.gameObject.SetActive(true);                        // 배가 보이게 설정
+            ship.IsDeployed = true;
             //Debug.Log($"{ship.gameObject.name}을 ({pos.x}, {pos.y})에 배치했습니다.");
         }
     }
@@ -296,6 +290,41 @@ public class BattleField : MonoBehaviour
                 result = IsShipDeployment(pos, ship);
             } while (!result);          // 배치 가능한 위치가 잡힐 때까지 랜덤 수행
             ShipDeployment(pos, ship);  // 실제로 배 배치
+        }
+    }
+
+    Vector2Int[] ShipPositions(Ship ship, Vector2Int pos)
+    {
+        Vector2Int[] positions = new Vector2Int[ship.size];
+        int index = (int)ship.Direction;
+        Vector2Int[] temp = { new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, 0), new Vector2Int(0, 1) };
+        for (int i = 0; i < ship.size; i++)
+        {
+            positions[i] = pos + temp[index] * i;   // 배가 배치될 좌표들 기록
+        }
+
+        return positions;
+    }
+
+    void Redeployment(Ship ship)
+    {
+        Vector2Int[] positions = ShipPositions(ship, ship.Position);
+        foreach(var pos in positions)
+        {
+            field[pos.x, pos.y].exists = FieldExists.None;
+            field[pos.x, pos.y].ship = null;
+        }
+        ship.Position = Vector2Int.zero;
+        ship.IsDeployed = false;
+        ship.transform.position = Vector3.zero;
+        ship.gameObject.SetActive(false);
+    }
+
+    public void ResetDeployment()
+    {
+        foreach(var ship in ships)
+        {
+            Redeployment(ship);
         }
     }
 

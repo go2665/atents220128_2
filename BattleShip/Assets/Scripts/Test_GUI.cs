@@ -31,6 +31,10 @@ public class Test_GUI : MonoBehaviour
         {
             GameManager.Inst.FieldLeft.RandomDeployment();
         }
+        if (GUILayout.Button("함선 배치 리셋"))
+        {
+            GameManager.Inst.FieldLeft.ResetDeployment();
+        }
         GUILayout.EndArea();
     }
 }
