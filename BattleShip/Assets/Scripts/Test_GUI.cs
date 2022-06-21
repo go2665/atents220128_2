@@ -27,6 +27,10 @@ public class Test_GUI : MonoBehaviour
         {
             GameManager.Inst.FieldLeft.ShipDiploymentMode(true, ShipType.Ship2);
         }
+        if (GUILayout.Button("함선 랜덤 배치"))
+        {
+            GameManager.Inst.FieldLeft.RandomDeployment();
+        }
         GUILayout.EndArea();
     }
 }

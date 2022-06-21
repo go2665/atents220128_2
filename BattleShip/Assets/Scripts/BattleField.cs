@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -181,6 +180,8 @@ public class BattleField : MonoBehaviour
                 field[position.x, position.y].ship = ship;
             }
             ship.Position = pos;
+            ship.transform.position = GridToWorld(pos.x, pos.y);    // 배를 해당 그리드의 위치로 이동
+            ship.gameObject.SetActive(true);                        // 배가 보이게 설정
             //Debug.Log($"{ship.gameObject.name}을 ({pos.x}, {pos.y})에 배치했습니다.");
         }
     }
@@ -271,6 +272,38 @@ public class BattleField : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 랜덤으로 남은 함선 배치
+    /// </summary>
+    public void RandomDeployment()
+    {
+        foreach(Ship ship in ships)
+        {
+            if (ship.IsDeployed)    // 이미 배치된 배는 스킵
+                continue;
+
+            int rotateCount = Random.Range(0, 4);   // 4방향 중 랜덤으로 하나 선택
+            for (int i = 0; i < rotateCount; i++)
+            {
+                ship.Rotate();
+            }
+
+            bool result;
+            Vector2Int pos;
+            do
+            {
+                pos = new Vector2Int(Random.Range(0, FieldSize), Random.Range(0, FieldSize));
+                result = IsShipDeployment(pos, ship);
+            } while (!result);          // 배치 가능한 위치가 잡힐 때까지 랜덤 수행
+            ShipDeployment(pos, ship);  // 실제로 배 배치
+        }
+    }
+
+    // 그리드 좌표를 월드좌표로 변경해주는 함수
+    Vector3 GridToWorld(int x, int y)
+    {
+        return transform.position + new Vector3(x + 0.5f, 0.0f, -y - 0.5f);
+    }
 
     // 유니티 이벤트 함수 --------------------------------------------------------------------------
     private void Awake()
@@ -353,8 +386,8 @@ public class BattleField : MonoBehaviour
             {
                 // 좌표 값이 변경되었을 때만 실행
                 //Debug.Log($"2D coord : {coord}");
-                selectedShip.transform.position = transform.position + new Vector3(coord.x + 0.5f, 0.0f, -coord.y - 0.5f);  // 배치 중인 배의 위치를 그리드 좌표에 맞춰 이동
-
+                //selectedShip.transform.position = transform.position + new Vector3(coord.x + 0.5f, 0.0f, -coord.y - 0.5f);  
+                selectedShip.transform.position = GridToWorld(coord.x, coord.y);    // 배치 중인 배의 위치를 그리드 좌표에 맞춰 이동
                 Vector2Int[] temp = new Vector2Int[selectedShip.size];
                 bool deployable = IsShipDeployment(coord, selectedShip, out temp);  // 백가 배치 가능한지 확인
                 //Debug.Log($"result : {success}");
