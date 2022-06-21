@@ -19,6 +19,11 @@ public class Ship : MonoBehaviour
     /// </summary>
     public ShipType shipType = ShipType.Ship2;
 
+    public Material normal = null;
+    public Material error = null;
+
+    MeshRenderer meshRenderer = null;
+
     /// <summary>
     /// 배가 바라보는 방향. 북쪽을 바라보는 것이 디폴트
     /// </summary>
@@ -35,6 +40,8 @@ public class Ship : MonoBehaviour
     /// 배의 필드 상 위치. 
     /// </summary>
     Vector2Int position = Vector2Int.zero;
+
+    
 
     // 읽기 전용 -----------------------------------------------------------------------------------
     /// <summary>
@@ -102,7 +109,7 @@ public class Ship : MonoBehaviour
         get => direction;   //set은 Rotate로 실행
     }
 
-    public bool MouseFollowMode { get; set; }
+    //public bool MouseFollowMode { get; set; }
 
     // 주요 함수 -----------------------------------------------------------------------------------
     /// <summary>
@@ -114,6 +121,8 @@ public class Ship : MonoBehaviour
         hp = size;
         hittedPoint = new bool[size];
         dirCount = System.Enum.GetValues(typeof(ShipDirection)).Length;
+
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
     }
 
     /// <summary>
@@ -122,9 +131,11 @@ public class Ship : MonoBehaviour
     /// <param name="clockwise">회전방향. true면 시계방향</param>
     public void Rotate(bool clockwise = true)
     {
+        float angle = 0.0f;
         if (clockwise)
         {
             direction = (ShipDirection)(((int)direction + 1) % dirCount);
+            angle = 90.0f;
         }
         else
         {
@@ -137,8 +148,31 @@ public class Ship : MonoBehaviour
             {
                 direction = (ShipDirection)decrease;
             }
+            angle = -90.0f;
         }
+        this.transform.Rotate(0, angle, 0);
         Debug.Log($"{gameObject.name} 함선은 {System.Enum.GetValues(typeof(ShipDirection)).GetValue((int)direction)}쪽을 바라봅니다.");
+    }
+        
+    public void SetMaterial(bool isNormal)
+    {
+        if (meshRenderer != null)
+        {
+            if (isNormal)
+            {
+                if (meshRenderer.material != normal)
+                {
+                    meshRenderer.material = normal;
+                }
+            }
+            else
+            {
+                if (meshRenderer.material != error)
+                {
+                    meshRenderer.material = error;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -161,13 +195,13 @@ public class Ship : MonoBehaviour
         Initialize(size);
     }
 
-    private void Update()
-    {
-        if( MouseFollowMode )
-        {
-            Vector2 mousePos = Mouse.current.position.ReadValue();
-            Vector3 newPos = Camera.main.ScreenToWorldPoint(mousePos);
-            transform.position = new Vector3(newPos.x, 0.0f, newPos.z);
-        }
-    }
+    //private void Update()
+    //{
+    //    if( MouseFollowMode )
+    //    {
+    //        Vector2 mousePos = Mouse.current.position.ReadValue();
+    //        Vector3 newPos = Camera.main.ScreenToWorldPoint(mousePos);
+    //        transform.position = new Vector3(newPos.x, 0.0f, newPos.z);
+    //    }
+    //}
 }

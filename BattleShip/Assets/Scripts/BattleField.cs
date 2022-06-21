@@ -92,6 +92,8 @@ public class BattleField : MonoBehaviour
             ships[i].gameObject.transform.parent = transform;
             ships[i].gameObject.SetActive(false);
         }
+
+        ShipDiploymentMode(false);
     }
 
     /// <summary>
@@ -207,15 +209,6 @@ public class BattleField : MonoBehaviour
         }
     }
 
-    public void ShipSelect(ShipType shipType)
-    {
-        if (shipType != ShipType.SizeOfShipType)
-        {
-            selectedShip = ships[(int)shipType];
-            selectedShip.gameObject.SetActive(true);
-            selectedShip.MouseFollowMode = true;
-        }
-    }
 
     // 유니티 이벤트 함수 --------------------------------------------------------------------------
     private void Awake()
@@ -232,31 +225,97 @@ public class BattleField : MonoBehaviour
     {
         inputActions.BattleField.Enable();
         inputActions.BattleField.Click.performed += OnBattleFieldClick;
+        inputActions.BattleField.MouseMove.performed += OnBattleFieldMouseMove;
+        inputActions.BattleField.MouseWheel.performed += OnBattleFieldMouseWheel;
     }
-
+    
     private void OnDisable()
     {
+        inputActions.BattleField.MouseWheel.performed -= OnBattleFieldMouseWheel;
+        inputActions.BattleField.MouseMove.performed -= OnBattleFieldMouseMove;
         inputActions.BattleField.Click.performed -= OnBattleFieldClick;
         inputActions.BattleField.Disable();
     }
 
+    private void OnBattleFieldMouseWheel(InputAction.CallbackContext context)
+    {
+        float whellDelta = context.ReadValue<float>();
+        //Debug.Log($"Wheel : {whellDelta}"); 
+
+        selectedShip.Rotate(whellDelta < 0.0f);
+        Vector2Int[] temp = new Vector2Int[selectedShip.size];
+        bool deployable = IsShipDeployment(oldMouseCoord, selectedShip, out temp);        
+        selectedShip.SetMaterial(deployable);
+    }
+
     private void OnBattleFieldClick(InputAction.CallbackContext context)
     {
-        Vector2 pos = Mouse.current.position.ReadValue();
+        //Vector2 pos = Mouse.current.position.ReadValue();
+        //Ray ray = Camera.main.ScreenPointToRay(pos);
+        //RaycastHit hit;
+        //if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField"))
+        //    && hit.collider.gameObject == this.gameObject )
+        //{
+        //    //Debug.Log($"Hit : {hit.point}");
+        //    //Debug.Log($"Local origin : {transform.position}");
+        //    //Debug.Log($"Diff :{hit.point - transform.position}");
+
+        //    Vector3 diff = hit.point - transform.position;
+        //    Vector2Int coord = new Vector2Int((int)diff.x, (int)-diff.z);
+        //    Debug.Log($"2D coord : {coord}");
+        //}        
+    }
+
+    Vector2Int oldMouseCoord = -Vector2Int.one;
+
+    private void OnBattleFieldMouseMove(InputAction.CallbackContext context)
+    {
+        Vector2 pos = context.ReadValue<Vector2>();
         Ray ray = Camera.main.ScreenPointToRay(pos);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField"))
-            && hit.collider.gameObject == this.gameObject )
+            && hit.collider.gameObject == this.gameObject)
         {
-            //Debug.Log($"Hit : {hit.point}");
-            //Debug.Log($"Local origin : {transform.position}");
-            //Debug.Log($"Diff :{hit.point - transform.position}");
-
             Vector3 diff = hit.point - transform.position;
             Vector2Int coord = new Vector2Int((int)diff.x, (int)-diff.z);
-            Debug.Log($"2D coord : {coord}");
-        }        
+            if (coord != oldMouseCoord)
+            {
+                //Debug.Log($"2D coord : {coord}");
+                selectedShip.transform.position = transform.position + new Vector3(coord.x + 0.5f, 0.0f, -coord.y - 0.5f);
+
+                Vector2Int[] temp = new Vector2Int[selectedShip.size];
+                bool deployable = IsShipDeployment(coord, selectedShip, out temp);
+                //Debug.Log($"result : {success}");
+                selectedShip.SetMaterial(deployable);
+
+                oldMouseCoord = coord;
+            }
+        }
+        else
+        {
+            Vector3 newPos = Camera.main.ScreenToWorldPoint(pos);
+            selectedShip.transform.position = new Vector3(newPos.x, 0, newPos.z);
+            selectedShip.SetMaterial(false);
+        }
     }
 
-
+    public void ShipDiploymentMode(bool on, ShipType shipType = ShipType.SizeOfShipType)
+    {
+        if(on)
+        {
+            inputActions.BattleField.MouseMove.Enable();
+            inputActions.BattleField.MouseWheel.Enable();
+            if (shipType != ShipType.SizeOfShipType)
+            {
+                selectedShip = ships[(int)shipType];
+                selectedShip.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            inputActions.BattleField.MouseWheel.Disable();
+            inputActions.BattleField.MouseMove.Disable();
+            oldMouseCoord = -Vector2Int.one;
+        }
+    }
 }

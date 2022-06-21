@@ -27,7 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6544121372981754315}
   m_Father: {fileID: 0}
@@ -47,6 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 3
   shipType: 2
+  normal: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  error: {fileID: 2100000, guid: 1016ae062057735419eadd08c73718db, type: 2}
 --- !u!1 &6544121372981754312
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,8 +75,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6544121372981754312}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -1.5}
-  m_LocalScale: {x: 1, y: 1.5, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 0.8, y: 1, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6544121371281450030}
