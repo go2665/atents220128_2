@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class ReadyCanvas : MonoBehaviour
+public class Canvas_Ready : MonoBehaviour
 {
     private void Start()
     {

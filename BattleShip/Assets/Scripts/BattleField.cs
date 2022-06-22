@@ -248,6 +248,7 @@ public class BattleField : MonoBehaviour
                 {
                     // 해당 배가 이미 배치되지 않았을 때만 실행
                     selectedShip = target;
+                    selectedShip.gameObject.transform.position = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
                     selectedShip.gameObject.SetActive(true);        // 대상을 배치중인 배로 설정하고 enable하기
                 }
             }
