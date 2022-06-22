@@ -81,17 +81,6 @@ public class BattleField : MonoBehaviour
     //InputActionMaps inputActions = null;
 
 
-    FieldState fieldMode = FieldState.Ready;
-    public FieldState FieldMode
-    {
-        get => fieldMode;
-        set
-        {
-            fieldMode = value;
-            Debug.Log($"FieldState change: {fieldMode}");
-        }
-    }
-
 
     // 프로퍼티 ------------------------------------------------------------------------------------
     /// <summary>
@@ -260,22 +249,14 @@ public class BattleField : MonoBehaviour
                     // 해당 배가 이미 배치되지 않았을 때만 실행
                     selectedShip = target;
                     selectedShip.gameObject.SetActive(true);        // 대상을 배치중인 배로 설정하고 enable하기
-
-                    FieldMode = FieldState.ShipDeployment_HoldShip;
-
-                    //inputActions.BattleField.MouseMove.Enable();    // 마우스 입력(휠, 움직임) 활성화
-                    //inputActions.BattleField.MouseWheel.Enable();                    
                 }
             }
         }
         else
         {
-            // 배치모드를 끌 경우            
-            //inputActions.BattleField.MouseWheel.Disable();  // 마우스 입력(휠, 움직임) 비할성화
-            //inputActions.BattleField.MouseMove.Disable();
+            // 배치모드를 끌 경우
             oldMouseCoord = -Vector2Int.one;                // oldMouseCoord를 불가능한 값으로 설정
             selectedShip = null;                            // 배치중인 배도 null로 설정
-            FieldMode = FieldState.ShipDeployment;
         }
     }
 
@@ -406,6 +387,16 @@ public class BattleField : MonoBehaviour
         else
         {
             // 선택된 배가 없을 때 배치된 배를 클릭하면 재 배치에 들어간다.
+            Ray ray = Camera.main.ScreenPointToRay(position);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("Ship")))
+            {
+                Ship ship = hit.collider.GetComponentInParent<Ship>();
+                CancelDeployment(ship);
+                ShipDiploymentMode(true, ship.shipType);
+                Vector3 newPos = Camera.main.ScreenToWorldPoint(position); 
+                selectedShip.transform.position = new Vector3(newPos.x, 0, newPos.z);
+            }
         }
     }
 
@@ -429,7 +420,6 @@ public class BattleField : MonoBehaviour
                 {
                     // 좌표 값이 변경되었을 때만 실행
                     //Debug.Log($"2D coord : {coord}");
-                    //selectedShip.transform.position = transform.position + new Vector3(coord.x + 0.5f, 0.0f, -coord.y - 0.5f);  
                     selectedShip.transform.position = GridToWorld(coord.x, coord.y);    // 배치 중인 배의 위치를 그리드 좌표에 맞춰 이동
                     Vector2Int[] temp = new Vector2Int[selectedShip.size];
                     bool deployable = IsShipDeployment(coord, selectedShip, out temp);  // 백가 배치 가능한지 확인

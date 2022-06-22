@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1366043404174276833}
   - component: {fileID: 1366043404174276844}
   - component: {fileID: 1366043404174276835}
-  m_Layer: 0
+  - component: {fileID: 3562494279237702001}
+  m_Layer: 7
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3562494279237702001
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366043404174276832}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5000001
+  m_Height: 2.0000005
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1366043405820465498
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1366043405820465499}
   - component: {fileID: 8986915301675005126}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ship5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
