@@ -78,7 +78,19 @@ public class BattleField : MonoBehaviour
     /// <summary>
     /// 인풋 시스템 액션 맵
     /// </summary>
-    InputActionMaps inputActions = null; 
+    //InputActionMaps inputActions = null;
+
+
+    FieldState fieldMode = FieldState.Ready;
+    public FieldState FieldMode
+    {
+        get => fieldMode;
+        set
+        {
+            fieldMode = value;
+            Debug.Log($"FieldState change: {fieldMode}");
+        }
+    }
 
 
     // 프로퍼티 ------------------------------------------------------------------------------------
@@ -249,20 +261,21 @@ public class BattleField : MonoBehaviour
                     selectedShip = target;
                     selectedShip.gameObject.SetActive(true);        // 대상을 배치중인 배로 설정하고 enable하기
 
-                    inputActions.BattleField.MouseMove.Enable();    // 마우스 입력 전부 활성화
-                    inputActions.BattleField.MouseWheel.Enable();
-                    inputActions.BattleField.Click.Enable();
+                    FieldMode = FieldState.ShipDeployment_HoldShip;
+
+                    //inputActions.BattleField.MouseMove.Enable();    // 마우스 입력(휠, 움직임) 활성화
+                    //inputActions.BattleField.MouseWheel.Enable();                    
                 }
             }
         }
         else
         {
-            // 배치모드를 끌 경우
-            inputActions.BattleField.Click.Disable();       // 마우스 입력 전부 비할성화
-            inputActions.BattleField.MouseWheel.Disable();
-            inputActions.BattleField.MouseMove.Disable();
+            // 배치모드를 끌 경우            
+            //inputActions.BattleField.MouseWheel.Disable();  // 마우스 입력(휠, 움직임) 비할성화
+            //inputActions.BattleField.MouseMove.Disable();
             oldMouseCoord = -Vector2Int.one;                // oldMouseCoord를 불가능한 값으로 설정
             selectedShip = null;                            // 배치중인 배도 null로 설정
+            FieldMode = FieldState.ShipDeployment;
         }
     }
 
@@ -293,10 +306,16 @@ public class BattleField : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 배가 배치되었을 때 차지할 그리드의 좌표들을 리턴하는 함수
+    /// </summary>
+    /// <param name="ship">위치를 찾을 배</param>
+    /// <param name="pos">배가 배치될 위치</param>
+    /// <returns>배가 pos 위치에 배치되면 차지하게 될 그리드 좌표들</returns>
     Vector2Int[] ShipPositions(Ship ship, Vector2Int pos)
     {
         Vector2Int[] positions = new Vector2Int[ship.size];
-        int index = (int)ship.Direction;
+        int index = (int)ship.Direction;    // 배 방향에 맞춰 어느 그리드를 가질지 결정
         Vector2Int[] temp = { new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, 0), new Vector2Int(0, 1) };
         for (int i = 0; i < ship.size; i++)
         {
@@ -306,71 +325,58 @@ public class BattleField : MonoBehaviour
         return positions;
     }
 
-    void Redeployment(Ship ship)
+    /// <summary>
+    /// 배 한척을 배치 취소 하는 함수
+    /// </summary>
+    /// <param name="ship">배치를 취소할 함선</param>
+    void CancelDeployment(Ship ship)
     {
         Vector2Int[] positions = ShipPositions(ship, ship.Position);
         foreach(var pos in positions)
         {
-            field[pos.x, pos.y].exists = FieldExists.None;
+            field[pos.x, pos.y].exists = FieldExists.None;  // 필드에 설정되어 있던 값들 제거
             field[pos.x, pos.y].ship = null;
         }
-        ship.Position = Vector2Int.zero;
+        ship.Position = Vector2Int.zero;        // 배에 기록된 정보들도 초기화
         ship.IsDeployed = false;
         ship.transform.position = Vector3.zero;
         ship.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 모든 배의 배치를 취소하는 함수
+    /// </summary>
     public void ResetDeployment()
     {
         foreach(var ship in ships)
         {
-            Redeployment(ship);
+            CancelDeployment(ship);
         }
     }
 
-    // 그리드 좌표를 월드좌표로 변경해주는 함수
+    /// <summary>
+    /// 그리드 좌표를 월드좌표로 변경해주는 함수 
+    /// </summary>
+    /// <param name="x">그리드의 x</param>
+    /// <param name="y">그리드의 y</param>
+    /// <returns>대상 그리드의 월드 좌표</returns>
     Vector3 GridToWorld(int x, int y)
     {
         return transform.position + new Vector3(x + 0.5f, 0.0f, -y - 0.5f);
     }
 
-    // 유니티 이벤트 함수 --------------------------------------------------------------------------
-    private void Awake()
-    {
-        inputActions = new InputActionMaps();
-    }
 
-    private void Start()
-    {
-        Initialize();
-    }
 
-    private void OnEnable()
-    {
-        inputActions.BattleField.Enable();
-        inputActions.BattleField.Click.performed += OnBattleFieldClick;
-        inputActions.BattleField.MouseMove.performed += OnBattleFieldMouseMove;
-        inputActions.BattleField.MouseWheel.performed += OnBattleFieldMouseWheel;
-    }
-    
-    private void OnDisable()
-    {
-        inputActions.BattleField.MouseWheel.performed -= OnBattleFieldMouseWheel;
-        inputActions.BattleField.MouseMove.performed -= OnBattleFieldMouseMove;
-        inputActions.BattleField.Click.performed -= OnBattleFieldClick;
-        inputActions.BattleField.Disable();
-    }
-
+    // 입력 처리 함수 ------------------------------------------------------------------------------
     /// <summary>
     /// 마우스 휠을 움직였을 때 실행될 함수
     /// </summary>
-    /// <param name="context"></param>
-    private void OnBattleFieldMouseWheel(InputAction.CallbackContext context)
+    /// <param name="whellDelta">마우스 휠이 움직인 정도. 올리면 120, 내리면 -120</param>
+    public void OnMouseWheel(float whellDelta)
     {
         // 휠 움직임 받아오기
         if (selectedShip != null)
         {
-            float whellDelta = context.ReadValue<float>();
             //Debug.Log($"Wheel : {whellDelta}"); 
             selectedShip.Rotate(whellDelta < 0.0f); // 받아온 값을 기준으로 회전(휠을 올리면 시계방향, 휠을 내리면 반시계밯향)            
             bool deployable = IsShipDeployment(oldMouseCoord, selectedShip);    // 배가 배치 가능한지 확인
@@ -381,56 +387,73 @@ public class BattleField : MonoBehaviour
     /// <summary>
     /// 마우스를 클릭했을 때 실행될 함수
     /// </summary>
-    /// <param name="context"></param>
-    private void OnBattleFieldClick(InputAction.CallbackContext context)
+    /// <param name="position">마우스 클릭한 좌표(스크린좌표)</param>
+    public void OnClick(Vector2 position)
     {
-        Vector2 pos = Mouse.current.position.ReadValue();
-        Ray ray = Camera.main.ScreenPointToRay(pos);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField"))
-            && hit.collider.gameObject == this.gameObject )
+        if (selectedShip != null)
         {
-            // 내 필드를 클릭했을 때만 동작
-            ShipDeployment(oldMouseCoord, selectedShip);    // 배치중인 배를 마우스가 마지막에 있었던 그리드에 배치
-            ShipDiploymentMode(false);                      // 배치모드 종료
-        }        
-    }
-    
-    /// <summary>
-    /// 마우스가 움직일 때 실행될 함수
-    /// </summary>
-    /// <param name="context"></param>
-    private void OnBattleFieldMouseMove(InputAction.CallbackContext context)
-    {
-        Vector2 pos = context.ReadValue<Vector2>();
-        Ray ray = Camera.main.ScreenPointToRay(pos);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField"))
-            && hit.collider.gameObject == this.gameObject)
-        {
-            // 내 필드위에서 마우스를 움직였을 때만 동작
-            Vector3 diff = hit.point - transform.position;
-            Vector2Int coord = new Vector2Int((int)diff.x, (int)-diff.z);   // 스크린좌표를 그리드 좌표로 변경
-            if (coord != oldMouseCoord)
+            // 함선 배치용 작업
+            Ray ray = Camera.main.ScreenPointToRay(position);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField"))
+                && hit.collider.gameObject == this.gameObject)  // 입력은 왼쪽 필드만 받는다.(내 필드를 클릭했다.)
             {
-                // 좌표 값이 변경되었을 때만 실행
-                //Debug.Log($"2D coord : {coord}");
-                //selectedShip.transform.position = transform.position + new Vector3(coord.x + 0.5f, 0.0f, -coord.y - 0.5f);  
-                selectedShip.transform.position = GridToWorld(coord.x, coord.y);    // 배치 중인 배의 위치를 그리드 좌표에 맞춰 이동
-                Vector2Int[] temp = new Vector2Int[selectedShip.size];
-                bool deployable = IsShipDeployment(coord, selectedShip, out temp);  // 백가 배치 가능한지 확인
-                //Debug.Log($"result : {success}");
-                selectedShip.SetMaterial(deployable);       // 배치 가능 여부에 따라 머티리얼 변경
-
-                oldMouseCoord = coord;                      // 그리드 좌표 기록
+                // 내 필드를 클릭했을 때만 동작
+                ShipDeployment(oldMouseCoord, selectedShip);    // 배치중인 배를 마우스가 마지막에 있었던 그리드에 배치
+                ShipDiploymentMode(false);                      // 배치모드 종료
             }
         }
         else
         {
-            // 내 필드 밖에서 마우스를 움직였을 때
-            Vector3 newPos = Camera.main.ScreenToWorldPoint(pos);   // 스크린 좌표를 월드 좌표로 변경하고
-            selectedShip.transform.position = new Vector3(newPos.x, 0, newPos.z);   // 배의 위치를 이동
-            selectedShip.SetMaterial(false);    // 머티리얼은 무조건 error로 설정
+            // 선택된 배가 없을 때 배치된 배를 클릭하면 재 배치에 들어간다.
         }
-    }    
+    }
+
+    /// <summary>
+    /// 마우스가 움직일 때 실행될 함수
+    /// </summary>
+    /// <param name="position">마우스 위치 좌표(스크린좌표)</param>
+    public void OnMouseMove(Vector2 position)
+    {
+        if (selectedShip != null)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(position);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField"))
+                && hit.collider.gameObject == this.gameObject)
+            {
+                // 내 필드위에서 마우스를 움직였을 때만 동작
+                Vector3 diff = hit.point - transform.position;
+                Vector2Int coord = new Vector2Int((int)diff.x, (int)-diff.z);   // 스크린좌표를 그리드 좌표로 변경
+                if (coord != oldMouseCoord)
+                {
+                    // 좌표 값이 변경되었을 때만 실행
+                    //Debug.Log($"2D coord : {coord}");
+                    //selectedShip.transform.position = transform.position + new Vector3(coord.x + 0.5f, 0.0f, -coord.y - 0.5f);  
+                    selectedShip.transform.position = GridToWorld(coord.x, coord.y);    // 배치 중인 배의 위치를 그리드 좌표에 맞춰 이동
+                    Vector2Int[] temp = new Vector2Int[selectedShip.size];
+                    bool deployable = IsShipDeployment(coord, selectedShip, out temp);  // 백가 배치 가능한지 확인
+                                                                                        //Debug.Log($"result : {success}");
+                    selectedShip.SetMaterial(deployable);       // 배치 가능 여부에 따라 머티리얼 변경
+
+                    oldMouseCoord = coord;                      // 그리드 좌표 기록
+                }
+            }
+            else
+            {
+                // 내 필드 밖에서 마우스를 움직였을 때
+                Vector3 newPos = Camera.main.ScreenToWorldPoint(position);   // 스크린 좌표를 월드 좌표로 변경하고
+                selectedShip.transform.position = new Vector3(newPos.x, 0, newPos.z);   // 배의 위치를 이동
+                selectedShip.SetMaterial(false);    // 머티리얼은 무조건 error로 설정
+            }
+        }
+    }
+
+    // 유니티 이벤트 함수 --------------------------------------------------------------------------
+    private void Start()
+    {
+        Initialize();
+    }
+
+       
 }

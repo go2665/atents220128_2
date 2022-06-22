@@ -15,3 +15,14 @@ public enum ShipType : byte
     Ship2 = 4,      // 사이즈2    
     SizeOfShipType
 }
+
+/// <summary>
+/// BattleField의 상태를 나타낼 enum
+/// </summary>
+public enum FieldState
+{
+    Ready = 0,                  // 대기 모드(처음 시작했을 때)
+    ShipDeployment,             // 함선 배치모드
+    ShipDeployment_HoldShip,    // 함선 배치모드(배를 들고 있는 상태)
+    GamePlay                    // 게임 플레이 모드
+}

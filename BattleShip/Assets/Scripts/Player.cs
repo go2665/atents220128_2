@@ -115,6 +115,11 @@ public class Player : MonoBehaviour
         isTurnActionFinish = false;
     }
 
+    public bool IsMyField(BattleField field)
+    {
+        return (myField == field);
+    }
+
     // 유니티 이벤트 함수 --------------------------------------------------------------------------
     private void Start()
     {

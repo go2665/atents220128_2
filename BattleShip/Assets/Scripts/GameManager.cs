@@ -71,6 +71,9 @@ public class GameManager : MonoBehaviour
         fieldLeft = field.GetComponent<BattleField>();
         field = GameObject.FindGameObjectWithTag("EnemyField");             // 적 필드 찾기
         fieldRight = field.GetComponent<BattleField>();
+
+        playerLeft.Initialize(fieldLeft, fieldRight);
+        playerRight.Initialize(fieldRight, fieldLeft);
     }
 
     /// <summary>
