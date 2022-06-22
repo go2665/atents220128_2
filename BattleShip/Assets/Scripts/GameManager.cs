@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     BattleField fieldLeft = null;
     BattleField fieldRight = null;
 
+    GameState state = GameState.Ready;
+
     public Player PlayerLeft
     {
         get => playerLeft;
@@ -84,5 +86,23 @@ public class GameManager : MonoBehaviour
     public Ship MakeShip(ShipType shipType)
     {
         return Instantiate(ships[(int)shipType]).GetComponent<Ship>();
+    }
+
+
+    public void StateChange(GameState newState)
+    {
+        switch (newState)
+        {
+            case GameState.Ready:   // 할 일 없음
+                break;
+            case GameState.ShipDeployment:
+                break;
+            case GameState.Battle:
+                break;
+            case GameState.GameOver:
+                break;
+            default:
+                break;
+        }
     }
 }

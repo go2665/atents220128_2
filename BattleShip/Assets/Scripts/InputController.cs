@@ -19,7 +19,7 @@ public class InputController : MonoBehaviour
     private void OnEnable()
     {
         inputActions.BattleField.Enable();
-        inputActions.BattleField.Click.performed += OnClick;
+        inputActions.BattleField.MouseClick.performed += OnClick;
         inputActions.BattleField.MouseMove.performed += OnMouseMove;
         inputActions.BattleField.MouseWheel.performed += OnMouseWheel;
     }
@@ -28,7 +28,7 @@ public class InputController : MonoBehaviour
     {
         inputActions.BattleField.MouseWheel.performed -= OnMouseWheel;
         inputActions.BattleField.MouseMove.performed -= OnMouseMove;
-        inputActions.BattleField.Click.performed -= OnClick;
+        inputActions.BattleField.MouseClick.performed -= OnClick;
         inputActions.BattleField.Disable();
     }
 

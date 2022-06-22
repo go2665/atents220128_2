@@ -26,3 +26,14 @@ public enum FieldState
     ShipDeployment_HoldShip,    // 함선 배치모드(배를 들고 있는 상태)
     GamePlay                    // 게임 플레이 모드
 }
+
+
+public enum GameState
+{
+    Ready = 0,
+    ShipDeployment,
+    Battle,
+    GameOver
+}
+
+// 게임시작 -> Ready상태 -> 다음 버튼 누르기 -> 함선배치 상태 -> 내 배치가 끝나면 자동으로 적 함선배치 -> 전투 시작(턴 진행) -> 한쪽이 죽으면 GameOver 상태
