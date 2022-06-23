@@ -12,9 +12,4 @@ public class Test_Attack : MonoBehaviour
         GameManager.Inst.StateChange(GameState.Battle);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -40,11 +40,6 @@ public class Ship : MonoBehaviour
     ShipDirection direction = ShipDirection.NORTH;
 
     /// <summary>
-    /// 피격당한 위치(맞았으면 true, 아니면 false). 현재 사용하지 않음
-    /// </summary>
-    bool[] hittedPoint = null;
-
-    /// <summary>
     /// 배의 HP.
     /// </summary>
     int hp = 0;
@@ -81,7 +76,7 @@ public class Ship : MonoBehaviour
     /// <summary>
     /// enum Direction의 개수 
     /// </summary>
-    int dirCount = 4;
+    private int dirCount = 4;
 
     // 프로퍼티 ------------------------------------------------------------------------------------
     /// <summary>
@@ -147,7 +142,6 @@ public class Ship : MonoBehaviour
     {
         size = Mathf.Clamp(newSize, MinSize, MaxSize);
         hp = size;
-        hittedPoint = new bool[size];
         dirCount = System.Enum.GetValues(typeof(ShipDirection)).Length;        
     }
 
@@ -157,7 +151,7 @@ public class Ship : MonoBehaviour
     /// <param name="clockwise">회전방향. true면 시계방향</param>
     public void Rotate(bool clockwise = true)
     {
-        float angle = 0.0f; // 매시 회전용 각도
+        float angle; // 매시 회전용 각도
         if (clockwise)
         {
             direction = (ShipDirection)(((int)direction + 1) % dirCount);

@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public GameObject MakeBombMark(bool isSuccess)
     {
-        GameObject obj = null;
+        GameObject obj;
         if (isSuccess)
         {
             obj = Instantiate(bombMark_Success);
@@ -166,8 +166,8 @@ public class GameManager : MonoBehaviour
         state = newState;
     }
 
-    //public GameObject GetCurrentCanvas()
-    //{
-    //    return ;
-    //}
+    public GameObject GetCurrentCanvas()
+    {
+        return FindObjectOfType<Canvas_Battle>().gameObject;
+    }
 }

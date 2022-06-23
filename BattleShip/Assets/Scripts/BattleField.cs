@@ -48,17 +48,17 @@ public class BattleField : MonoBehaviour
     /// <summary>
     /// 필드. 특정 좌표에 배치된 오브젝트 정보 기록(확인용)
     /// </summary>
-    FieldCell[,] field = new FieldCell[FieldSize, FieldSize];
-
-    /// <summary>
-    /// 필드에 배치된 가라앉지 않은 배의 수
-    /// </summary>
-    int aliveShipCount = 0;
+    readonly FieldCell[,] field = new FieldCell[FieldSize, FieldSize];
 
     /// <summary>
     /// 필드에 배치될 배
     /// </summary>
-    Ship[] ships = new Ship[ShipCount];
+    readonly Ship[] ships = new Ship[ShipCount];
+
+    /// <summary>
+    /// 필드에 배치된 가라앉지 않은 배의 수
+    /// </summary>
+    int aliveShipCount = 0;   
 
     /// <summary>
     /// 현재 배치중인 배
@@ -93,6 +93,25 @@ public class BattleField : MonoBehaviour
         get => isPlayerField;
     }
 
+    /// <summary>
+    /// 남아 있는 배의 댓수
+    /// (특정값과 액션을 묶어주기 위한 private 프로퍼티)
+    /// </summary>
+    private int AliveShipCount
+    {
+        get => aliveShipCount;
+        set
+        {
+            aliveShipCount = value;
+            OnAliveShipCountChange?.Invoke(aliveShipCount); // 값이 변하면 등록된 델리게이트 실행
+        }
+    }
+
+    // 델리게이트 ----------------------------------------------------------------------------------
+    /// <summary>
+    /// 남아 있는 배의 수가 변경될 때 실행될 델리게이트
+    /// </summary>
+    public System.Action<int> OnAliveShipCountChange;
 
     // 함수들 --------------------------------------------------------------------------------------
     /// <summary>
@@ -101,7 +120,7 @@ public class BattleField : MonoBehaviour
     /// <param name="isPplayer">플레이어의 필드인지 아닌지. true면 플레이어의 필드</param>
     public void Initialize(bool isPplayer = false)
     {
-        aliveShipCount = ShipCount;     // 시작 배 대수 설정
+        AliveShipCount = ShipCount;     // 시작 배 대수 설정
         for(int i=0;i<ShipCount;i++)
         {
             ships[i] = GameManager.Inst.MakeShip((ShipType)i);  // 배 생성
@@ -157,8 +176,7 @@ public class BattleField : MonoBehaviour
     /// <returns>true면 배치가능, false면 배치불가</returns>
     bool IsShipDeployment(Vector2Int pos, Ship ship)
     {
-        Vector2Int[] positions;
-        return IsShipDeployment(pos, ship, out positions);
+        return IsShipDeployment(pos, ship, out _);
     }
 
     /// <summary>
@@ -168,10 +186,9 @@ public class BattleField : MonoBehaviour
     /// <param name="ship">배치할 배</param>
     public void ShipDeployment(Vector2Int pos, Ship ship)
     {
-        Vector2Int[] positions = null;
-        if ( IsShipDeployment(pos, ship, out positions) )
+        if (IsShipDeployment(pos, ship, out Vector2Int[] positions))
         {
-            foreach(Vector2Int position in positions)
+            foreach (Vector2Int position in positions)
             {
                 field[position.x, position.y].exists = FieldExists.Ship;
                 field[position.x, position.y].ship = ship;
@@ -224,7 +241,7 @@ public class BattleField : MonoBehaviour
                     field[pos.x, pos.y].ship.Hit();             // 배에 데미지를 주고
                     if (field[pos.x, pos.y].ship.IsSinking)     // 배가 가라앉았는지를 확인
                     {
-                        aliveShipCount--;                       // 생존해 있는 배 수 감소
+                        AliveShipCount--;                       // 생존해 있는 배 수 감소
                         Debug.Log($"남아있는 함선의 수 : {aliveShipCount}척");
                         if(IsDepeat)
                         {
@@ -466,8 +483,7 @@ public class BattleField : MonoBehaviour
         {
             // 함선 배치용 작업
             Ray ray = Camera.main.ScreenPointToRay(position);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField"))
+            if (Physics.Raycast(ray, out RaycastHit hit, 100.0f, LayerMask.GetMask("BattleField"))
                 && hit.collider.gameObject == this.gameObject)  // 입력은 왼쪽 필드만 받는다.(내 필드를 클릭했다.)
             {
 
@@ -479,8 +495,7 @@ public class BattleField : MonoBehaviour
         {
             // 선택된 배가 없을 때 배치된 배를 클릭하면 재 배치에 들어간다.
             Ray ray = Camera.main.ScreenPointToRay(position);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("Ship")))
+            if (Physics.Raycast(ray, out RaycastHit hit, 100.0f, LayerMask.GetMask("Ship")))
             {
                 Ship ship = hit.collider.GetComponentInParent<Ship>();
                 CancelDeployment(ship);
@@ -493,14 +508,13 @@ public class BattleField : MonoBehaviour
     private void OnClick_Battle(Vector2 position)
     {
         Ray ray = Camera.main.ScreenPointToRay(position);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField")))
+        if (Physics.Raycast(ray, out RaycastHit hit, 100.0f, LayerMask.GetMask("BattleField")))
         {
             BattleField field = hit.collider.gameObject.GetComponent<BattleField>();
-            if(!field.isPlayerField)
+            if (!field.isPlayerField)
             {
                 Player player = GameManager.Inst.PlayerLeft;
-                if ( !player.IsTurnActionFinish )
+                if (!player.IsTurnActionFinish)
                 {
                     Vector2Int gridPos = field.WorldToGrid(hit.point);
                     Debug.Log($"적 필드 : {gridPos}");
@@ -515,23 +529,19 @@ public class BattleField : MonoBehaviour
         if (selectedShip != null)
         {
             Ray ray = Camera.main.ScreenPointToRay(position);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField"))
+            if (Physics.Raycast(ray, out RaycastHit hit, 100.0f, LayerMask.GetMask("BattleField"))
                 && hit.collider.gameObject == this.gameObject)
             {
                 // 내 필드위에서 마우스를 움직였을 때만 동작
                 Vector3 diff = hit.point - transform.position;
-                Vector2Int coord = new Vector2Int((int)diff.x, (int)-diff.z);   // 스크린좌표를 그리드 좌표로 변경
+                Vector2Int coord = new((int)diff.x, (int)-diff.z);   // 스크린좌표를 그리드 좌표로 변경
                 if (coord != oldMouseCoord)
                 {
                     // 좌표 값이 변경되었을 때만 실행
                     //Debug.Log($"2D coord : {coord}");
-                    selectedShip.transform.position = GridToWorld(coord.x, coord.y);    // 배치 중인 배의 위치를 그리드 좌표에 맞춰 이동
-                    Vector2Int[] temp = new Vector2Int[selectedShip.size];
-                    bool deployable = IsShipDeployment(coord, selectedShip, out temp);  // 백가 배치 가능한지 확인
-                                                                                        //Debug.Log($"result : {success}");
+                    selectedShip.transform.position = GridToWorld(coord.x, coord.y);    // 배치 중인 배의 위치를 그리드 좌표에 맞춰 이동                    
+                    bool deployable = IsShipDeployment(coord, selectedShip);            // 배가 배치 가능한지 확인                                                                                       
                     selectedShip.SetMaterial(deployable);       // 배치 가능 여부에 따라 머티리얼 변경
-
                     oldMouseCoord = coord;                      // 그리드 좌표 기록
                 }
             }

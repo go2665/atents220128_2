@@ -56,14 +56,14 @@ public class Player : MonoBehaviour
         enemyField = enemy;
 
         // 위치 정보를 가지는 원본 리스트 만들기
-        List<int> original = new List<int>(100);
+        List<int> original = new(100);
         for (int i = 0; i < 100; i++)
         {
             original.Add(i);
         }
 
         // 원본 리스트를 섞어서 만들 랜덤 리스트 만들기
-        randomList = new List<int>(100);
+        randomList = new(100);
         while (original.Count > 0)
         {
             int index = Random.Range(0, original.Count);    // 원본 리스트에서 랜덤으로 하나 선택
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
             int posValue = randomList[0];   // 랜덤 리스트의 첫번째 값 저장
             randomList.RemoveAt(0);         // 랜덤 리스트에서 첫번째 값 삭제
 
-            Vector2Int pos = new Vector2Int(posValue % BattleField.FieldSize, posValue / BattleField.FieldSize);    // 랜덤 리스트의 값을 이용해 위치로 변환
+            Vector2Int pos = new(posValue % BattleField.FieldSize, posValue / BattleField.FieldSize);    // 랜덤 리스트의 값을 이용해 위치로 변환
             enemyField.Attacked(pos);       // 해당 위치 공격
             isTurnActionFinish = true;
         }
@@ -123,8 +123,5 @@ public class Player : MonoBehaviour
     }
 
     // 유니티 이벤트 함수 --------------------------------------------------------------------------
-    private void Start()
-    {
-        //Initialize(GameManager.Inst.LeftField, GameManager.Inst.RightField);    // 초기화 함수 실행
-    }
+    
 }
