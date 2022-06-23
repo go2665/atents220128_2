@@ -73,13 +73,12 @@ public class BattleField : MonoBehaviour
     /// <summary>
     /// 그래픽 출력용 포탄
     /// </summary>     
-    List<Vector2Int> cannonballPosition = new List<Vector2Int>(FieldSize* FieldSize);
+    List<Vector2Int> bombPosition = new List<Vector2Int>(FieldSize*FieldSize);
 
     /// <summary>
-    /// 인풋 시스템 액션 맵
+    /// 플레이어의 필드인지 아닌지. true면 플레이어의 필드
     /// </summary>
-    //InputActionMaps inputActions = null;
-
+    bool isPlayerField = false;
 
 
     // 프로퍼티 ------------------------------------------------------------------------------------
@@ -90,13 +89,22 @@ public class BattleField : MonoBehaviour
     {
         get => (aliveShipCount <= 0);
     }    
-    
+
+    /// <summary>
+    /// 플레이어의 필드인지 아닌지 여부. true면 플레이어의 필드
+    /// </summary>
+    public bool IsPlayerField
+    {
+        get => isPlayerField;
+    }
+
 
     // 함수들 --------------------------------------------------------------------------------------
     /// <summary>
     /// 게임이 시작될때 실행될 초기화 함수
     /// </summary>
-    void Initialize()
+    /// <param name="isPplayer">플레이어의 필드인지 아닌지. true면 플레이어의 필드</param>
+    public void Initialize(bool isPplayer = false)
     {
         aliveShipCount = ShipCount;     // 시작 배 대수 설정
         for(int i=0;i<ShipCount;i++)
@@ -105,7 +113,7 @@ public class BattleField : MonoBehaviour
             ships[i].gameObject.transform.parent = transform;   // 필드에 배 추가
             ships[i].gameObject.SetActive(false);               // 우선 배는 안보이게 해놓기
         }
-
+        isPlayerField = isPplayer;
         ShipDiploymentMode(false);      // 배 배치모드 아님
     }
 
@@ -138,7 +146,7 @@ public class BattleField : MonoBehaviour
             if( !IsValidPosition(positions[i]) || IsShipThere(positions[i]))
             {
                 //한 칸이라도 밖으로 벗어나거나 다른배와 겹칠 경우 안됨.
-                Debug.Log($"{ship.gameObject.name}을 ({pos.x}, {pos.y})에 배치할 수 없습니다.");
+                //Debug.Log($"{ship.gameObject.name}을 ({pos.x}, {pos.y})에 배치할 수 없습니다.");
                 result = false;
                 break;
             }
@@ -178,6 +186,8 @@ public class BattleField : MonoBehaviour
             ship.gameObject.SetActive(true);                        // 배가 보이게 설정
             ship.IsDeployed = true;
             //Debug.Log($"{ship.gameObject.name}을 ({pos.x}, {pos.y})에 배치했습니다.");
+
+            ShipDiploymentMode(false);                              // 배치모드 종료
         }
     }
 
@@ -214,7 +224,7 @@ public class BattleField : MonoBehaviour
                 if(field[pos.x, pos.y].exists == FieldExists.Ship)  
                 {
                     // 배를 공격했으면
-                    Debug.Log($"{gameObject.name} : 배({pos.x},{pos.y})가 공격받았습니다.");
+                    Debug.Log($"{gameObject.name} : 배({field[pos.x, pos.y].ship.name})이 ({pos.x},{pos.y})를 공격받았습니다.");
                     field[pos.x, pos.y].ship.Hit();             // 배에 데미지를 주고
                     if (!field[pos.x, pos.y].ship.IsSinking)    // 배가 가라앉았는지를 확인
                     {
@@ -347,6 +357,17 @@ public class BattleField : MonoBehaviour
         return transform.position + new Vector3(x + 0.5f, 0.0f, -y - 0.5f);
     }
 
+    /// <summary>
+    /// 월드좌표를 그리드 좌표로 변경해주는 함수
+    /// </summary>
+    /// <param name="worldPos">변경할 월드 좌표</param>
+    /// <returns>변환 완료된 그리드 좌표</returns>
+    public Vector2Int WorldToGrid(Vector3 worldPos)
+    {
+        Vector3 diff = worldPos - transform.position;
+        return new Vector2Int((int)diff.x, (int)-diff.z);
+    }
+
 
 
     // 입력 처리 함수 ------------------------------------------------------------------------------
@@ -356,13 +377,20 @@ public class BattleField : MonoBehaviour
     /// <param name="whellDelta">마우스 휠이 움직인 정도. 올리면 120, 내리면 -120</param>
     public void OnMouseWheel(float whellDelta)
     {
-        // 휠 움직임 받아오기
-        if (selectedShip != null)
+        // 상태별로 다르게 동작하도록 변경
+        switch (GameManager.Inst.State)
         {
-            //Debug.Log($"Wheel : {whellDelta}"); 
-            selectedShip.Rotate(whellDelta < 0.0f); // 받아온 값을 기준으로 회전(휠을 올리면 시계방향, 휠을 내리면 반시계밯향)            
-            bool deployable = IsShipDeployment(oldMouseCoord, selectedShip);    // 배가 배치 가능한지 확인
-            selectedShip.SetMaterial(deployable);   // 배치 가능 여부에 따라 머티리얼 변경
+            case GameState.Ready:
+                break;
+            case GameState.ShipDeployment:
+                OnMouseWheel_ShipdeployState(whellDelta);
+                break;
+            case GameState.Battle:
+                break;
+            case GameState.GameOver:
+                break;
+            default:
+                break;
         }
     }
 
@@ -372,6 +400,62 @@ public class BattleField : MonoBehaviour
     /// <param name="position">마우스 클릭한 좌표(스크린좌표)</param>
     public void OnClick(Vector2 position)
     {
+        // 상태별로 다르게 동작하도록 변경
+        switch (GameManager.Inst.State)
+        {
+            case GameState.Ready:
+                break;
+            case GameState.ShipDeployment:
+                OnClick_ShipdeployState(position);
+                break;
+            case GameState.Battle:
+                OnClick_Battle(position);
+                break;
+            case GameState.GameOver:
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    /// <summary>
+    /// 마우스가 움직일 때 실행될 함수
+    /// </summary>
+    /// <param name="position">마우스 위치 좌표(스크린좌표)</param>
+    public void OnMouseMove(Vector2 position)
+    {
+        // 상태별로 다르게 동작하도록 변경
+        switch (GameManager.Inst.State)
+        {
+            case GameState.Ready:
+                break;
+            case GameState.ShipDeployment:
+                OnMouseMove_ShipdeployState(position);
+                break;
+            case GameState.Battle:
+                break;
+            case GameState.GameOver:
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void OnMouseWheel_ShipdeployState(float whellDelta)
+    {
+        // 휠 움직임 받아오기
+        if (selectedShip != null)
+        {
+            //Debug.Log($"Wheel : {whellDelta}"); 
+            selectedShip.Rotate(whellDelta < 0.0f); // 받아온 값을 기준으로 회전(휠을 올리면 시계방향, 휠을 내리면 반시계밯향)            
+            bool deployable = IsShipDeployment(oldMouseCoord, selectedShip);    // 배가 배치 가능한지 확인
+            selectedShip.SetMaterial(deployable);   // 배치 가능 여부에 따라 머티리얼 변경
+        }
+    }       
+
+    private void OnClick_ShipdeployState(Vector2 position)
+    {
         if (selectedShip != null)
         {
             // 함선 배치용 작업
@@ -380,9 +464,9 @@ public class BattleField : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField"))
                 && hit.collider.gameObject == this.gameObject)  // 입력은 왼쪽 필드만 받는다.(내 필드를 클릭했다.)
             {
+
                 // 내 필드를 클릭했을 때만 동작
-                ShipDeployment(oldMouseCoord, selectedShip);    // 배치중인 배를 마우스가 마지막에 있었던 그리드에 배치
-                ShipDiploymentMode(false);                      // 배치모드 종료
+                ShipDeployment(oldMouseCoord, selectedShip);    // 배치중인 배를 마우스가 마지막에 있었던 그리드에 배치                
             }
         }
         else
@@ -395,17 +479,32 @@ public class BattleField : MonoBehaviour
                 Ship ship = hit.collider.GetComponentInParent<Ship>();
                 CancelDeployment(ship);
                 ShipDiploymentMode(true, ship.shipType);
-                Vector3 newPos = Camera.main.ScreenToWorldPoint(position); 
+                Vector3 newPos = Camera.main.ScreenToWorldPoint(position);
                 selectedShip.transform.position = new Vector3(newPos.x, 0, newPos.z);
             }
         }
     }
+    private void OnClick_Battle(Vector2 position)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(position);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("BattleField")))
+        {
+            BattleField field = hit.collider.gameObject.GetComponent<BattleField>();
+            if(!field.isPlayerField)
+            {
+                Player player = GameManager.Inst.PlayerLeft;
+                if ( !player.IsTurnActionFinish )
+                {
+                    Vector2Int gridPos = field.WorldToGrid(hit.point);
+                    Debug.Log($"적 필드 : {gridPos}");
+                    player.Attack(gridPos);
+                }
+            }
+        }
+    }
 
-    /// <summary>
-    /// 마우스가 움직일 때 실행될 함수
-    /// </summary>
-    /// <param name="position">마우스 위치 좌표(스크린좌표)</param>
-    public void OnMouseMove(Vector2 position)
+    private void OnMouseMove_ShipdeployState(Vector2 position)
     {
         if (selectedShip != null)
         {
@@ -441,10 +540,5 @@ public class BattleField : MonoBehaviour
     }
 
     // 유니티 이벤트 함수 --------------------------------------------------------------------------
-    private void Start()
-    {
-        Initialize();
-    }
-
        
 }

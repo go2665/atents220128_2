@@ -9,12 +9,23 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public GameObject[] ships = new GameObject[(int)ShipType.SizeOfShipType];
 
+    /// <summary>
+    /// 포탄의 프리팹
+    /// </summary>
+    public GameObject bomb_Success = null;
+    public GameObject bomb_Fail = null;
+
     Player playerLeft = null;
     Player playerRight = null;
     BattleField fieldLeft = null;
     BattleField fieldRight = null;
 
     GameState state = GameState.Ready;
+
+    public GameState State
+    {
+        get => state;
+    }
 
     public Player PlayerLeft
     {
@@ -71,8 +82,10 @@ public class GameManager : MonoBehaviour
 
         GameObject field = GameObject.FindGameObjectWithTag("PlayerField"); // 아군 필드 찾기
         fieldLeft = field.GetComponent<BattleField>();
+        fieldLeft.Initialize(true);
         field = GameObject.FindGameObjectWithTag("EnemyField");             // 적 필드 찾기
         fieldRight = field.GetComponent<BattleField>();
+        fieldRight.Initialize();
 
         playerLeft.Initialize(fieldLeft, fieldRight);
         playerRight.Initialize(fieldRight, fieldLeft);
@@ -89,11 +102,16 @@ public class GameManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 상태 설정용 함수
+    /// </summary>
+    /// <param name="newState">새 상태</param>
     public void StateChange(GameState newState)
     {
-        switch (newState)
+        // 이전 상태가 끝나며 할 일
+        switch (state)
         {
-            case GameState.Ready:   // 할 일 없음
+            case GameState.Ready: 
                 break;
             case GameState.ShipDeployment:
                 break;
@@ -104,5 +122,21 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
+
+        // 새로운 상태로 들어가며 해야 할 일
+        switch (newState)
+        {
+            case GameState.Ready:   // 할 일 없음                
+                break;
+            case GameState.ShipDeployment:
+                break;
+            case GameState.Battle:
+                break;
+            case GameState.GameOver:
+                break;
+            default:
+                break;
+        }
+        state = newState;
     }
 }

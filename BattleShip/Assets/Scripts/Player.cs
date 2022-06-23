@@ -79,14 +79,16 @@ public class Player : MonoBehaviour
     /// <param name="pos">공격할 위치</param>
     public void Attack(Vector2Int pos)
     {
-        if (!isTurnActionFinish)
+        if (!isTurnActionFinish)  // 테스트를 위해 임시로 막음
         {
             //Debug.Log("일반 공격");
             int posValue = pos.y * BattleField.FieldSize + pos.x;   // 랜덤 리스트에서 공격할 위치를 제거하기 위해 posValue 계산
             randomList.Remove(posValue);    // 랜덤 리스트에서 이번에 공격할 위치값 제거
 
             enemyField.Attacked(pos);       // 적 필드에 공격
-            isTurnActionFinish = true;      // 한턴에 한번만 공격하도록 설정
+
+            // 테스트를 위해 임시로 막음
+            //isTurnActionFinish = true;      // 한턴에 한번만 공격하도록 설정
         }
     }
 
