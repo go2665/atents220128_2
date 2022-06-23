@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] ships = new GameObject[(int)ShipType.SizeOfShipType];
 
     /// <summary>
-    /// 포탄의 프리팹
+    /// 포탄의 프리팹들
     /// </summary>
     public GameObject bombMark_Success = null;
     public GameObject bombMark_Fail = null;
@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     BattleField fieldLeft = null;
     BattleField fieldRight = null;
 
-    TurnManager turnManager = null;
+    TurnManager turnManager = null;     // 턴 매니저
 
     GameState state = GameState.Ready;
 
@@ -44,6 +44,11 @@ public class GameManager : MonoBehaviour
     public BattleField FieldRight
     {
         get => fieldRight;
+    }
+
+    public TurnManager TurnManager
+    {
+        get => turnManager;
     }
 
     static GameManager instance = null;

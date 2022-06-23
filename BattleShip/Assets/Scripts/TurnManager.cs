@@ -30,14 +30,46 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     float countDown = 0.0f;
 
+    /// <summary>
+    /// 현재 진행중인 턴을 표시하는 프로퍼티
+    /// </summary>
+    private int CurrentTurn
+    {
+        get => currentTurn;
+        set
+        {
+            currentTurn = value;
+            OnTurnChange?.Invoke(currentTurn);  // 값이 변경될 경우 델리게이트 실행
+        }
+    }
+
+    /// <summary>
+    /// 현재 턴에서 남아있는 행동 시간을 표시하는 프로퍼티
+    /// </summary>
+    private float CountDown
+    {
+        get => countDown;
+        set
+        {
+            countDown = value;
+            OnCountDownChange?.Invoke(Mathf.Clamp(countDown / CountDownTime, 0.0f, 1.0f));  // 값이 변경될 경우 델리게이트 실행
+        }
+    }
+
+    /// <summary>
+    /// 값이 변경될 때 실행될 델리게이트들
+    /// </summary>
+    public System.Action<int> OnTurnChange;
+    public System.Action<float> OnCountDownChange;
+
     // 함수들 --------------------------------------------------------------------------------------
     /// <summary>
     /// 턴이 시작할 때 할 초기화 작업들을 실행
     /// </summary>
     void StartTurn()
     {
-        Debug.Log($"{currentTurn} 턴 시작");
-        countDown = CountDownTime;          // 카운트 다운 시간 초기화
+        Debug.Log($"{CurrentTurn} 턴 시작");
+        CountDown = CountDownTime;          // 카운트 다운 시간 초기화
         playerLeft.TurnStartReset();        // 각 플레이어들이 다시 공격 가능하도록 초기화
         playerRight.TurnStartReset();
     }
@@ -47,8 +79,8 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     void CountDownProcess()
     {
-        countDown -= Time.deltaTime;    // 지속적으로 시간 감소
-        if (countDown < 0.0f)
+        CountDown -= Time.deltaTime;    // 지속적으로 시간 감소
+        if (CountDown < 0.0f)
         {
             TimeOut();                  // 시간이 다되면 TimeOut 실행
         }
@@ -69,8 +101,8 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     void EndTurn()
     {        
-        Debug.Log($"{currentTurn} 턴 종료");
-        currentTurn++;      // 턴 수 증가
+        Debug.Log($"{CurrentTurn} 턴 종료");
+        CurrentTurn++;      // 턴 수 증가
 
         if(playerLeft.IsDepeat || playerRight.IsDepeat)
         {
@@ -89,7 +121,7 @@ public class TurnManager : MonoBehaviour
         playerLeft = GameManager.Inst.PlayerLeft;   // GameManager에서 플레이어 가져와서 설정
         playerRight = GameManager.Inst.PlayerRight;
 
-        currentTurn = 1;
+        CurrentTurn = 1;
         StartTurn();    // 첫번째 턴 시작
     }
 
