@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
             enemyField.Attacked(pos);       // 적 필드에 공격
 
             // 테스트를 위해 임시로 막음
-            //isTurnActionFinish = true;      // 한턴에 한번만 공격하도록 설정
+            isTurnActionFinish = true;      // 한턴에 한번만 공격하도록 설정
         }
     }
 

@@ -12,13 +12,15 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 포탄의 프리팹
     /// </summary>
-    public GameObject bomb_Success = null;
-    public GameObject bomb_Fail = null;
+    public GameObject bombMark_Success = null;
+    public GameObject bombMark_Fail = null;
 
     Player playerLeft = null;
     Player playerRight = null;
     BattleField fieldLeft = null;
     BattleField fieldRight = null;
+
+    TurnManager turnManager = null;
 
     GameState state = GameState.Ready;
 
@@ -89,6 +91,9 @@ public class GameManager : MonoBehaviour
 
         playerLeft.Initialize(fieldLeft, fieldRight);
         playerRight.Initialize(fieldRight, fieldLeft);
+
+        turnManager = GetComponentInChildren<TurnManager>();
+        turnManager.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -99,6 +104,25 @@ public class GameManager : MonoBehaviour
     public Ship MakeShip(ShipType shipType)
     {
         return Instantiate(ships[(int)shipType]).GetComponent<Ship>();
+    }
+
+    /// <summary>
+    /// 폭탄 표시 생성
+    /// </summary>
+    /// <param name="isSuccess"></param>
+    /// <returns></returns>
+    public GameObject MakeBombMark(bool isSuccess)
+    {
+        GameObject obj = null;
+        if (isSuccess)
+        {
+            obj = Instantiate(bombMark_Success);
+        }
+        else
+        {
+            obj = Instantiate(bombMark_Fail);
+        }
+        return obj;
     }
 
 
@@ -116,6 +140,7 @@ public class GameManager : MonoBehaviour
             case GameState.ShipDeployment:
                 break;
             case GameState.Battle:
+                turnManager.gameObject.SetActive(false);
                 break;
             case GameState.GameOver:
                 break;
@@ -131,6 +156,7 @@ public class GameManager : MonoBehaviour
             case GameState.ShipDeployment:
                 break;
             case GameState.Battle:
+                turnManager.gameObject.SetActive(true);
                 break;
             case GameState.GameOver:
                 break;
@@ -139,4 +165,9 @@ public class GameManager : MonoBehaviour
         }
         state = newState;
     }
+
+    //public GameObject GetCurrentCanvas()
+    //{
+    //    return ;
+    //}
 }

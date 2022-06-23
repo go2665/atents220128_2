@@ -72,14 +72,24 @@ public class TurnManager : MonoBehaviour
         Debug.Log($"{currentTurn} 턴 종료");
         currentTurn++;      // 턴 수 증가
 
+        if(playerLeft.IsDepeat || playerRight.IsDepeat)
+        {
+            // 게임 종료
+            GameManager.Inst.StateChange(GameState.GameOver);
+            return;
+        }
+
         StartTurn();        // 다음 턴 시작
     }
 
-    // 유니티 이벤트 함수 --------------------------------------------------------------------------
-    private void Start()
+    // 유니티 이벤트 함수 --------------------------------------------------------------------------   
+
+    private void OnEnable()
     {
         playerLeft = GameManager.Inst.PlayerLeft;   // GameManager에서 플레이어 가져와서 설정
         playerRight = GameManager.Inst.PlayerRight;
+
+        currentTurn = 1;
         StartTurn();    // 첫번째 턴 시작
     }
 

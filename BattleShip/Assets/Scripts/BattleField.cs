@@ -71,11 +71,6 @@ public class BattleField : MonoBehaviour
     Vector2Int oldMouseCoord = -Vector2Int.one;
 
     /// <summary>
-    /// 그래픽 출력용 포탄
-    /// </summary>     
-    List<Vector2Int> bombPosition = new List<Vector2Int>(FieldSize*FieldSize);
-
-    /// <summary>
     /// 플레이어의 필드인지 아닌지. true면 플레이어의 필드
     /// </summary>
     bool isPlayerField = false;
@@ -221,20 +216,31 @@ public class BattleField : MonoBehaviour
         {
             if (IsAttackable(pos))  // 공격 가능한 위치여야 한다.(이미 공격하지 않은 곳)
             {
-                if(field[pos.x, pos.y].exists == FieldExists.Ship)  
+                bool isShipHit = field[pos.x, pos.y].exists == FieldExists.Ship;
+                if (isShipHit)  
                 {
                     // 배를 공격했으면
                     Debug.Log($"{gameObject.name} : 배({field[pos.x, pos.y].ship.name})이 ({pos.x},{pos.y})를 공격받았습니다.");
                     field[pos.x, pos.y].ship.Hit();             // 배에 데미지를 주고
-                    if (!field[pos.x, pos.y].ship.IsSinking)    // 배가 가라앉았는지를 확인
+                    if (field[pos.x, pos.y].ship.IsSinking)     // 배가 가라앉았는지를 확인
                     {
                         aliveShipCount--;                       // 생존해 있는 배 수 감소
+                        Debug.Log($"남아있는 함선의 수 : {aliveShipCount}척");
+                        if(IsDepeat)
+                        {
+                            // 게임 오버
+                            Debug.Log($"{this.name}이 패배");
+                        }
                     }
                 }
                 else
                 {
                     Debug.Log($"{gameObject.name} : 바다({pos.x},{pos.y})가 공격받았습니다.");
                 }
+                GameObject bombMark = GameManager.Inst.MakeBombMark(isShipHit);
+                bombMark.transform.position = GridToWorld(pos.x, pos.y);
+                bombMark.transform.Translate(Vector3.up, Space.World);
+                bombMark.transform.parent = this.transform;
                 field[pos.x, pos.y].exists = FieldExists.CannonBall;    // 공격 받았다고 표시
             }
         }
