@@ -258,6 +258,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5038293720396415467, guid: f54625dacdb771b40a888e00115e7674, type: 3}
+      propertyPath: attackCandidateMark
+      value: 
+      objectReference: {fileID: 6741090266455999623, guid: 1ba81394dd9893f49ac4a0679a583a67, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f54625dacdb771b40a888e00115e7674, type: 3}
 --- !u!1001 &430879323
@@ -319,6 +323,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 5038293720396415467, guid: f54625dacdb771b40a888e00115e7674, type: 3}
+      propertyPath: attackCandidateMark
+      value: 
+      objectReference: {fileID: 6741090266455999623, guid: 1ba81394dd9893f49ac4a0679a583a67, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f54625dacdb771b40a888e00115e7674, type: 3}
 --- !u!43 &518287365
@@ -327,7 +335,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-85786
+  m_Name: pb_Mesh-1232
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -837,7 +845,7 @@ PrefabInstance:
       objectReference: {fileID: 108234824}
     - target: {fileID: 9076974897223758379, guid: 4ae1d5f7852049a4d86034c41b6aa43c, type: 3}
       propertyPath: CountDownTime
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ae1d5f7852049a4d86034c41b6aa43c, type: 3}
@@ -1025,7 +1033,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-86110
+  m_Name: pb_Mesh-1556
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

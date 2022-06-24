@@ -208,7 +208,7 @@ public class BattleField : MonoBehaviour
     /// </summary>
     /// <param name="pos">체크할 위치</param>
     /// <returns>true면 필드 안의 위치, false면 필드 밖의 위치</returns>
-    public bool IsValidPosition(Vector2Int pos)
+    private bool IsValidPosition(Vector2Int pos)
     {
         return (-1 < pos.x && pos.x < FieldSize && -1 < pos.y && pos.y < FieldSize);
     }
@@ -218,17 +218,23 @@ public class BattleField : MonoBehaviour
     /// </summary>
     /// <param name="pos">공격할 위치</param>
     /// <returns>공격가능하면 true, 아니면 false</returns>
-    public bool IsAttackable(Vector2Int pos)
+    private bool IsAttackable(Vector2Int pos)
     {
         return (field[pos.x, pos.y].exists != FieldExists.CannonBall);
+    }
+
+    public bool IsValidAndAttackable(Vector2Int pos)
+    {
+        return (IsValidPosition(pos) && IsAttackable(pos));
     }
 
     /// <summary>
     /// 이 필드가 공격을 받음처리
     /// </summary>
     /// <param name="pos">공격받은 위치</param>
-    public void Attacked(Vector2Int pos)
+    public Ship Attacked(Vector2Int pos)
     {
+        Ship hitShip = null;
         if (IsValidPosition(pos))   // 적절한 위치여야 한다.
         {
             if (IsAttackable(pos))  // 공격 가능한 위치여야 한다.(이미 공격하지 않은 곳)
@@ -237,12 +243,13 @@ public class BattleField : MonoBehaviour
                 if (isShipHit)  
                 {
                     // 배를 공격했으면
-                    Debug.Log($"{gameObject.name} : 배({field[pos.x, pos.y].ship.name})이 ({pos.x},{pos.y})를 공격받았습니다.");
-                    field[pos.x, pos.y].ship.Hit();             // 배에 데미지를 주고
-                    if (field[pos.x, pos.y].ship.IsSinking)     // 배가 가라앉았는지를 확인
+                    //Debug.Log($"{gameObject.name} : 배({field[pos.x, pos.y].ship.name})이 ({pos.x},{pos.y})를 공격받았습니다.");
+                    hitShip = field[pos.x, pos.y].ship;
+                    hitShip.Hit();             // 배에 데미지를 주고
+                    if (hitShip.IsSinking)     // 배가 가라앉았는지를 확인
                     {
                         AliveShipCount--;                       // 생존해 있는 배 수 감소
-                        Debug.Log($"남아있는 함선의 수 : {aliveShipCount}척");
+                        //Debug.Log($"남아있는 함선의 수 : {aliveShipCount}척");
                         if(IsDepeat)
                         {
                             // 게임 오버
@@ -252,7 +259,7 @@ public class BattleField : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"{gameObject.name} : 바다({pos.x},{pos.y})가 공격받았습니다.");
+                    //Debug.Log($"{gameObject.name} : 바다({pos.x},{pos.y})가 공격받았습니다.");
                 }
                 GameObject bombMark = GameManager.Inst.MakeBombMark(isShipHit);
                 bombMark.transform.position = GridToWorld(pos.x, pos.y);
@@ -261,6 +268,7 @@ public class BattleField : MonoBehaviour
                 field[pos.x, pos.y].exists = FieldExists.CannonBall;    // 공격 받았다고 표시
             }
         }
+        return hitShip;
     }
 
     /// <summary>
@@ -517,7 +525,7 @@ public class BattleField : MonoBehaviour
                 if (!player.IsTurnActionFinish)
                 {
                     Vector2Int gridPos = field.WorldToGrid(hit.point);
-                    Debug.Log($"적 필드 : {gridPos}");
+                    //Debug.Log($"적 필드 : {gridPos}");
                     player.Attack(gridPos);
                 }
             }

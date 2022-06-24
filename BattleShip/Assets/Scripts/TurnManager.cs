@@ -68,7 +68,7 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     void StartTurn()
     {
-        Debug.Log($"{CurrentTurn} 턴 시작");
+        //Debug.Log($"{CurrentTurn} 턴 시작");
         CountDown = CountDownTime;          // 카운트 다운 시간 초기화
         playerLeft.TurnStartReset();        // 각 플레이어들이 다시 공격 가능하도록 초기화
         playerRight.TurnStartReset();
@@ -101,7 +101,7 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     void EndTurn()
     {        
-        Debug.Log($"{CurrentTurn} 턴 종료");
+        //Debug.Log($"{CurrentTurn} 턴 종료");
         CurrentTurn++;      // 턴 수 증가
 
         if(playerLeft.IsDepeat || playerRight.IsDepeat)
@@ -129,6 +129,10 @@ public class TurnManager : MonoBehaviour
     {
         CountDownProcess(); // 카운트다운 진행
 
+        if( playerLeft.IsTurnActionFinish)
+        {
+            playerRight.ForcedAttack();
+        }
         if (playerLeft.IsTurnActionFinish && playerRight.IsTurnActionFinish)    // 두 플레이어가 모두 공격하면 다음 턴 실행
         {
             EndTurn();
