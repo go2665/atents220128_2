@@ -117,8 +117,8 @@ public class BattleField : MonoBehaviour
     /// <summary>
     /// 게임이 시작될때 실행될 초기화 함수
     /// </summary>
-    /// <param name="isPplayer">플레이어의 필드인지 아닌지. true면 플레이어의 필드</param>
-    public void Initialize(bool isPplayer = false)
+    /// <param name="isPlayer">플레이어의 필드인지 아닌지. true면 플레이어의 필드</param>
+    public void Initialize(bool isPlayer = false)
     {
         AliveShipCount = ShipCount;     // 시작 배 대수 설정
         for(int i=0;i<ShipCount;i++)
@@ -127,7 +127,9 @@ public class BattleField : MonoBehaviour
             ships[i].gameObject.transform.parent = transform;   // 필드에 배 추가
             ships[i].gameObject.SetActive(false);               // 우선 배는 안보이게 해놓기
         }
-        isPlayerField = isPplayer;
+        isPlayerField = isPlayer;
+        transform.Find("Cover").gameObject.SetActive(!isPlayerField);
+
         ShipDiploymentMode(false);      // 배 배치모드 아님
     }
 
@@ -265,11 +267,12 @@ public class BattleField : MonoBehaviour
                     {
                         AliveShipCount--;                       // 생존해 있는 배 수 감소
                         //Debug.Log($"남아있는 함선의 수 : {aliveShipCount}척");
-                        if(IsDepeat)
-                        {
-                            // 게임 오버
-                            Debug.Log($"{this.name}이 패배");
-                        }
+                        //if(IsDepeat)
+                        //{
+                        //    // 게임 오버
+                        //    //Debug.Log($"{this.name}이 패배");
+                        //    GameManager.Inst.StateChange(GameState.GameOver);
+                        //}
                     }
                 }
                 else

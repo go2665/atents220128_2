@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class Canvas_Ready : MonoBehaviour
 {
@@ -15,6 +11,6 @@ public class Canvas_Ready : MonoBehaviour
 
     private void OnGameStart()
     {
-        SceneManager.LoadScene("Scene_Main");
+        GameManager.Inst.StateChange(GameState.ShipDeployment);
     }
 }

@@ -120,13 +120,16 @@ public class Player : MonoBehaviour
     {
         if (!isTurnActionFinish)
         {
-            //Debug.Log("일반 공격");
-            int posValue = pos.y * BattleField.FieldSize + pos.x;   // 랜덤 리스트에서 공격할 위치를 제거하기 위해 posValue 계산
-            randomList.Remove(posValue);    // 랜덤 리스트에서 이번에 공격할 위치값 제거
+            if (enemyField.IsValidAndAttackable(pos))   // 중복공격 방지
+            {
+                //Debug.Log("일반 공격");
+                int posValue = pos.y * BattleField.FieldSize + pos.x;   // 랜덤 리스트에서 공격할 위치를 제거하기 위해 posValue 계산
+                randomList.Remove(posValue);    // 랜덤 리스트에서 이번에 공격할 위치값 제거
 
-            Ship hitShip = enemyField.Attacked(pos);       // 적 필드에 공격
-            CadidateProcess(hitShip, pos);  // 배가 맞았으면 공격 후보 위치 추가
-            isTurnActionFinish = true;      // 한턴에 한번만 공격하도록 설정
+                Ship hitShip = enemyField.Attacked(pos);       // 적 필드에 공격
+                CadidateProcess(hitShip, pos);  // 배가 맞았으면 공격 후보 위치 추가
+                isTurnActionFinish = true;      // 한턴에 한번만 공격하도록 설정
+            }
         }
     }
 
@@ -301,7 +304,7 @@ public class Player : MonoBehaviour
                 // 테스트용------------
                 GameObject obj = Instantiate(attackCandidateMark);
                 obj.transform.position = enemyField.transform.position + new Vector3(temp[index].x + 0.5f, 0.0f, -temp[index].y - 0.5f);
-                obj.transform.Translate(Vector3.up * 0.5f, Space.World);
+                obj.transform.Translate(Vector3.up * 0.7f, Space.World);
                 obj.SetActive(showAttackCandidate);
                 //--------------------
                 candidateMarks[temp[index]] = obj;

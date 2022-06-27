@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     public GameObject bombMark_Success = null;
     public GameObject bombMark_Fail = null;
 
+    Dictionary<GameState, GameObject> canvases = new();
+
+
     Player playerLeft = null;
     Player playerRight = null;
     BattleField fieldLeft = null;
@@ -99,6 +102,16 @@ public class GameManager : MonoBehaviour
 
         turnManager = GetComponentInChildren<TurnManager>();
         turnManager.gameObject.SetActive(false);
+
+        canvases[GameState.Ready] = FindObjectOfType<Canvas_Ready>().gameObject;
+        canvases[GameState.ShipDeployment] = FindObjectOfType<Canvas_Deployment>().gameObject;
+        canvases[GameState.Battle] = FindObjectOfType<Canvas_Battle>().gameObject;
+        canvases[GameState.GameOver] = FindObjectOfType<Canvas_Result>().gameObject;
+        foreach (var canvasPair in canvases)
+        {
+            canvasPair.Value.SetActive(false);
+        }
+        StateChange(GameState.Ready);
     }
 
     /// <summary>
@@ -138,11 +151,11 @@ public class GameManager : MonoBehaviour
     public void StateChange(GameState newState)
     {
         // 이전 상태가 끝나며 할 일
+        canvases[state].SetActive(false);
         switch (state)
         {
-            case GameState.Ready: 
-                break;
             case GameState.ShipDeployment:
+                FieldRight.RandomDeployment();
                 break;
             case GameState.Battle:
                 turnManager.gameObject.SetActive(false);
@@ -153,17 +166,27 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
+        canvases[newState].SetActive(true);
         // 새로운 상태로 들어가며 해야 할 일
         switch (newState)
         {
-            case GameState.Ready:   // 할 일 없음                
-                break;
-            case GameState.ShipDeployment:
+            case GameState.ShipDeployment:                
                 break;
             case GameState.Battle:
                 turnManager.gameObject.SetActive(true);
                 break;
             case GameState.GameOver:
+                Canvas_Result canvasResult = canvases[newState].GetComponent<Canvas_Result>();
+                if (!PlayerLeft.IsDepeat)
+                {
+                    Debug.Log("Player Win");
+                    canvasResult.OnVictory();
+                }
+                else
+                {
+                    Debug.Log("Enemy Win");
+                    canvasResult.OnDefeat();
+                }
                 break;
             default:
                 break;

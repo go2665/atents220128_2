@@ -21,7 +21,7 @@ public class Canvas_Deployment : MonoBehaviour
         buttons[4].onClick.AddListener(() => SelectShip(ShipType.Ship2));
         buttons[5].onClick.AddListener(Cancel);     // 취소
         buttons[6].onClick.AddListener(Random);     // 랜덤
-        //buttons[7].onClick.AddListener();   // 결정
+        buttons[7].onClick.AddListener(Confirm);   // 결정
 
     }
 
@@ -49,5 +49,10 @@ public class Canvas_Deployment : MonoBehaviour
         {
             buttons[i].interactable = false;
         }
+    }
+
+    void Confirm()
+    {
+        GameManager.Inst.StateChange(GameState.Battle);
     }
 }
