@@ -25,11 +25,6 @@ public class Player : MonoBehaviour
     List<int> randomList = null;
 
     /// <summary>
-    /// 마지막으로 공격한 배(명중 여부 표시 및 침몰 확인용.)
-    /// </summary>
-    Ship lastHitShip = null;
-
-    /// <summary>
     /// 마지막으로 성공한 공격 위치(좀 더 적절한 위치를 계산하기 위해 사용. 배가 침몰할 경우 INVALID_GRID_POSITION로 초기화)
     /// </summary>
     Vector2Int lastHitPosition;
@@ -37,10 +32,15 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 공격할 위치 후보. 배가 침몰할 경우 Clear
     /// </summary>
-    Stack<Vector2Int> attackCandidate = new();    
+    Stack<Vector2Int> attackCandidate = new();
 
 
     // 테스트용 변수 -------------------------------------------------------------------------------
+    /// <summary>
+    /// 공격할 위치 후보를 표시할지 여부. true면 보여준다.
+    /// </summary>
+    public bool showAttackCandidate = false;
+
     /// <summary>
     /// 공격할 위치 후보를 표시할 오브젝트(녹색판)
     /// </summary>
@@ -118,28 +118,14 @@ public class Player : MonoBehaviour
     /// <param name="pos">공격할 위치</param>
     public void Attack(Vector2Int pos)
     {
-        if (!isTurnActionFinish)  // 테스트를 위해 임시로 막음
+        if (!isTurnActionFinish)
         {
             //Debug.Log("일반 공격");
             int posValue = pos.y * BattleField.FieldSize + pos.x;   // 랜덤 리스트에서 공격할 위치를 제거하기 위해 posValue 계산
             randomList.Remove(posValue);    // 랜덤 리스트에서 이번에 공격할 위치값 제거
 
-            lastHitShip = enemyField.Attacked(pos);       // 적 필드에 공격
-            if (lastHitShip)    // 배를 맞췄다.
-            {
-                if (!lastHitShip.IsSinking)     
-                {
-                    // 배가 침몰은 안됬다.
-                    AddAttackCandidate(pos);    // 새 후보위치 추가
-                    lastHitPosition = pos;
-                }
-                else
-                {
-                    // 배가 침몰했다.
-                    lastHitPosition = INVALID_GRID_POSITION;
-                }
-            }
-            // 테스트를 위해 임시로 막음
+            Ship hitShip = enemyField.Attacked(pos);       // 적 필드에 공격
+            CadidateProcess(hitShip, pos);  // 배가 맞았으면 공격 후보 위치 추가
             isTurnActionFinish = true;      // 한턴에 한번만 공격하도록 설정
         }
     }
@@ -162,21 +148,8 @@ public class Player : MonoBehaviour
                 candidateMarks.Remove(pos);
                 // -------------------
 
-                lastHitShip = enemyField.Attacked(pos);       // 해당 위치 공격
-                if (lastHitShip)    // 배를 맞췄다.
-                {
-                    if (!lastHitShip.IsSinking)
-                    {
-                        // 배가 침몰은 안됬다.
-                        AddAttackCandidate(pos);    // 새 후보위치 추가
-                        lastHitPosition = pos;
-                    }
-                    else
-                    {
-                        // 배가 침몰했다.
-                        lastHitPosition = INVALID_GRID_POSITION;
-                    }
-                }
+                Ship hitShip = enemyField.Attacked(pos);       // 적 필드에 공격
+                CadidateProcess(hitShip, pos);  // 배가 맞았으면 공격 후보 위치 추가
                 isTurnActionFinish = true;
             }
             else
@@ -187,49 +160,79 @@ public class Player : MonoBehaviour
                 randomList.RemoveAt(0);         // 랜덤 리스트에서 첫번째 값 삭제
 
                 Vector2Int pos = new(posValue % BattleField.FieldSize, posValue / BattleField.FieldSize);    // 랜덤 리스트의 값을 이용해 위치로 변환
-                lastHitShip = enemyField.Attacked(pos);       // 해당 위치 공격
-                if (lastHitShip)    // 배를 맞췄다.
-                {
-                    if (!lastHitShip.IsSinking)
-                    {
-                        // 배가 침몰은 안됬다.
-                        AddAttackCandidate(pos);    // 새 후보위치 추가
-                        lastHitPosition = pos;
-                    }
-                    else
-                    {
-                        // 배가 침몰했다.
-                        lastHitPosition = INVALID_GRID_POSITION;
-                    }
-                }
+                Ship hitShip = enemyField.Attacked(pos);       // 적 필드에 공격
+                CadidateProcess(hitShip, pos);  // 배가 맞았으면 공격 후보 위치 추가
                 isTurnActionFinish = true;
             }            
         }
     }
 
+    /// <summary>
+    /// 턴이 시작될 때 플레이어에서 리셋할 데이터들 리셋
+    /// </summary>
+    public void TurnStartReset()
+    {
+        isTurnActionFinish = false;
+    }
+
+    /// <summary>
+    /// 내 필드인지 확인하는 함수
+    /// </summary>
+    /// <param name="field">확인할 필드</param>
+    /// <returns>true면 내 필드</returns>
+    public bool IsMyField(BattleField field)
+    {
+        return (myField == field);
+    }
+
+    /// <summary>
+    /// 배가 피격되었을 경우 후속 공격을 진행할 후보자 계산 처리
+    /// </summary>
+    /// <param name="lastHitShip">맞은 배</param>
+    /// <param name="pos">공격한 위치</param>
+    void CadidateProcess(Ship lastHitShip, Vector2Int pos)
+    {
+        if (lastHitShip)    // 맞은 배가 있다.
+        {
+            if (!lastHitShip.IsSinking)
+            {
+                // 배가 침몰은 안됬다.
+                AddAttackCandidate(pos);                    // 새 후보위치 추가                
+            }
+            else
+            {
+                // 배가 침몰했다.(후보자 스택은 OnEnemyShipDestroyed에서 자동 처리)
+                lastHitPosition = INVALID_GRID_POSITION;    // 후보자 추가 끝내기
+            }
+        }
+    }
+
+    /// <summary>
+    /// 새 공격 후보 위치 결정하기
+    /// </summary>
+    /// <param name="pos">공격한 위치</param>
     void AddAttackCandidate(Vector2Int pos)
     {
         // 새 공격 후보 뽑기
-        List<Vector2Int> temp = new(4);
+        List<Vector2Int> temp = new(4);     // 최대 4개이기 때문에 capacity를 4로 지정
 
-        if (lastHitPosition.x == pos.x)
+        if (lastHitPosition.x == pos.x)     // 세로로 이어서 공격했다.
         {
-            // 한줄로 맞았다.
             Vector2Int nPos = pos;
-            for (int i = pos.y - 1; i > -1; i--)
+            for (int i = pos.y - 1; i > -1; i--)    // 맞은 위치에서 위쪽 후보지점 찾음
             {
                 nPos.y = i;
-                if(enemyField.IsAttckFailPosition(nPos))
+                if(enemyField.IsAttckFailPosition(nPos))    // 공격이 실패한 지점이 나오면 그 이후는 적절한 지점이 없음
                 {
                     break;
                 }
-                if (enemyField.IsValidAndAttackable(nPos))
+                if (enemyField.IsValidAndAttackable(nPos))  // 공격가능한 적절한 지점이 나오면 후보에 추가
                 {
                     temp.Add(nPos);
                     break;
                 }
             }
-            for (int i = pos.y + 1; i < BattleField.FieldSize; i++)
+            for (int i = pos.y + 1; i < BattleField.FieldSize; i++) // 맞은 위치에서 아래쪽 후보지점 찾음
             {
                 nPos.y = i;
                 if (enemyField.IsAttckFailPosition(nPos))
@@ -243,11 +246,10 @@ public class Player : MonoBehaviour
                 }
             }
         }
-        else if( lastHitPosition.y == pos.y)
+        else if( lastHitPosition.y == pos.y)    // 가로로 이어서 공격했다.
         {
-            // 한줄로 맞았다.
             Vector2Int nPos = pos;
-            for (int i = pos.x - 1; i > -1; i--)
+            for (int i = pos.x - 1; i > -1; i--)        // 맞은 위치에서 왼쪽 후보지점 찾음
             {
                 nPos.x = i;
                 if (enemyField.IsAttckFailPosition(nPos))
@@ -260,7 +262,7 @@ public class Player : MonoBehaviour
                     break;
                 }
             }
-            for (int i = pos.x + 1; i < BattleField.FieldSize; i++)
+            for (int i = pos.x + 1; i < BattleField.FieldSize; i++) // 맞은 위치에서 오른쪽 후보지점 찾음
             {
                 nPos.x = i;
                 if (enemyField.IsAttckFailPosition(nPos))
@@ -276,8 +278,8 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // 완전 별도의 공간
-            foreach (var n in neighbor)
+            // 이전 공격과 관계가 없는 공격
+            foreach (var n in neighbor) // 4방향 모두 추가
             {
                 Vector2Int nPos = pos + n;                  // 공격한 위치의 위아래좌우 구하기
                 if (enemyField.IsValidAndAttackable(nPos))  // 공격 불가능한 부분 제거
@@ -287,6 +289,7 @@ public class Player : MonoBehaviour
             }
         }
         
+        // 후보위치를 다 골랐으면 섞어서 스택에 추가
         do
         {
             int index = Random.Range(0, temp.Count); 
@@ -299,6 +302,7 @@ public class Player : MonoBehaviour
                 GameObject obj = Instantiate(attackCandidateMark);
                 obj.transform.position = enemyField.transform.position + new Vector3(temp[index].x + 0.5f, 0.0f, -temp[index].y - 0.5f);
                 obj.transform.Translate(Vector3.up * 0.5f, Space.World);
+                obj.SetActive(showAttackCandidate);
                 //--------------------
                 candidateMarks[temp[index]] = obj;
 
@@ -309,9 +313,14 @@ public class Player : MonoBehaviour
 
         lastHitPosition = pos;
     }
+
+    /// <summary>
+    /// 적 함선이 침몰할 때 실행될 델리게이트에 등록할 함수
+    /// </summary>
+    /// <param name="_">생략</param>
     private void OnEnemyShipDestroyed(int _)
     {
-        attackCandidate.Clear();
+        attackCandidate.Clear();    // 공격 후보 스택 비우기
 
         // 테스트용---------------------------
         foreach(var mark in candidateMarks)
@@ -320,19 +329,6 @@ public class Player : MonoBehaviour
         }
         candidateMarks.Clear();
         // -----------------------------------
-    }
-
-    /// <summary>
-    /// 턴이 시작될 때 플레이어에서 리셋할 데이터들 리셋
-    /// </summary>
-    public void TurnStartReset()
-    {
-        isTurnActionFinish = false;
-    }
-
-    public bool IsMyField(BattleField field)
-    {
-        return (myField == field);
     }
 
     // 유니티 이벤트 함수 --------------------------------------------------------------------------

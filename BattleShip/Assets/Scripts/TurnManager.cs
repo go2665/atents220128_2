@@ -129,11 +129,18 @@ public class TurnManager : MonoBehaviour
     {
         CountDownProcess(); // 카운트다운 진행
 
-        if( playerLeft.IsTurnActionFinish)
+        // 한 플레이어가 공격하면 다른 플레이어는 강제 공격
+        if ( playerLeft.IsTurnActionFinish && !playerRight.IsTurnActionFinish)  
         {
             playerRight.ForcedAttack();
         }
-        if (playerLeft.IsTurnActionFinish && playerRight.IsTurnActionFinish)    // 두 플레이어가 모두 공격하면 다음 턴 실행
+        if (!playerLeft.IsTurnActionFinish && playerRight.IsTurnActionFinish)  
+        {
+            playerLeft.ForcedAttack();
+        }
+
+        // 두 플레이어가 모두 공격하면 다음 턴 실행
+        if (playerLeft.IsTurnActionFinish && playerRight.IsTurnActionFinish)    
         {
             EndTurn();
         }
