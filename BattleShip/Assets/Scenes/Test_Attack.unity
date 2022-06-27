@@ -845,7 +845,7 @@ PrefabInstance:
       objectReference: {fileID: 108234824}
     - target: {fileID: 9076974897223758379, guid: 4ae1d5f7852049a4d86034c41b6aa43c, type: 3}
       propertyPath: CountDownTime
-      value: 1
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ae1d5f7852049a4d86034c41b6aa43c, type: 3}

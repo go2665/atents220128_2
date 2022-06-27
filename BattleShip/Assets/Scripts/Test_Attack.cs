@@ -8,7 +8,10 @@ public class Test_Attack : MonoBehaviour
     void Start()
     {
         GameManager.Inst.FieldLeft.RandomDeployment();
+        //GameManager.Inst.FieldRight.TestDeployment();
         GameManager.Inst.FieldRight.RandomDeployment();
+
+
         GameManager.Inst.StateChange(GameState.Battle);
     }
 

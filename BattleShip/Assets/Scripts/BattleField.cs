@@ -223,9 +223,24 @@ public class BattleField : MonoBehaviour
         return (field[pos.x, pos.y].exists != FieldExists.CannonBall);
     }
 
+    /// <summary>
+    /// 위치가 필드 범위 안이고 공격이 가능한 지역인지 확인
+    /// </summary>
+    /// <param name="pos">확인할 위치</param>
+    /// <returns>적절한 공격 가능 위치면 true, 아니면 false</returns>
     public bool IsValidAndAttackable(Vector2Int pos)
     {
         return (IsValidPosition(pos) && IsAttackable(pos));
+    }
+
+    /// <summary>
+    /// 위치가 공격 실패한 지점인지 확인
+    /// </summary>
+    /// <param name="pos">확인할 위치</param>
+    /// <returns>true면 공격이 실패했던 지점. 필드 안이 아니거나 공격했던 지점이 아니거나 공격이 성공했으면 false</returns>
+    public bool IsAttckFailPosition(Vector2Int pos)
+    {
+        return (IsValidPosition(pos) && field[pos.x, pos.y].exists == FieldExists.CannonBall && field[pos.x, pos.y].ship == null);
     }
 
     /// <summary>
@@ -327,6 +342,19 @@ public class BattleField : MonoBehaviour
             } while (!result);          // 배치 가능한 위치가 잡힐 때까지 랜덤 수행
             ShipDeployment(pos, ship);  // 실제로 배 배치
         }
+    }
+
+    /// <summary>
+    /// 테스트 용도. 원하는대로 함선을 배치하기 위한 함수
+    /// </summary>
+    public void TestDeployment()
+    {
+        ships[0].Rotate(false);
+        ShipDeployment(new(0, 0), ships[0]);
+        ShipDeployment(new(1, 1), ships[1]);
+        ShipDeployment(new(2, 1), ships[2]);
+        ShipDeployment(new(3, 1), ships[3]);
+        ShipDeployment(new(4, 1), ships[4]);
     }
 
     /// <summary>
