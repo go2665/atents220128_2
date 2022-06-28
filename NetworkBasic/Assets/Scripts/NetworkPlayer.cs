@@ -24,11 +24,25 @@ public class NetworkPlayer : NetworkBehaviour
         inputField = GameObject.Find("InputField").GetComponent<InputField>();
         confirm = GameObject.Find("Confirm").GetComponent<Button>();
 
-        confirm.onClick.AddListener(OnConfirm);
+        if (IsOwner)
+        {
+            confirm.onClick.AddListener(OnConfirm);
+        }
+        else
+        {
+            number.OnValueChanged += OnNumberChange;
+        }
+    }
+
+    private void OnNumberChange(int previousValue, int newValue)
+    {
+        debugText.text += $"상대방이 수를 보냈다 : {newValue}\n";
     }
 
     private void OnConfirm()
     {
-        debugText.text += $"내 이름은 {playerName}\n";
+        //debugText.text += $"내 이름은 {playerName}\n";
+        number.Value = int.Parse(inputField.text);
+        debugText.text += $"{inputField.text}을(를) 보냈다.\n";
     }
 }
