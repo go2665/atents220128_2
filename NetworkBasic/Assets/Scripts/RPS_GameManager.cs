@@ -10,7 +10,7 @@ public class RPS_GameManager : MonoBehaviour
     Button rock;
     Button paper;
     Button scissors;
-    TextMeshProUGUI result;
+    TextMeshProUGUI resultText;
     TextMeshProUGUI mySelection;
     TextMeshProUGUI oppenentSelection;
 
@@ -77,26 +77,36 @@ public class RPS_GameManager : MonoBehaviour
         GUILayout.EndArea();
     }
 
+    /// <summary>
+    /// 각 종 초기화 실행
+    /// </summary>
     void Initialize()
     {
+        // UI 찾고
         rock = GameObject.Find("Button_Rock").GetComponent<Button>();
         paper = GameObject.Find("Button_Paper").GetComponent<Button>();
         scissors = GameObject.Find("Button_Scissors").GetComponent<Button>();
-        result = GameObject.Find("ResultText").GetComponent<TextMeshProUGUI>();
+        resultText = GameObject.Find("ResultText").GetComponent<TextMeshProUGUI>();
         mySelection = GameObject.Find("MySelection").GetComponent<TextMeshProUGUI>();
         oppenentSelection = GameObject.Find("OppenentSelection").GetComponent<TextMeshProUGUI>();
 
+        // 이벤트 함수 등록하기
         rock.onClick.AddListener(() => OnHandClick(HandSelection.Rock));
         paper.onClick.AddListener(() => OnHandClick(HandSelection.Paper));
         scissors.onClick.AddListener(() => OnHandClick(HandSelection.Scissors));
     }
 
+    /// <summary>
+    /// 가위, 바위, 보 버튼을 클릭했을 때 실행될 함수
+    /// </summary>
+    /// <param name="hand">클릭한 버튼의 종류</param>
     private void OnHandClick(HandSelection hand)
     {
+        // 플레이어가 찾아져 있고 플레이어가 아무런 선택을 하지 않았을 때만 선택 가능
         if (player && player.Selection == HandSelection.None)
         {
-            player.Selection = hand;
-            switch (hand)
+            player.Selection = hand;            // 플레이어의 선택 표시
+            switch (hand)                       // 텍스트에도 표시
             {                
                 case HandSelection.Rock:
                     mySelection.text = "바위";
@@ -114,25 +124,47 @@ public class RPS_GameManager : MonoBehaviour
         }
     }
 
-    public void SetOpponentText(string text)
+    /// <summary>
+    /// 적의 선택 결과 표시창에 글자를 찍을 함수
+    /// </summary>
+    /// <param name="hand">선택한 손모양</param>
+    public void SetOpponentText(HandSelection hand)
     {
-        oppenentSelection.text = text;
+        string select = "";
+        switch (hand)
+        {
+            case HandSelection.Rock:
+                select = "바위";
+                break;
+            case HandSelection.Paper:
+                select = "보";
+                break;
+            case HandSelection.Scissors:
+                select = "가위";
+                break;
+            case HandSelection.None:
+            default:
+                break;
+        }
+        oppenentSelection.text = select;
     }
 
-    public void SetResultText(string text)
-    {
-        result.text = text;
-    }
-
+    /// <summary>
+    /// 둘 다 선택을 했는지 확인
+    /// </summary>
+    /// <returns>둘 다 선택을 했으면 true. 아니면 false</returns>
     public bool IsBothComplete()
     {
         return (player.Selection != HandSelection.None) && (enemy.Selection != HandSelection.None);
     }
 
-    public BattleResult IsPlayerWin()
+    /// <summary>
+    /// 가위, 바위, 보 결과를 출력하는 함수
+    /// </summary>
+    public void SetBattleResultText()
     {
         BattleResult result = BattleResult.Draw;
-        if( Player.Selection == HandSelection.Rock )
+        if( Player.Selection == HandSelection.Rock )        // 가위 바위 보 결과 확인
         {
             if( Enemy.Selection == HandSelection.Rock )
             {
@@ -177,7 +209,20 @@ public class RPS_GameManager : MonoBehaviour
                 result = BattleResult.Draw;
             }
         }
-        return result;
-    }
 
+        switch (result) // 결과에 따라서 글자 출력
+        {
+            case BattleResult.Draw:
+                resultText.text = "무승부";
+                break;
+            case BattleResult.PlayerWin:
+                resultText.text = "무승부";
+                break;
+            case BattleResult.EnemyWin:
+                resultText.text = "무승부";
+                break;
+            default:
+                break;
+        }
+    }
 }
