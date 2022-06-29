@@ -51,7 +51,7 @@ public class RPS_Player : NetworkBehaviour
         if (!IsOwner)   // 오너가 아니다 => 적
         {
             selection = newValue;                           // enemy의 selection 변경
-            RPS_GameManager.Inst.SetOpponentText(newValue); // 찍히는 글자도 변경
+            RPS_GameManager.Inst.OpponentSelectComplete(); // 찍히는 글자도 변경
         }
 
         if (RPS_GameManager.Inst.IsBothComplete())          // 둘 다 선택을 했는지 확인

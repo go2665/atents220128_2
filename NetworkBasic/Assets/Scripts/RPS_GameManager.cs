@@ -125,28 +125,11 @@ public class RPS_GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 적의 선택 결과 표시창에 글자를 찍을 함수
+    /// 적이 선택을 완료했음을 표시
     /// </summary>
-    /// <param name="hand">선택한 손모양</param>
-    public void SetOpponentText(HandSelection hand)
-    {
-        string select = "";
-        switch (hand)
-        {
-            case HandSelection.Rock:
-                select = "바위";
-                break;
-            case HandSelection.Paper:
-                select = "보";
-                break;
-            case HandSelection.Scissors:
-                select = "가위";
-                break;
-            case HandSelection.None:
-            default:
-                break;
-        }
-        oppenentSelection.text = select;
+    public void OpponentSelectComplete()
+    {        
+        oppenentSelection.text = "선택완료";
     }
 
     /// <summary>
@@ -210,16 +193,34 @@ public class RPS_GameManager : MonoBehaviour
             }
         }
 
+        string select = "";
+        switch (Enemy.Selection)
+        {
+            case HandSelection.Rock:
+                select = "바위";
+                break;
+            case HandSelection.Paper:
+                select = "보";
+                break;
+            case HandSelection.Scissors:
+                select = "가위";
+                break;
+            case HandSelection.None:
+            default:
+                break;
+        }
+        oppenentSelection.text = select;
+
         switch (result) // 결과에 따라서 글자 출력
         {
             case BattleResult.Draw:
                 resultText.text = "무승부";
                 break;
             case BattleResult.PlayerWin:
-                resultText.text = "무승부";
+                resultText.text = "승리";
                 break;
             case BattleResult.EnemyWin:
-                resultText.text = "무승부";
+                resultText.text = "패배";
                 break;
             default:
                 break;
