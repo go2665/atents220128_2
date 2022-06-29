@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/RockPaperScissors.unity
+    guid: 93f73815e19f1084e960cb9ff6f2c269
+  - enabled: 1
     path: Assets/Scenes/NetworkSampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
