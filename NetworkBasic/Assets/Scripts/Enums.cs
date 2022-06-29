@@ -9,3 +9,10 @@ public enum HandSelection : byte
     Paper,
     Scissors
 }
+
+public enum BattleResult : byte
+{
+    Draw = 0,
+    PlayerWin,
+    EnemyWin
+}

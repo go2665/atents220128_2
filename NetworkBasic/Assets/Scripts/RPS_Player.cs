@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using System;
 
 public class RPS_Player : NetworkBehaviour
 {
@@ -18,11 +17,6 @@ public class RPS_Player : NetworkBehaviour
             SubmitSelectRequestServerRpc(selection);
         }
     }
-
-    //public void HandSelect(HandSelection hand)
-    //{
-    //    selection = hand;
-    //}
 
     public override void OnNetworkSpawn()
     {
@@ -40,28 +34,53 @@ public class RPS_Player : NetworkBehaviour
 
     private void OnSelectChange(HandSelection previousValue, HandSelection newValue)
     {
-        string select = "";
-        switch (newValue)
-        {   
-            case HandSelection.Rock:
-                select = "바위";
-                break;
-            case HandSelection.Paper:
-                select = "보";
-                break;
-            case HandSelection.Scissors:
-                select = "가위";
-                break;
-            case HandSelection.None:
-            default:
-                break;
+        if (!IsOwner)
+        {
+            string select = "";
+            switch (newValue)
+            {
+                case HandSelection.Rock:
+                    select = "바위";
+                    break;
+                case HandSelection.Paper:
+                    select = "보";
+                    break;
+                case HandSelection.Scissors:
+                    select = "가위";
+                    break;
+                case HandSelection.None:
+                default:
+                    break;
+            }
+            selection = newValue;
+            RPS_GameManager.Inst.SetOpponentText(select);
         }
-        RPS_GameManager.Inst.SetOpponentText(select);
+
+        if (RPS_GameManager.Inst.IsBothComplete())
+        {
+            BattleResult result = RPS_GameManager.Inst.IsPlayerWin();
+
+            switch (result)
+            {
+                case BattleResult.Draw:
+                    RPS_GameManager.Inst.SetResultText("무승부");
+                    break;
+                case BattleResult.PlayerWin:
+                    RPS_GameManager.Inst.SetResultText("승리");
+                    break;
+                case BattleResult.EnemyWin:
+                    RPS_GameManager.Inst.SetResultText("패배");
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     [ServerRpc]
     void SubmitSelectRequestServerRpc(HandSelection hand)
     {
         netSelect.Value = hand;
+        selection = hand;
     }
 }

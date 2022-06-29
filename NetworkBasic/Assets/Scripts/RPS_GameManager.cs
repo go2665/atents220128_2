@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.Netcode;
-using System;
 
 public class RPS_GameManager : MonoBehaviour
 {
@@ -118,6 +117,67 @@ public class RPS_GameManager : MonoBehaviour
     public void SetOpponentText(string text)
     {
         oppenentSelection.text = text;
+    }
+
+    public void SetResultText(string text)
+    {
+        result.text = text;
+    }
+
+    public bool IsBothComplete()
+    {
+        return (player.Selection != HandSelection.None) && (enemy.Selection != HandSelection.None);
+    }
+
+    public BattleResult IsPlayerWin()
+    {
+        BattleResult result = BattleResult.Draw;
+        if( Player.Selection == HandSelection.Rock )
+        {
+            if( Enemy.Selection == HandSelection.Rock )
+            {
+                result = BattleResult.Draw;
+            }
+            else if(Enemy.Selection == HandSelection.Scissors)
+            {
+                result = BattleResult.PlayerWin;
+            }
+            else if(Enemy.Selection == HandSelection.Paper)
+            {
+                result = BattleResult.EnemyWin;
+            }
+        }
+        else if (Player.Selection == HandSelection.Scissors)
+        {
+            if (Enemy.Selection == HandSelection.Rock)
+            {
+                result = BattleResult.EnemyWin;
+            }
+            else if (Enemy.Selection == HandSelection.Scissors)
+            {
+                result = BattleResult.Draw;
+            }
+            else if (Enemy.Selection == HandSelection.Paper)
+            {
+                result = BattleResult.PlayerWin;
+            }
+        }
+        else if (Player.Selection == HandSelection.Paper)
+        {
+            if (Enemy.Selection == HandSelection.Rock)
+            {
+                result = BattleResult.PlayerWin;
+            }
+            else if (Enemy.Selection == HandSelection.Scissors)
+            {
+                result = BattleResult.EnemyWin;
+            }
+            else if (Enemy.Selection == HandSelection.Paper)
+            {
+                result = BattleResult.Draw;
+            }
+        }
+        return result;
     }
 
 }
