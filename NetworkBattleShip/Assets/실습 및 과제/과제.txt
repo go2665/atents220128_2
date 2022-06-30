@@ -1,0 +1,2 @@
+6/24
+AddAttackCandidate 함수 개선하기
