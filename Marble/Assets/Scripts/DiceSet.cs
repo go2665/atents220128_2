@@ -10,35 +10,36 @@ public class DiceSet : MonoBehaviour
         get => dices.Length;
     }
 
+    public System.Action OnDouble;
+
     void Awake()
     {
         dices = FindObjectsOfType<Dice>();
     }
 
     /// <summary>
-    /// 여러 주사위를 굴려 주사위의 합과 모두 일치하는지 여부를 돌려줌
+    /// 여러 주사위를 굴려 주사위 값의 합을 돌려줌
     /// </summary>
-    /// <param name="sum">출력용 파라메터. 모든 주사위값의 합이 기록됨</param>
-    /// <returns>모든 주사위 값의 일치여부 true면 모든 주사위의 값이 같다.</returns>
-    public bool RollAll_GetSum(out int sum)
+    /// <returns>모든 주사위값의 합</returns>
+    public int RollAll_GetSum()
     {
-        bool isDouble = RollAll_GetIndividual(out int[] results);
-        sum = 0;
+        int[] results = RollAll_GetIndividual();
+        int sum = 0;
         foreach(int r in results)
         {
             sum += r;
         }
-        return isDouble;
+
+        return sum;
     }
 
     /// <summary>
-    /// 여러 주사위를 굴려 각 주사위의 결과값과 주사위 결과값이 모두 일치하는지 여부를 돌려줌
+    /// 여러 주사위를 굴려 각 주사위의 결과값을 돌려줌
     /// </summary>
-    /// <param name="results">출력용 파라메터. 모든 주사위값의 합이 기록됨</param>
-    /// <returns>모든 주사위 값의 일치여부 true면 모든 주사위의 값이 같다.</returns>
-    public bool RollAll_GetIndividual(out int[] results)
+    /// <returns>모든 주사위의 결과값</returns>
+    public int[] RollAll_GetIndividual()
     {   
-        results = new int[dices.Length];
+        int[] results = new int[dices.Length];
         for(int i=0;i<dices.Length;i++)
         {
             results[i] = dices[i].Roll();            
@@ -55,7 +56,12 @@ public class DiceSet : MonoBehaviour
             }
         }
 
-        return isDouble;
+        if (isDouble)
+        {
+            OnDouble?.Invoke();
+        }
+
+        return results;
     }
 
     /// <summary>

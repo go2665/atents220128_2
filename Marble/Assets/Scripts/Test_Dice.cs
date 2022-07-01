@@ -13,6 +13,8 @@ public class Test_Dice : MonoBehaviour
     public TextMeshProUGUI diceSum;
     public Button rollButton;
 
+    bool isDouble;
+
     void Start()
     {
         Debug.Log("주사위를 하나씩 굴립니다.");        
@@ -22,15 +24,28 @@ public class Test_Dice : MonoBehaviour
         }
 
         rollButton.onClick.AddListener(DiceRoll);
+        GameManager.Inst.GameDiceSet.OnDouble += DoubleCheck;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Inst.GameDiceSet.OnDouble -= DoubleCheck;
+    }
+
+    void DoubleCheck()
+    {
+        isDouble = true;
     }
 
     private void DiceRoll()
     {
-        bool isDouble = GameManager.Inst.GameDiceSet.RollAll_GetIndividual(out int[] result);
+        int[] result = GameManager.Inst.GameDiceSet.RollAll_GetIndividual();
         PrintDiceResult(result[0], result[1], isDouble);
+        isDouble = false;
 
-        isDouble = GameManager.Inst.GameDiceSet.RollAll_GetSum(out int sum);
+        int sum = GameManager.Inst.GameDiceSet.RollAll_GetSum();
         PrintDiceSumResult(sum, isDouble);
+        isDouble = false;
     }
 
     void PrintDiceResult(int d1, int d2, bool isDouble)
