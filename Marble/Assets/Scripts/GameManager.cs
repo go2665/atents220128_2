@@ -15,9 +15,12 @@ public class GameManager : Singleton<GameManager>
         Initialize();
     }
 
+    /// <summary>
+    /// 초기화 함수.
+    /// </summary>
     void Initialize()
     {
         Debug.Log("Game Manager Initialize");
-        diceSet = new();
+        diceSet = FindObjectOfType<DiceSet>();
     }
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Inherit from this base class to create a singleton.
-/// e.g. public class MyClassName : Singleton<MyClassName> {}
+/// 싱글톤으로 만들 클래스가 상속받게 해라.
+/// 예시) public class MyClassName : Singleton<MyClassName> {}
 /// </summary>
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
@@ -37,27 +37,18 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 // 찾았는데 없는 경우
                 if (instance == null)
                 {
-                    MakeSingletonObject();                    
+                    // 새 오브젝트 만들고 컴포넌트도 새로 만들어서 추가해 줌
+                    var singletonObject = new GameObject();
+                    instance = singletonObject.AddComponent<T>();
+                    singletonObject.name = $"{typeof(T).ToString()} (Singleton)";   // 이름도 변경                   
                 }
+                // 오브젝트가 삭제되지 않도록 처리
+                DontDestroyOnLoad(instance.gameObject);
             }
 
             return instance;
             //}
         }
-    }
-
-    /// <summary>
-    /// 싱글톤 오브젝트 생성
-    /// </summary>
-    private static void MakeSingletonObject()
-    {
-        // 새 오브젝트 만들고 컴포넌트도 새로 만들어서 추가해 줌
-        var singletonObject = new GameObject();
-        instance = singletonObject.AddComponent<T>();
-        singletonObject.name = $"{typeof(T).ToString()} (Singleton)";   // 이름도 변경
-
-        // 오브젝트가 삭제되지 않도록 처리
-        DontDestroyOnLoad(singletonObject);     
     }
 
     /// <summary>

@@ -26,9 +26,11 @@ public class Test_Dice : MonoBehaviour
 
     private void DiceRoll()
     {
-        bool isDouble = GameManager.Inst.GameDiceSet.RollAll(out int[] result);
+        bool isDouble = GameManager.Inst.GameDiceSet.RollAll_GetIndividual(out int[] result);
         PrintDiceResult(result[0], result[1], isDouble);
-        PrintDiceSumResult(GameManager.Inst.GameDiceSet.RollAll());
+
+        isDouble = GameManager.Inst.GameDiceSet.RollAll_GetSum(out int sum);
+        PrintDiceSumResult(sum, isDouble);
     }
 
     void PrintDiceResult(int d1, int d2, bool isDouble)
@@ -45,8 +47,16 @@ public class Test_Dice : MonoBehaviour
         }
     }
 
-    void PrintDiceSumResult(int sum)
+    void PrintDiceSumResult(int sum, bool isDouble)
     {
         diceSum.text = sum.ToString();
+        if (isDouble)
+        {
+            diceSum.text = $"{sum} [더블]";
+        }
+        else
+        {
+            diceSum.text = sum.ToString();
+        }
     }
 }
