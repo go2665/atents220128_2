@@ -43,7 +43,7 @@ public class Test_Dice : MonoBehaviour
         PrintDiceResult(result[0], result[1], isDouble);
         isDouble = false;
 
-        int sum = GameManager.Inst.GameDiceSet.RollAll_GetSum();
+        int sum = GameManager.Inst.GameDiceSet.RollAll_GetTotalSum();
         PrintDiceSumResult(sum, isDouble);
         isDouble = false;
     }

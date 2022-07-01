@@ -21,7 +21,7 @@ public class DiceSet : MonoBehaviour
     /// 여러 주사위를 굴려 주사위 값의 합을 돌려줌
     /// </summary>
     /// <returns>모든 주사위값의 합</returns>
-    public int RollAll_GetSum()
+    public int RollAll_GetTotalSum()
     {
         int[] results = RollAll_GetIndividual();
         int sum = 0;
