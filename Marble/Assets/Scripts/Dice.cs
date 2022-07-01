@@ -7,7 +7,7 @@ public class Dice : MonoBehaviour
     public GameObject dicePrefab;
     public int diceMax = 6;
 
-    public int RollDice()
+    public int Roll()
     {
         return Random.Range(1, diceMax + 1);
     }

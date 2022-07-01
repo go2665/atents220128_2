@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    DiceSet diceSet;
+    public DiceSet GameDiceSet
+    {
+        get => diceSet;
+    }
+
     void Awake()
     {
         Initialize();
@@ -12,5 +18,6 @@ public class GameManager : Singleton<GameManager>
     void Initialize()
     {
         Debug.Log("Game Manager Initialize");
+        diceSet = new();
     }
 }
