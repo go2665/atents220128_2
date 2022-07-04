@@ -10,6 +10,12 @@ public class GameManager : Singleton<GameManager>
         get => diceSet;
     }
 
+    Player[] players = null;
+    public Player[] Players
+    {
+        get => players;
+    }
+
     void Awake()
     {
         Initialize();
