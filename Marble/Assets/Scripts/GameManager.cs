@@ -4,16 +4,24 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    readonly public int NumOfPlayer = System.Enum.GetValues(typeof(PlayerType)).Length;
+
     DiceSet diceSet;
     public DiceSet GameDiceSet
     {
         get => diceSet;
     }
 
-    Player[] players = null;
+    Player[] players = null;    // 은행 포함
     public Player[] Players
     {
         get => players;
+    }
+
+    Map map = null;
+    public Map GameMap
+    {
+        get => map;
     }
 
     void Awake()

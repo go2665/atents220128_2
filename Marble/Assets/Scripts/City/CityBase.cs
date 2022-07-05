@@ -10,6 +10,11 @@ public class CityBase : Place
     protected PlayerType owner = PlayerType.Bank;
     protected int value;
 
+    public PlayerType Owner
+    {
+        get => owner;
+    }
+
     public int Value
     {
         get
@@ -38,5 +43,18 @@ public class CityBase : Place
     protected virtual void Start()
     {
         value = price;
+    }
+
+    public override void OnArrive(Player player)
+    {
+        if (owner == PlayerType.Bank)
+        {
+            // 은행 땅이다. => 구매 여부 확인
+        }
+        else if (owner != player.Type)
+        {
+            // 남의 땅이다.
+            player.Money -= usePrice;
+        }
     }
 }
