@@ -5,49 +5,24 @@ using UnityEngine;
 
 public class Test_Place : MonoBehaviour
 {
+    public GameObject testObj;
+
     private void Start()
     {
-        string path = $"{Application.dataPath}/data";
-        string fullPath = $"{path}/MapData.csv";
+        MapData testPlace = new();
+        testPlace.id = 999;
+        testPlace.type = PlaceType.City;
+        testPlace.name = "테스트도시";
+        testPlace.placeBuyPrice = 150;
+        testPlace.placeUsePrice = 50;
+        testPlace.villaBuyPrice = 100;
+        testPlace.villaUsePrice = 200;
+        testPlace.buildingBuyPrice = 300;
+        testPlace.buildingUsePrice = 400;
+        testPlace.villaBuyPrice = 500;
+        testPlace.villaUsePrice = 600;
 
-        string[] allLineText = File.ReadAllLines(fullPath);
-        MapData[] mapDatas = new MapData[allLineText.Length-1];
-        for (int i=1;i<allLineText.Length;i++)
-        {
-            string[] data = allLineText[i].Split(',');
-            MapData mapData = new();
-            mapData.id = int.Parse(data[0]);
-            mapData.type = (PlaceType)int.Parse(data[1]);
-            mapData.name = data[2];
-            switch (mapData.type)
-            {
-                case PlaceType.City:
-                    mapData.placeBuyPrice = int.Parse(data[3]);
-                    mapData.placeUsePrice = int.Parse(data[4]);
-                    mapData.villaBuyPrice = int.Parse(data[5]);
-                    mapData.buildingBuyPrice = int.Parse(data[6]);
-                    mapData.hotelBuyPrice = int.Parse(data[7]);
-                    mapData.villaUsePrice = int.Parse(data[8]);
-                    mapData.buildingUsePrice = int.Parse(data[9]);
-                    mapData.hotelUsePrice = int.Parse(data[10]);
-                    break;
-                case PlaceType.CityBase:
-                    mapData.placeBuyPrice = int.Parse(data[3]);
-                    mapData.placeUsePrice = int.Parse(data[4]);
-                    break;
-                case PlaceType.Start:
-                case PlaceType.Island:
-                case PlaceType.Fund_Get:
-                case PlaceType.Fund_Pay:
-                case PlaceType.SpaceShip:
-                case PlaceType.GoldenKey:
-                default:
-                    break;
-            }
-            
-            mapDatas[i - 1] = mapData;
-        }
-
-        int j = 0;
+        City city = testObj.AddComponent<City>();
+        city.Initialize(testObj, ref testPlace);
     }
 }

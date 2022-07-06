@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class City : CityBase
 {
-    public BuildingData[] buildings;
+    public BuildingData[] buildingDatas;
     int totalUsePrice = 0;
+    GameObject[] buildingObj;
 
     private void Awake()
     {
-        buildings = new BuildingData[System.Enum.GetValues(typeof(BuildingType)).Length];        
+        int NumOfBuildingTypes = System.Enum.GetValues(typeof(BuildingType)).Length;
+        buildingDatas = new BuildingData[NumOfBuildingTypes];
+        //buildingObj = new GameObject[NumOfBuildingTypes];
+        //for (int i = 0; i < NumOfBuildingTypes; i++)
+        //{
+        //    buildingObj[i] = transform.GetChild(i+1).gameObject;
+        //    buildingObj[i].SetActive(false);
+        //}
     }
 
     public void MakeBuilding(BuildingType type, int count)
     {
-        buildings[(int)type].count += count;
+        buildingObj[(int)type].SetActive(true);
+        buildingDatas[(int)type].count += count;
 
         Player ownerPlayer = GameManager.Inst.Players[(int)owner];
-        ownerPlayer.Money -= buildings[(int)type].price * count;
+        ownerPlayer.Money -= buildingDatas[(int)type].price * count;
 
         ReCalcValue();
         ReCalcTotalUsePrice();
@@ -26,7 +35,7 @@ public class City : CityBase
     void ReCalcValue()
     {
         int buildingValue = price;
-        foreach (var b in buildings)
+        foreach (var b in buildingDatas)
         {
             buildingValue += b.price * b.count;
         }
@@ -37,7 +46,7 @@ public class City : CityBase
     void ReCalcTotalUsePrice()
     {
         int total = usePrice;
-        foreach (var b in buildings)
+        foreach (var b in buildingDatas)
         {
             total += b.usePrice * b.count;
         }
@@ -64,11 +73,11 @@ public class City : CityBase
     public override void Initialize(GameObject obj, ref MapData mapData)
     {
         base.Initialize(obj, ref mapData);
-        buildings[(int)BuildingType.Villa].price = mapData.villaBuyPrice;
-        buildings[(int)BuildingType.Villa].usePrice = mapData.villaUsePrice;
-        buildings[(int)BuildingType.Building].price = mapData.villaBuyPrice;
-        buildings[(int)BuildingType.Building].usePrice = mapData.villaUsePrice;
-        buildings[(int)BuildingType.Hotel].price = mapData.villaBuyPrice;
-        buildings[(int)BuildingType.Hotel].usePrice = mapData.villaUsePrice;
+        buildingDatas[(int)BuildingType.Villa].price = mapData.villaBuyPrice;
+        buildingDatas[(int)BuildingType.Villa].usePrice = mapData.villaUsePrice;
+        buildingDatas[(int)BuildingType.Building].price = mapData.buildingBuyPrice;
+        buildingDatas[(int)BuildingType.Building].usePrice = mapData.buildingUsePrice;
+        buildingDatas[(int)BuildingType.Hotel].price = mapData.hotelBuyPrice;
+        buildingDatas[(int)BuildingType.Hotel].usePrice = mapData.hotelUsePrice;
     }
 }
