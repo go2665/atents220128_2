@@ -57,4 +57,11 @@ public class CityBase : Place
             player.Money -= usePrice;
         }
     }
+
+    public override void Initialize(GameObject obj, ref MapData mapData)
+    {
+        base.Initialize(obj, ref mapData);
+        price = mapData.placeBuyPrice;
+        usePrice = mapData.placeUsePrice;
+    }
 }

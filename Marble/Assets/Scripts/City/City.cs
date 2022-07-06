@@ -60,4 +60,15 @@ public class City : CityBase
             // 내 땅이다. => 건물 짖기 UI
         }
     }
+
+    public override void Initialize(GameObject obj, ref MapData mapData)
+    {
+        base.Initialize(obj, ref mapData);
+        buildings[(int)BuildingType.Villa].price = mapData.villaBuyPrice;
+        buildings[(int)BuildingType.Villa].usePrice = mapData.villaUsePrice;
+        buildings[(int)BuildingType.Building].price = mapData.villaBuyPrice;
+        buildings[(int)BuildingType.Building].usePrice = mapData.villaUsePrice;
+        buildings[(int)BuildingType.Hotel].price = mapData.villaBuyPrice;
+        buildings[(int)BuildingType.Hotel].usePrice = mapData.villaUsePrice;
+    }
 }

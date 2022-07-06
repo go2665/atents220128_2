@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Place : MonoBehaviour
 {
-    GameObject placeObject;
-    protected int id;
-    protected string placeName;
+    GameObject placeObject;    
+    protected int id;    
+    public string placeName;
 
     public int ID
     {
@@ -19,5 +19,12 @@ public class Place : MonoBehaviour
 
     public virtual void OnTurnStart(Player player)
     {
+    }
+
+    public virtual void Initialize(GameObject obj, ref MapData mapData)
+    {
+        placeObject = obj;
+        id = mapData.id;
+        placeName = mapData.name;
     }
 }
