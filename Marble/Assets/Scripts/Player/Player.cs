@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    DiceSet dice;
+    Map map;
+
     const int StartMoney = 5000;
 
     MapID position = MapID.Start;
     int money;
     PlayerType type = PlayerType.Bank;
     Material material;
-    int actionCount = 0;
+    int actionCount = 1;
 
     int islandWaitTime = 0; 
 
@@ -64,14 +67,11 @@ public class Player : MonoBehaviour
 
         gameObject.name = $"Player_{playerType}";
 
-        //GameManager.Inst.TurnManager.OnTurnEnd += OnTurnEnd;
-        //GameManager.Inst.GameDiceSet.OnDouble += OnDouble;
-    }
+        dice = GameManager.Inst.GameDiceSet;
+        map = GameManager.Inst.GameMap;
 
-    private void OnDestroy()
-    {
-        //GameManager.Inst.GameDiceSet.OnDouble -= OnDouble;
-        //GameManager.Inst.TurnManager.OnTurnEnd -= OnTurnEnd;
+        GameManager.Inst.TurnManager.OnTurnEnd += OnTurnEnd;
+        GameManager.Inst.GameDiceSet.OnDouble += OnDouble;
     }
 
     public void OnArriveIsland(int wait)
@@ -88,14 +88,28 @@ public class Player : MonoBehaviour
     {
         if (diceThrower == type)
         {
+            Debug.Log($"{diceThrower}이 더블이 나왔습니다.");
             actionCount++;
         }
     }
 
     public void RollDice()
     {
-        actionCount--;
-        // 주사위 돌리는 애니메이션 등 처리
-        // 입력이 들어오면 DiceSet 클래스 사용
+        if (actionCount > 0)
+        {
+            actionCount--;
+
+            // 주사위 돌리는 애니메이션 등 처리
+            int dicesum = dice.RollAll_GetTotalSum(Type == PlayerType.Human);
+            //Debug.Log($"{Type}은 {dicesum}이 나왔습니다.");
+            //string str = $"{Type}은 {(int)this.Position}에서 ";
+            map.Move(this, dicesum);
+            //str += $"{(int)this.Position}에 도착했습니다.";
+            //Debug.Log(str);
+            //if (Type == PlayerType.Human)
+            {
+                GameManager.Inst.UI_Manager.SetResultText(Type, dicesum);
+            }
+        }
     }
 }

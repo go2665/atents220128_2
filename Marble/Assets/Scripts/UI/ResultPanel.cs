@@ -7,6 +7,7 @@ using System;
 public class ResultPanel : MonoBehaviour
 {
     TextMeshProUGUI textUI;
+    bool isDouble = false;
 
     private void Awake()
     {
@@ -20,6 +21,19 @@ public class ResultPanel : MonoBehaviour
 
     internal void SetText(PlayerType type, int diceEyes)
     {
-        textUI.text = $"{type}의 주사위는 {diceEyes}(이)가 나왔습니다.";
+        if (isDouble)
+        {
+            textUI.text = $"{type}의 주사위는 {diceEyes}(이)가 나왔습니다.[더블]";
+            isDouble = false;
+        }
+        else
+        {
+            textUI.text = $"{type}의 주사위는 {diceEyes}(이)가 나왔습니다.";
+        }
+    }
+
+    public void OnDouble(PlayerType type)
+    {
+        isDouble = true;
     }
 }

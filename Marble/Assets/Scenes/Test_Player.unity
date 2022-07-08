@@ -531,7 +531,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 805321010}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -593,7 +593,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Player1\uC774 12\uAC00 \uB098\uC654\uC2B5\uB2C8\uB2E4."
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 670e013b7415e584e9fc1b69e27ffdfc, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b88799d410fd1ad4a9e3827f6edb98fa, type: 2}

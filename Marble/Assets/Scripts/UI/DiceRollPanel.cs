@@ -17,16 +17,21 @@ public class DiceRollPanel : MonoBehaviour, IPointerClickHandler
         if( isShow )
         {
             canvasGroup.alpha = 1;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
         }
         else
         {
             canvasGroup.alpha = 0;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
         }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         //Debug.Log("DiceRollPanel");
+        Show(false);
         GameManager.Inst.TurnManager.PlayerTurnProcess();
     }
 }

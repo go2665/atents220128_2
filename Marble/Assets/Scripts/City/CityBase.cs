@@ -27,6 +27,12 @@ public class CityBase : Place
         }
     }
 
+    protected virtual void Awake()
+    {
+        CoverImage_Normal cover = GetComponentInChildren<CoverImage_Normal>();
+        cover.SetImage(CoverImage_Normal.Type.None);
+    }
+
     public bool CanBuy(PlayerType buyer)
     {
         return (GameManager.Inst.Players[(int)buyer].Money > price);
@@ -54,6 +60,7 @@ public class CityBase : Place
 
     public override void OnArrive(Player player)
     {
+        Debug.Log($"{player} : {placeName}에 도착했습니다.");
         if (owner == PlayerType.Bank)
         {
             // 은행 땅이다. => 구매 여부 확인

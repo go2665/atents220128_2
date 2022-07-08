@@ -32,7 +32,7 @@ public class Dice : MonoBehaviour
         {
             transform.rotation = diceEyeRotation[eye - 1];
         }
-        Debug.Log($"{gameObject.name} : {eye}");
+        //Debug.Log($"{gameObject.name} : {eye}");
 
         return eye;
     }

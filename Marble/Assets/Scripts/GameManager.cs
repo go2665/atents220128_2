@@ -57,6 +57,9 @@ public class GameManager : Singleton<GameManager>
         map = FindObjectOfType<Map>();
         map.Initialize();
 
+        turnManager = GetComponent<TurnManager>();
+        turnManager.Initialize();
+
         players = new Player[NumOfPlayer];
         for(int i=0; i<NumOfPlayer; i++ )
         {
@@ -67,13 +70,15 @@ public class GameManager : Singleton<GameManager>
             {
                 map.Move(players[i], MapID.Start);
             }
-        }
-
-        turnManager = GetComponent<TurnManager>();
-        turnManager.Initialize();
+        }        
 
         ui_Manager = GetComponent<UI_Manager>();
         ui_Manager.Initialize();
+    }
+
+    private void Start()
+    {
+        TurnManager.GameStart();
     }
 
     public Player GetPlayer(PlayerType type)

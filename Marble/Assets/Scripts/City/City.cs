@@ -8,8 +8,10 @@ public class City : CityBase
     int totalUsePrice = 0;
     GameObject[] buildingObj;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         int NumOfBuildingTypes = System.Enum.GetValues(typeof(BuildingType)).Length;
         buildingDatas = new BuildingData[NumOfBuildingTypes];
         //buildingObj = new GameObject[NumOfBuildingTypes];
@@ -55,6 +57,7 @@ public class City : CityBase
 
     public override void OnArrive(Player player)
     {
+        Debug.Log($"{player} : {placeName}에 도착했습니다.");
         if (owner == PlayerType.Bank)
         {
             // 은행 땅이다. => 구매 여부 확인

@@ -39,14 +39,20 @@ public class TurnManager : MonoBehaviour
     public void Initialize()
     {
         map = GameManager.Inst.GameMap;
-        dice = GameManager.Inst.GameDiceSet;
+        dice = GameManager.Inst.GameDiceSet;        
+    }
+
+    public void GameStart()
+    {
         int num = GameManager.Inst.NumOfPlayer - 1;
         playersOnly = new Player[num];
-        for (int i=0;i<num; i++)
+        for (int i = 0; i < num; i++)
         {
-            playersOnly[i] = GameManager.Inst.Players[i+1];
+            playersOnly[i] = GameManager.Inst.Players[i + 1];
         }
         human = playersOnly[0];
+
+        TurnStart();
     }
 
     void TurnStart()
@@ -57,26 +63,39 @@ public class TurnManager : MonoBehaviour
     
     void TurnProcess(Player player)
     {
-        if (player.Type != PlayerType.Human)
+        if (!player.ActionDone)
         {
-            int dicesum = dice.RollAll_GetTotalSum();
-            map.Move(player, dicesum);
-            TurnEnd();
+            if (player.Type != PlayerType.Human)
+            {
+                player.RollDice();
+                TurnProcess(player);
+            }
+            else
+            {
+                // 패널 열어서 주사위 굴리기
+                GameManager.Inst.UI_Manager.ShowDiceRollPanel(true);
+            }
         }
         else
         {
-            // 패널 열어서 주사위 굴리기
-            GameManager.Inst.UI_Manager.ShowDiceRollPanel(true);
-        }        
+            TurnEnd();
+        }     
     }
 
     public void PlayerTurnProcess()
     {
-        Debug.Log("Player Roll");
-        int dicesum = dice.RollAll_GetTotalSum(true);
-        GameManager.Inst.UI_Manager.SetResultText(human.Type, dicesum);
-        map.Move(human, dicesum);
-        TurnEnd();
+        //Debug.Log("Player Roll");
+
+        human.RollDice();        
+
+        if(human.ActionDone)
+        {
+            TurnEnd();
+        }
+        else
+        {
+            GameManager.Inst.UI_Manager.ShowDiceRollPanel(true);
+        }
     }
 
     void TurnEnd()

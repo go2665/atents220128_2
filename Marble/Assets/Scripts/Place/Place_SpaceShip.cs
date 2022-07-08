@@ -7,6 +7,13 @@ public class Place_SpaceShip : Place
     int shipUsePrice = 200;
     bool[] passenger = null;
 
+    private void Awake()
+    {
+        CoverImage_Corner cover = GetComponentInChildren<CoverImage_Corner>();
+        cover.SetImage(CoverImage_Corner.Type.SpaceShip);
+        cover.transform.Rotate(0, 0, 180);
+    }
+
     private void Start()
     {
         passenger = new bool[GameManager.Inst.NumOfPlayer];
@@ -14,6 +21,7 @@ public class Place_SpaceShip : Place
 
     public override void OnArrive(Player player)
     {
+        Debug.Log($"{player} : 우주왕복선입니다.");
         // UI로 사용 여부 확인
         bool use = false;
 

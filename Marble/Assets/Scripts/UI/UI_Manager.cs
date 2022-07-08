@@ -11,6 +11,8 @@ public class UI_Manager : MonoBehaviour
     {
         diceRollPanel = FindObjectOfType<DiceRollPanel>();
         resultPanel = FindObjectOfType<ResultPanel>();
+
+        GameManager.Inst.GameDiceSet.OnDouble += resultPanel.OnDouble;
     }
 
     public void ShowDiceRollPanel(bool isShow)
