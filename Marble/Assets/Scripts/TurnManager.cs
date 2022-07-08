@@ -51,24 +51,38 @@ public class TurnManager : MonoBehaviour
 
     void TurnStart()
     {
+        Player player = NextPlayer;
+        TurnProcess(player);
     }
     
-    public void TurnProcess(Player player)
+    void TurnProcess(Player player)
     {
         if (player.Type != PlayerType.Human)
         {
             int dicesum = dice.RollAll_GetTotalSum();
             map.Move(player, dicesum);
+            TurnEnd();
         }
         else
         {
+            // 패널 열어서 주사위 굴리기
+            GameManager.Inst.UI_Manager.ShowDiceRollPanel(true);
+        }        
+    }
 
-        }
+    public void PlayerTurnProcess()
+    {
+        Debug.Log("Player Roll");
+        int dicesum = dice.RollAll_GetTotalSum(true);
+        GameManager.Inst.UI_Manager.SetResultText(human.Type, dicesum);
+        map.Move(human, dicesum);
+        TurnEnd();
     }
 
     void TurnEnd()
     {
         OnTurnEnd?.Invoke();
+        TurnStart();
     }
 
     //private void Update()

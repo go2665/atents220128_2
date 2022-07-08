@@ -10,6 +10,13 @@ public class GameManager : Singleton<GameManager>
         new(0, 0.1726165f, 0.6764706f, 0.454902f), new(0.7352941f, 0,0, 0.454902f), 
         new(0.7352941f, 0.6237322f, 0, 0.454902f), new(0, 0, 0, 0.454902f) };
 
+    UI_Manager ui_Manager;
+    public UI_Manager UI_Manager
+    {
+        get => ui_Manager;
+    }
+
+
     TurnManager turnManager;
     public TurnManager TurnManager
     {
@@ -46,9 +53,9 @@ public class GameManager : Singleton<GameManager>
     {
         Debug.Log("Game Manager Initialize");
 
-        diceSet = FindObjectOfType<DiceSet>();        
+        diceSet = GetComponent<DiceSet>();        
         map = FindObjectOfType<Map>();
-         
+        map.Initialize();
 
         players = new Player[NumOfPlayer];
         for(int i=0; i<NumOfPlayer; i++ )
@@ -62,9 +69,11 @@ public class GameManager : Singleton<GameManager>
             }
         }
 
-        turnManager = FindObjectOfType<TurnManager>();
+        turnManager = GetComponent<TurnManager>();
         turnManager.Initialize();
 
+        ui_Manager = GetComponent<UI_Manager>();
+        ui_Manager.Initialize();
     }
 
     public Player GetPlayer(PlayerType type)

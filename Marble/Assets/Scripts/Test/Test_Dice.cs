@@ -11,7 +11,8 @@ public class Test_Dice : MonoBehaviour
     public TextMeshProUGUI dice2;
     public TextMeshProUGUI doubleText;
     public TextMeshProUGUI diceSum;
-    public Button rollButton;
+    public Button indvRollButton;
+    public Button sumRollButton;
 
     bool isDouble;
 
@@ -23,7 +24,8 @@ public class Test_Dice : MonoBehaviour
             Debug.Log($"Dice_{i}(은)는 {GameManager.Inst.GameDiceSet.Roll(i)}(이)가 나왔습니다.");
         }
 
-        rollButton.onClick.AddListener(DiceRoll);
+        indvRollButton.onClick.AddListener(DiceRoll1);
+        sumRollButton.onClick.AddListener(DiceRoll2);
         
     }
 
@@ -46,12 +48,14 @@ public class Test_Dice : MonoBehaviour
         isDouble = true;
     }
 
-    private void DiceRoll()
+    private void DiceRoll1()
     {
         int[] result = GameManager.Inst.GameDiceSet.RollAll_GetIndividual();
         PrintDiceResult(result[0], result[1], isDouble);
         isDouble = false;
-
+    }
+    private void DiceRoll2()
+    {
         int sum = GameManager.Inst.GameDiceSet.RollAll_GetTotalSum();
         PrintDiceSumResult(sum, isDouble);
         isDouble = false;

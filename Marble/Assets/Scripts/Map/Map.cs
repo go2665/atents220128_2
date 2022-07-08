@@ -13,18 +13,18 @@ public class Map : MonoBehaviour
     const int NumOfSize = 4;
     const int NumOfPlaces = SideSize * NumOfSize;    
 
-    private void Awake()
+    public void Initialize()
     {
         places = new Place[NumOfPlaces];
 
         MapData[] mapDatas = LoadMapData();
         GameObject[] mapObjects = MakeMapObject();
-        for(int i=0;i<NumOfPlaces; i++)
+        for (int i = 0; i < NumOfPlaces; i++)
         {
             switch (mapDatas[i].type)
             {
                 case PlaceType.City:
-                    places[i] = mapObjects[i].AddComponent<City>();                    
+                    places[i] = mapObjects[i].AddComponent<City>();
                     break;
                 case PlaceType.CityBase:
                     places[i] = mapObjects[i].AddComponent<CityBase>();

@@ -21,9 +21,9 @@ public class DiceSet : MonoBehaviour
     /// 여러 주사위를 굴려 주사위 값의 합을 돌려줌
     /// </summary>
     /// <returns>모든 주사위값의 합</returns>
-    public int RollAll_GetTotalSum()
+    public int RollAll_GetTotalSum(bool showDiceRotate = false)
     {
-        int[] results = RollAll_GetIndividual();
+        int[] results = RollAll_GetIndividual(showDiceRotate);
         int sum = 0;
         foreach(int r in results)
         {
@@ -37,12 +37,12 @@ public class DiceSet : MonoBehaviour
     /// 여러 주사위를 굴려 각 주사위의 결과값을 돌려줌
     /// </summary>
     /// <returns>모든 주사위의 결과값</returns>
-    public int[] RollAll_GetIndividual()
+    public int[] RollAll_GetIndividual(bool showDiceRotate = false)
     {   
         int[] results = new int[dices.Length];
         for(int i=0;i<dices.Length;i++)
         {
-            results[i] = dices[i].Roll();            
+            results[i] = dices[i].Roll(showDiceRotate);            
         }
 
         bool isDouble = true;
