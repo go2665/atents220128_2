@@ -1,0 +1,22 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Test_Player : MonoBehaviour
+{
+    void Start()
+    {
+        Player[] players = GameManager.Inst.Players;
+        Map map = GameManager.Inst.GameMap;
+
+        //Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        //map.Move(GameManager.Inst.GetPlayer(PlayerType.Human), 1);
+        //map.Move(GameManager.Inst.GetPlayer(PlayerType.CPU1), 2);
+        //map.Move(GameManager.Inst.GetPlayer(PlayerType.CPU2), 3);
+        //map.Move(GameManager.Inst.GetPlayer(PlayerType.CPU3), 4);
+        //GameManager.Inst.TurnManager.TurnProcess();
+        //GameManager.Inst.TurnManager.TurnProcess();
+        //GameManager.Inst.TurnManager.TurnProcess();
+        //GameManager.Inst.TurnManager.TurnProcess();
+    }
+}

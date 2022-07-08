@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Test_Place : MonoBehaviour
 {
-    public GameObject testObj;
+    public GameObject[] testObj;
 
     private void Start()
     {
@@ -22,7 +22,11 @@ public class Test_Place : MonoBehaviour
         testPlace.villaBuyPrice = 500;
         testPlace.villaUsePrice = 600;
 
-        City city = testObj.AddComponent<City>();
-        city.Initialize(testObj, ref testPlace);
+        for (int i = 0; i < 4; i++)
+        {
+            City city = testObj[i].GetComponent<City>();
+            city.Initialize(testObj[i], ref testPlace);
+            city.Sell((PlayerType)(i+1), 100);
+        }        
     }
 }

@@ -17,8 +17,8 @@ public class Map : MonoBehaviour
     {
         places = new Place[NumOfPlaces];
 
-        GameObject[] mapObjects = MakeMapObject();
         MapData[] mapDatas = LoadMapData();
+        GameObject[] mapObjects = MakeMapObject();
         for(int i=0;i<NumOfPlaces; i++)
         {
             switch (mapDatas[i].type)
@@ -70,7 +70,9 @@ public class Map : MonoBehaviour
         }
 
         player.Position = (MapID)dest;
-        GetPlace(player.Position).OnArrive(player);
+        Place place = GetPlace(player.Position);
+        player.transform.position = place.GetPlayerPosition(player.Type);
+        place.OnArrive(player);
     }
 
     public void Move(Player player, MapID mapID)
@@ -162,12 +164,12 @@ public class Map : MonoBehaviour
                 if (id == 0)
                 {
                     place.transform.SetAsFirstSibling();
-                    
+
                 }
                 allPaceObject[id] = place;
             }
             startPos = place.transform.position;
-            makeDir = Quaternion.Euler(0, 90, 0) * makeDir;            
+            makeDir = Quaternion.Euler(0, 90, 0) * makeDir;
         }
 
         return allPaceObject;

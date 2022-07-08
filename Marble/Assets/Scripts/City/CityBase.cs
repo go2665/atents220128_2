@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CityBase : Place
 {
+    public GameObject playerColorLayerPrefab;
+    protected GameObject playerColorLayer;
+    Renderer playerColorLayerRenderer;
+
     public int price;      // 구매 비용
     public int usePrice;   // 다른 플레이어가 들어왔을때 지불할 비용
 
@@ -38,6 +42,9 @@ public class CityBase : Place
         buyerPlayer.Money -= sellPrice;
 
         owner = buyer;
+
+        playerColorLayerRenderer.material.color = GameManager.Inst.PlayerColor[(int)owner];
+        playerColorLayer.SetActive(true);
     }
 
     protected virtual void Start()
@@ -63,5 +70,9 @@ public class CityBase : Place
         base.Initialize(obj, ref mapData);
         price = mapData.placeBuyPrice;
         usePrice = mapData.placeUsePrice;
+
+        playerColorLayer = Instantiate(playerColorLayerPrefab, transform);
+        playerColorLayerRenderer = playerColorLayer.GetComponent<Renderer>();
+        playerColorLayer.SetActive(false);
     }
 }

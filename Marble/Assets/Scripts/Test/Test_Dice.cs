@@ -24,15 +24,24 @@ public class Test_Dice : MonoBehaviour
         }
 
         rollButton.onClick.AddListener(DiceRoll);
+        
+    }
+
+    private void OnEnable()
+    {
         GameManager.Inst.GameDiceSet.OnDouble += DoubleCheck;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        GameManager.Inst.GameDiceSet.OnDouble -= DoubleCheck;
+        if (GameManager.Inst)
+        {
+            GameManager.Inst.GameDiceSet.OnDouble -= DoubleCheck;
+        }
     }
 
-    void DoubleCheck()
+
+    void DoubleCheck(PlayerType type)
     {
         isDouble = true;
     }

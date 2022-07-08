@@ -10,7 +10,7 @@ public class DiceSet : MonoBehaviour
         get => dices.Length;
     }
 
-    public System.Action OnDouble;
+    public System.Action<PlayerType> OnDouble;
 
     void Awake()
     {
@@ -58,7 +58,7 @@ public class DiceSet : MonoBehaviour
 
         if (isDouble)
         {
-            OnDouble?.Invoke();
+            OnDouble?.Invoke(GameManager.Inst.TurnManager.CurrentPlayer);
         }
 
         return results;
