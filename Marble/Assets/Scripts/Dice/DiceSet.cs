@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class DiceSet : MonoBehaviour
 {
+    public bool isTest = false;
+    [Range(1,6)]
+    public int testDice1 = 1;
+    [Range(1, 6)]
+    public int testDice2 = 1;
+
     Dice[] dices;
     public int NumOfDices
     {
@@ -43,6 +49,12 @@ public class DiceSet : MonoBehaviour
         for(int i=0;i<dices.Length;i++)
         {
             results[i] = dices[i].Roll(showDiceRotate);            
+        }
+
+        if(isTest)
+        {
+            results[0] = testDice1;
+            results[1] = testDice2;
         }
 
         bool isDouble = true;

@@ -79,7 +79,7 @@ public class TurnManager : MonoBehaviour
         else
         {
             TurnEnd();
-        }     
+        }
     }
 
     public void PlayerTurnProcess()
@@ -98,9 +98,17 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    void TurnEnd()
+    void TurnEnd()  
     {
-        OnTurnEnd?.Invoke();
+        GameManager.Inst.GetPlayer(CurrentPlayer).OnTurnEnd();
+        //OnTurnEnd?.Invoke();
+
+        StartCoroutine(TurnStartDelay());
+    }
+
+    IEnumerator TurnStartDelay()
+    {
+        yield return new WaitForSeconds(0.1f);
         TurnStart();
     }
 

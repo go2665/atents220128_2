@@ -21,7 +21,7 @@ public class Place_SpaceShip : Place
 
     public override void OnArrive(Player player)
     {
-        Debug.Log($"{player} : 우주왕복선입니다.");
+        //Debug.Log($"{player} : 우주왕복선입니다.");
         // UI로 사용 여부 확인
         bool use = false;
 

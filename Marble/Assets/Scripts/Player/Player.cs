@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
     Material material;
     int actionCount = 1;
 
-    int islandWaitTime = 0; 
+
+    int islandWaitTime = -1; 
 
     public int Money 
     { 
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
         set
         {
             money = value;
+            OnMoneyChange?.Invoke(money);
         }
     }
 
@@ -44,6 +46,10 @@ public class Player : MonoBehaviour
     {
         get => actionCount < 1;
     }
+
+
+    public System.Action<int> OnMoneyChange;
+
 
     private void Awake()
     {
@@ -79,17 +85,33 @@ public class Player : MonoBehaviour
         islandWaitTime = wait;
     }
 
-    void OnTurnEnd()
+    public void OnTurnEnd()
     {
+        if (type == PlayerType.Human)
+        {
+            Debug.Log($"{type} turn end");
+        }
         actionCount = 1;
+        islandWaitTime--;
     }
 
     void OnDouble(PlayerType diceThrower)
     {
         if (diceThrower == type)
         {
-            Debug.Log($"{diceThrower}이 더블이 나왔습니다.");
-            actionCount++;
+            if (diceThrower == PlayerType.Human)
+            {
+                Debug.Log($"{diceThrower}이 더블이 나왔습니다.");
+            }
+
+            if (islandWaitTime > 0)
+            {
+                islandWaitTime = 0;
+            }
+            else
+            {
+                actionCount++;
+            }
         }
     }
 
@@ -100,15 +122,25 @@ public class Player : MonoBehaviour
             actionCount--;
 
             // 주사위 돌리는 애니메이션 등 처리
-            int dicesum = dice.RollAll_GetTotalSum(Type == PlayerType.Human);
             //Debug.Log($"{Type}은 {dicesum}이 나왔습니다.");
             //string str = $"{Type}은 {(int)this.Position}에서 ";
-            map.Move(this, dicesum);
-            //str += $"{(int)this.Position}에 도착했습니다.";
-            //Debug.Log(str);
-            //if (Type == PlayerType.Human)
+            if (islandWaitTime <= 0)
             {
+                int dicesum = dice.RollAll_GetTotalSum(Type == PlayerType.Human);
+                map.Move(this, dicesum);
+                //map.Move(this, 10);
+                //str += $"{(int)this.Position}에 도착했습니다.";
+                //Debug.Log(str);
                 GameManager.Inst.UI_Manager.SetResultText(Type, dicesum);
+            }
+            else
+            {
+                dice.RollAll_GetTotalSum(Type == PlayerType.Human);
+                if (Type == PlayerType.Human)
+                {
+                    Debug.Log($"{Type} 무인도 탈출 실패");
+                }
+                GameManager.Inst.UI_Manager.SetResultText($"{Type} 무인도 탈출 실패");
             }
         }
     }

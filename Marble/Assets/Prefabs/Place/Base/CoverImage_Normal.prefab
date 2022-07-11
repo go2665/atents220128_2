@@ -98,5 +98,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materials:
   - {fileID: 2100000, guid: 186035cf8e82d2a4c967b9b3d9a4e890, type: 2}
+  - {fileID: 2100000, guid: 5673b18f23cdd0c478f428b2d34ca9b5, type: 2}
   type: 0
   myRenderer: {fileID: 847591197150692909}

@@ -7,7 +7,8 @@ public class CoverImage_Normal : MonoBehaviour
     public enum Type
     {
         None = -1,
-        GoldenKey = 0
+        GoldenKey = 0,
+        FundPay
     }
 
     public Material[] materials;
@@ -24,16 +25,17 @@ public class CoverImage_Normal : MonoBehaviour
         SetImage(type);
     }
 
-    public void SetImage(Type type)
+    public void SetImage(Type newType)
     {
-        if (type != Type.None)
+        if (newType != Type.None)
         {
-            myRenderer.material = materials[(int)type];
+            myRenderer.material = materials[(int)newType];
         }
         else
         {
             gameObject.SetActive(false);
         }
+        type = newType;
     }
 
     //private void OnValidate()

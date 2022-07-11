@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Place_Island : Place
 {
-    int waitCount = 3;
+    int waitCount = 4;  // 무인도에 들어간 턴이 종료될 때 1이 감소하므로 3턴 쉬게 된다.
 
     private void Awake()
     {
@@ -15,7 +15,7 @@ public class Place_Island : Place
     public override void OnArrive(Player player)
     {
         player.OnArriveIsland(waitCount);
-        Debug.Log($"{player} : 무인도에 도착했습니다.");
+        //Debug.Log($"{player} : 무인도에 도착했습니다.");
     }
 
     public override void OnTurnStart(Player player)

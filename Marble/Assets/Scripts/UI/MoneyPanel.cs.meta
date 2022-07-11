@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: c8991c6861e6f4848bd7c7c5ca7ef52d
+guid: a46f87c7d023cfd47b33d2da67403f90
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - fundTextPrefab: {fileID: 3079342425886234857, guid: 6100c5da6ecaf88439038baabbec492b, type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
