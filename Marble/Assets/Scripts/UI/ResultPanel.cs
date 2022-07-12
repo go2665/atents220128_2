@@ -4,6 +4,9 @@ using UnityEngine;
 using TMPro;
 using System;
 
+/// <summary>
+/// 행동 결과창
+/// </summary>
 public class ResultPanel : MonoBehaviour
 {
     TextMeshProUGUI textUI;
@@ -32,7 +35,11 @@ public class ResultPanel : MonoBehaviour
         }
     }
 
-    public void OnDouble(PlayerType type)
+    /// <summary>
+    /// 더블이 나왔을 때 실행될 함수. 델리게이터에 간접적으로 연결
+    /// </summary>
+    /// <param name="_">사용안함</param>
+    public void OnDouble(PlayerType _)
     {
         isDouble = true;
     }

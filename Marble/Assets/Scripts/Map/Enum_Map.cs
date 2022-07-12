@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 맵의 칸별 아이디
+/// </summary>
 public enum MapID
 {
     Start = 0,

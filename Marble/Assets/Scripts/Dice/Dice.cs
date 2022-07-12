@@ -25,6 +25,11 @@ public class Dice : MonoBehaviour
         diceEyeRotation[5] = Quaternion.Euler(0, 0, 90);
     }
 
+    /// <summary>
+    /// 주사위를 굴리는 함수
+    /// </summary>
+    /// <param name="showDiceRotate">주사위 눈이 보이게 회전시킬지 결정</param>
+    /// <returns></returns>
     public int Roll(bool showDiceRotate = false)
     {
         int eye = Random.Range(1, diceMax + 1);

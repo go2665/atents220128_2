@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 무인도
+/// </summary>
 public class Place_Island : Place
 {
     int waitCount = 4;  // 무인도에 들어간 턴이 종료될 때 1이 감소하므로 3턴 쉬게 된다.

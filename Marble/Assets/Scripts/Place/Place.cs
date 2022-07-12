@@ -23,6 +23,11 @@ public class Place : MonoBehaviour
     {
     }
 
+    /// <summary>
+    /// 장소 한칸의 초기화 함수
+    /// </summary>
+    /// <param name="obj">장소 한칸을 보여줄 오브젝트</param>
+    /// <param name="mapData">이 장소에 대한 데이터</param>
     public virtual void Initialize(GameObject obj, ref MapData mapData)
     {
         placeObject = obj;
@@ -37,6 +42,11 @@ public class Place : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 이 장소에 말이 배치될 위치를 리턴하는 함수
+    /// </summary>
+    /// <param name="type">배치될 플레이어</param>
+    /// <returns>배치될 위치</returns>
     public Vector3 GetPlayerPosition(PlayerType type)
     {
         return playerPostions[(int)type - 1].position;

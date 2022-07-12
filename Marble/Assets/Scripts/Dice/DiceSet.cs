@@ -23,9 +23,11 @@ public class DiceSet : MonoBehaviour
         dices = FindObjectsOfType<Dice>();
     }
 
+
     /// <summary>
     /// 여러 주사위를 굴려 주사위 값의 합을 돌려줌
     /// </summary>
+    /// <param name="showDiceRotate">주사위를 회전시킬지 여부</param>
     /// <returns>모든 주사위값의 합</returns>
     public int RollAll_GetTotalSum(bool showDiceRotate = false)
     {
