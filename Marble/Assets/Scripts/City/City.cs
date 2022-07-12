@@ -57,7 +57,7 @@ public class City : CityBase
 
     public override void OnArrive(Player player)
     {
-        Debug.Log($"{player} : {placeName}에 도착했습니다.");
+        //Debug.Log($"{player} : {placeName}에 도착했습니다.");
         if (owner == PlayerType.Bank)
         {
             // 은행 땅이다. => 구매 여부 확인
@@ -71,6 +71,8 @@ public class City : CityBase
         {
             // 내 땅이다. => 건물 짖기 UI
         }
+
+        base.OnArrive(player);
     }
 
     public override void Initialize(GameObject obj, ref MapData mapData)

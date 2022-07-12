@@ -31,9 +31,9 @@ public class Player : MonoBehaviour
         {
             if (money != value)
             {
+                money = value;
                 OnMoneyChange?.Invoke(money);   // 금액에 변동이 있으면 OnMoneyChange 델리게이트 실행
             }
-            money = value;
         }
     }
 
@@ -111,6 +111,42 @@ public class Player : MonoBehaviour
         islandWaitTime = wait;
     }
 
+    public void PlayerTurnStart()
+    {
+        actionCount = 1;    // 행동력 1로 회복
+        islandWaitTime--;   // 무인도 대기 시간 감소
+                
+        if (Type != PlayerType.Human)
+        {
+            // CPU 플레이어들
+            do
+            {
+                RollDice();
+            }
+            while(!ActionDone); //플레이어가 액션을 할 수 있으면 계속 반복
+        }
+        else
+        {
+            // 인간 플레이어                
+            GameManager.Inst.UI_Manager.ShowDiceRollPanel(true);    // 패널 열어서 주사위 굴리기
+        }        
+    }
+
+    public void PlayerTurnEnd()
+    {
+        // 각 플레이스의 OnArrive 끝날 때 자동 실행
+        StartCoroutine(TurnEndWait());
+    }
+
+    IEnumerator TurnEndWait()
+    {
+        yield return new WaitForSeconds(0.3f);
+        if (GameManager.Inst.TurnManager != null)
+        {
+            GameManager.Inst.TurnManager.NextPlayer.PlayerTurnStart();
+        }
+    }
+
     /// <summary>
     /// 턴이 종료될 때 실행될 함수. 턴 매니저에서 호출
     /// </summary>
@@ -120,8 +156,8 @@ public class Player : MonoBehaviour
         //{
         //    Debug.Log($"{type} turn end");
         //}
-        actionCount = 1;    // 행동력 1로 회복
-        islandWaitTime--;   // 무인도 대기 시간 감소
+        
+        
     }
 
     /// <summary>

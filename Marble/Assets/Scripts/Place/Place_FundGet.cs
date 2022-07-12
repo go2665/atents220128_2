@@ -45,5 +45,6 @@ public class Place_FundGet : Place
         player.Money += totalFund;
         totalFund = 0;
         fundText.text = totalFund.ToString();
+        base.OnArrive(player);
     }
 }

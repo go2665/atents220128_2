@@ -17,6 +17,8 @@ public class Place : MonoBehaviour
 
     public virtual void OnArrive(Player player)
     {
+        Debug.Log($"{player} : {placeName}에 도착했습니다.");
+        player.PlayerTurnEnd();
     }
 
     public virtual void OnTurnStart(Player player)

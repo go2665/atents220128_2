@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Place_SpaceShip : Place
 {
-    int shipUsePrice = 200;
+    public const int shipUsePrice = 200;
     bool[] passenger = null;
 
     private void Awake()
@@ -23,18 +23,22 @@ public class Place_SpaceShip : Place
     {
         //Debug.Log($"{player} : 우주왕복선입니다.");
         // UI로 사용 여부 확인
-        bool use = false;
 
-        if( use )
-        {
-            // 탑승할 경우
-            CityBase coumbia = GameManager.Inst.GameMap.GetPlace(MapID.Columbia) as CityBase;
-            Player ownerPlayer = GameManager.Inst.Players[(int)coumbia.Owner];
+        GameManager.Inst.UI_Manager.ShowSpaceShipPanel(true, player);
 
-            player.Money -= shipUsePrice;
-            passenger[(int)player.Type] = true;
-            ownerPlayer.Money += shipUsePrice;
-        }        
+        //bool use = false;
+
+        //if( use )
+        //{
+        //    // 탑승할 경우
+        //    CityBase coumbia = GameManager.Inst.GameMap.GetPlace(MapID.Columbia) as CityBase;
+        //    Player ownerPlayer = GameManager.Inst.Players[(int)coumbia.Owner];
+
+        //    player.Money -= shipUsePrice;
+        //    passenger[(int)player.Type] = true;
+        //    ownerPlayer.Money += shipUsePrice;
+        //}
+        base.OnArrive(player);
     }
 
     public override void OnTurnStart(Player player)

@@ -13,5 +13,6 @@ public class Place_GoldenKey : Place
     public override void OnArrive(Player player)
     {
         //Debug.Log($"{player} : 황금 열쇠를 엽니다.");
+        base.OnArrive(player);
     }
 }

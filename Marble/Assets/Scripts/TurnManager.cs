@@ -29,20 +29,21 @@ public class TurnManager : MonoBehaviour
     /// <summary>
     /// 다음 플레이어를 가져오는 프로퍼티(가지고 올 때 currentPlayer도 변경됨)
     /// </summary>
-    Player NextPlayer
+    public Player NextPlayer
     {
         get
         {
-            PlayerType next;
-            if (currentPlayer != PlayerType.CPU3)   // Human->CPU1->CPU2->CPU3->Human->...
+            if (playersOnly[(int)currentPlayer-1].ActionDone)
             {
-                next = currentPlayer + 1;
+                if (currentPlayer != PlayerType.CPU3)   // Human->CPU1->CPU2->CPU3->Human->...
+                {
+                    currentPlayer = currentPlayer + 1;
+                }
+                else
+                {
+                    currentPlayer = PlayerType.Human;
+                }
             }
-            else
-            {
-                next = PlayerType.Human;
-            }
-            currentPlayer = next;
             return playersOnly[(int)(currentPlayer) - 1];
         }
     }
@@ -66,82 +67,7 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     public void GameStart()
     {
-        TurnStart();
-    }
-
-    /// <summary>
-    /// 각 플레이어 별로 턴이 시작될 때 실행되는 함수
-    /// </summary>
-    void TurnStart()
-    {
-        Player player = NextPlayer;
-        TurnProcess(player);
-    }
-    
-    /// <summary>
-    /// 플레이어의 턴을 진행하는 함수
-    /// </summary>
-    /// <param name="player">턴을 진행할 플레이어</param>
-    void TurnProcess(Player player)
-    {
-        if (!player.ActionDone)
-        {
-            if (player.Type != PlayerType.Human)
-            {
-                // CPU 플레이어들
-                player.RollDice();
-                TurnProcess(player);    // 재귀 호출 방식으로 플레이어가 액션을 할 수 있으면 계속 반복
-            }
-            else
-            {
-                // 인간 플레이어                
-                GameManager.Inst.UI_Manager.ShowDiceRollPanel(true);    // 패널 열어서 주사위 굴리기
-            }
-        }
-        else
-        {
-            // 모든 행동이 완료되면 턴 종료
-            TurnEnd();
-        }
-    }
-
-    /// <summary>
-    /// 플레이어용 턴 처리 함수. 주사위 굴림판을 클릭했을 때 실행되는 함수
-    /// </summary>
-    public void PlayerTurnProcess()
-    {
-        //Debug.Log("Player Roll");
-
-        human.RollDice();       // 주사위 굴리고    
-
-        if(human.ActionDone)
-        {
-            TurnEnd();          // 행동력을 다 쓰면 턴 종료
-        }
-        else
-        {
-            GameManager.Inst.UI_Manager.ShowDiceRollPanel(true);    // 다시 주사위 굴림판 열기
-        }
-    }
-
-    /// <summary>
-    /// 각 플레이어별로 턴이 종료될 때 실행될 함수
-    /// </summary>
-    void TurnEnd()  
-    {        
-        GameManager.Inst.GetPlayer(CurrentPlayer).OnTurnEnd();  // 행동력을 1로 만들고 무인도 대기시간 감소
-        //OnTurnEnd?.Invoke();
-
-        StartCoroutine(TurnStartDelay());   // 다음 턴 시작을 잠시 딜레이 시킴
-    }
-
-    /// <summary>
-    /// 턴 시작을 잠시 딜레이시키기 위한 코루틴
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator TurnStartDelay()
-    {
-        yield return new WaitForSeconds(0.1f);
-        TurnStart();
+        currentPlayer = PlayerType.Human;
+        human.PlayerTurnStart();
     }
 }

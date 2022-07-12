@@ -46,6 +46,7 @@ public class DiceRollPanel : MonoBehaviour, IPointerClickHandler
     {
         //Debug.Log("DiceRollPanel");
         Show(false);    // 닫고
-        GameManager.Inst.TurnManager.PlayerTurnProcess(); // 인간 플레이어 턴 진행
+        //GameManager.Inst.TurnManager.HumanTurnProcess(); // 인간 플레이어 턴 진행
+        GameManager.Inst.GetPlayer(PlayerType.Human).RollDice();
     }
 }

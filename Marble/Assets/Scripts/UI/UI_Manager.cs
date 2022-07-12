@@ -7,6 +7,7 @@ public class UI_Manager : MonoBehaviour
     DiceRollPanel diceRollPanel;    // 주사위 굴림판 UI
     ResultPanel resultPanel;        // 주사위 굴린 결과 창 UI(주사위의 눈 합, 더블 여부, 무인도 탈출 여부 출력)
     MoneyPanel moneyPanel;          // 각 플레이어들의 보유금액 표시
+    SpaceShipPanel spaceShipPanel;
 
     /// <summary>
     /// 초기화 함수. 주사위와 플레이어의 초기화 이후에 실행되어야 한다.
@@ -16,6 +17,7 @@ public class UI_Manager : MonoBehaviour
         diceRollPanel = FindObjectOfType<DiceRollPanel>();  // 각 UI 가져오기
         resultPanel = FindObjectOfType<ResultPanel>();
         moneyPanel = FindObjectOfType<MoneyPanel>();
+        spaceShipPanel = FindObjectOfType<SpaceShipPanel>();
 
         GameManager.Inst.GameDiceSet.OnDouble += OnDouble_Result;   // 주사위가 더블이 나왔을 때 resultPanel에서 표시하기 위한 함수 등록
 
@@ -72,5 +74,10 @@ public class UI_Manager : MonoBehaviour
     void OnDouble_Result(PlayerType _)
     {
         resultPanel.OnDouble(_);
+    }
+
+    public void ShowSpaceShipPanel(bool isShow, Player cadidate)
+    {
+        spaceShipPanel.Show(isShow, cadidate);
     }
 }

@@ -79,7 +79,8 @@ public class GameManager : Singleton<GameManager>
     {
         Debug.Log("Game Manager Initialize");
         
-        diceSet = GetComponent<DiceSet>();        
+        diceSet = GetComponent<DiceSet>();
+
         map = FindObjectOfType<Map>();
         map.Initialize();
 

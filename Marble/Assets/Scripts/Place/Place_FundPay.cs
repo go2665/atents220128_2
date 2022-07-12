@@ -34,5 +34,6 @@ public class Place_FundPay : Place
             fundGet.AddFund(fundPrice);
         }
         //Debug.Log($"{player} : 기금에 {fundPrice}원을 지불합니다.");
+        base.OnArrive(player);
     }
 }

@@ -17,7 +17,7 @@ public class Map : MonoBehaviour
     const int NumOfPlaces = SideSize * NumOfSize;   // 전체 칸수
 
     /// <summary>
-    /// 초기화 함수
+    /// 초기화 함수(우선순위 상관없음)
     /// </summary>
     public void Initialize()
     {

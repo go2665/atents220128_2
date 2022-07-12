@@ -9,7 +9,10 @@ public class Test_Player : MonoBehaviour
         Player[] players = GameManager.Inst.Players;
         Map map = GameManager.Inst.GameMap;
 
-        //Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        //map.Move(p1, MapID.Lisbon);
+        //p1.Money = 1000;
+
         //map.Move(GameManager.Inst.GetPlayer(PlayerType.Human), 1);
         //map.Move(GameManager.Inst.GetPlayer(PlayerType.CPU1), 2);
         //map.Move(GameManager.Inst.GetPlayer(PlayerType.CPU2), 3);
