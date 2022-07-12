@@ -5,7 +5,7 @@ using UnityEngine;
 public class Place_SpaceShip : Place
 {
     public const int shipUsePrice = 200;
-    bool[] passenger = null;
+    //bool[] passenger = null;
 
     private void Awake()
     {
@@ -16,7 +16,7 @@ public class Place_SpaceShip : Place
 
     private void Start()
     {
-        passenger = new bool[GameManager.Inst.NumOfPlayer];
+        //passenger = new bool[GameManager.Inst.NumOfPlayer];
     }
 
     public override void OnArrive(Player player)
@@ -41,15 +41,15 @@ public class Place_SpaceShip : Place
         base.OnArrive(player);
     }
 
-    public override void OnTurnStart(Player player)
-    {
-        bool user = passenger[(int)player.Type];
-        if (user)
-        {
-            passenger[(int)player.Type] = false;
-            // 갈 위치 선택
-            MapID target = MapID.Start; // UI를 통해서 변경할 것
-            GameManager.Inst.GameMap.Move(player, target);
-        }
-    }
+    //public override void OnTurnStart(Player player)
+    //{
+    //    bool user = passenger[(int)player.Type];
+    //    if (user)
+    //    {
+    //        passenger[(int)player.Type] = false;
+    //        // 갈 위치 선택
+    //        MapID target = MapID.Start; // UI를 통해서 변경할 것
+    //        GameManager.Inst.GameMap.Move(player, target);
+    //    }
+    //}
 }

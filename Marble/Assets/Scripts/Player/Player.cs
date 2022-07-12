@@ -148,19 +148,6 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// 턴이 종료될 때 실행될 함수. 턴 매니저에서 호출
-    /// </summary>
-    public void OnTurnEnd()
-    {
-        //if (type == PlayerType.Human)
-        //{
-        //    Debug.Log($"{type} turn end");
-        //}
-        
-        
-    }
-
-    /// <summary>
     /// 더블이 나왔을 때 실행될 함수
     /// </summary>
     /// <param name="diceThrower"></param>
@@ -173,14 +160,13 @@ public class Player : MonoBehaviour
             //    Debug.Log($"{diceThrower}이 더블이 나왔습니다.");
             //}
 
-            if (islandWaitTime > 0)
+            if (position == MapID.Island)
             {
-                islandWaitTime = 0; // 무인도에 있는 상황이면 무인도 탈출
+                islandWaitTime = 0; // 무인도에 있는 상황이면 무인도 탈출 조건 성립 시킴
             }
-            else
-            {
-                actionCount++;      // 일반 상황이면 한번 더 던지기
-            }
+            
+            actionCount++;          // 한번 더 던지도록 행동 횟수 추가
+            
         }
     }
 
@@ -198,18 +184,18 @@ public class Player : MonoBehaviour
             //Debug.Log($"{Type}은 {dicesum}이 나왔습니다.");
             //string str = $"{Type}은 {(int)this.Position}에서 ";
             
-            if (islandWaitTime <= 0)    // 무인도가 아닌 상황
+            if (position != MapID.Island || islandWaitTime <= 0)    
             {
+                // 일반적인 상황
                 int dicesum = dice.RollAll_GetTotalSum(Type == PlayerType.Human);   // 주사위 굴리고
                 map.Move(this, dicesum);    // 이동시키기
-                //map.Move(this, 10);
                 //str += $"{(int)this.Position}에 도착했습니다.";
                 //Debug.Log(str);
                 GameManager.Inst.UI_Manager.SetResultText(Type, dicesum);   // 결과를 결과창에 띄우기
             }
             else
             {
-                // 무인도인 상황
+                // 무인도 탈출 시도중인 상황
                 dice.RollAll_GetTotalSum(Type == PlayerType.Human);
                 if (islandWaitTime > 0) // 더블이 안나온 상황
                 {
@@ -219,6 +205,15 @@ public class Player : MonoBehaviour
                     }
                     GameManager.Inst.UI_Manager.SetResultText($"{Type} 무인도 탈출 실패");
                 }
+                else
+                {
+                    if (Type == PlayerType.Human)
+                    {
+                        Debug.Log($"{Type} 무인도 탈출 성공");
+                    }
+                    GameManager.Inst.UI_Manager.SetResultText($"{Type} 무인도 탈출 성공");
+                }
+                this.PlayerTurnEnd();
             }
         }
     }
