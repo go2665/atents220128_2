@@ -516,6 +516,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "SpaceShip",
+            "id": "dd574a09-8430-446e-b9de-5a9872dda068",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "1d427ce6-cdd9-4f12-9507-cc2ab33cd88d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d3597dee-a0f9-4957-8e06-a446e0efbf00",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

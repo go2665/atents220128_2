@@ -5,12 +5,12 @@ using UnityEngine;
 public class Place : MonoBehaviour
 {
     GameObject placeObject;    
-    protected int id;    
+    protected MapID id;    
     public string placeName;
 
     public Transform[] playerPostions;
 
-    public int ID
+    public MapID ID
     {
         get => id;
     }
@@ -19,10 +19,6 @@ public class Place : MonoBehaviour
     {
         Debug.Log($"{player} : {placeName}에 도착했습니다.");
         player.PlayerTurnEnd();
-    }
-
-    public virtual void OnTurnStart(Player player)
-    {
     }
 
     /// <summary>

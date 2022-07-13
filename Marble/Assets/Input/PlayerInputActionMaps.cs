@@ -538,6 +538,34 @@ public partial class @PlayerInputActionMaps : IInputActionCollection2, IDisposab
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SpaceShip"",
+            ""id"": ""dd574a09-8430-446e-b9de-5a9872dda068"",
+            ""actions"": [
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d427ce6-cdd9-4f12-9507-cc2ab33cd88d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d3597dee-a0f9-4957-8e06-a446e0efbf00"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -571,6 +599,9 @@ public partial class @PlayerInputActionMaps : IInputActionCollection2, IDisposab
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // SpaceShip
+        m_SpaceShip = asset.FindActionMap("SpaceShip", throwIfNotFound: true);
+        m_SpaceShip_Click = m_SpaceShip.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -731,6 +762,39 @@ public partial class @PlayerInputActionMaps : IInputActionCollection2, IDisposab
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // SpaceShip
+    private readonly InputActionMap m_SpaceShip;
+    private ISpaceShipActions m_SpaceShipActionsCallbackInterface;
+    private readonly InputAction m_SpaceShip_Click;
+    public struct SpaceShipActions
+    {
+        private @PlayerInputActionMaps m_Wrapper;
+        public SpaceShipActions(@PlayerInputActionMaps wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Click => m_Wrapper.m_SpaceShip_Click;
+        public InputActionMap Get() { return m_Wrapper.m_SpaceShip; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SpaceShipActions set) { return set.Get(); }
+        public void SetCallbacks(ISpaceShipActions instance)
+        {
+            if (m_Wrapper.m_SpaceShipActionsCallbackInterface != null)
+            {
+                @Click.started -= m_Wrapper.m_SpaceShipActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_SpaceShipActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_SpaceShipActionsCallbackInterface.OnClick;
+            }
+            m_Wrapper.m_SpaceShipActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
+            }
+        }
+    }
+    public SpaceShipActions @SpaceShip => new SpaceShipActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -752,5 +816,9 @@ public partial class @PlayerInputActionMaps : IInputActionCollection2, IDisposab
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface ISpaceShipActions
+    {
+        void OnClick(InputAction.CallbackContext context);
     }
 }

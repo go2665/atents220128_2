@@ -10,7 +10,7 @@ public class Test_Place : MonoBehaviour
     private void Start()
     {
         MapData testPlace = new();
-        testPlace.id = 999;
+        //testPlace.id = 999;
         testPlace.type = PlaceType.City;
         testPlace.name = "테스트도시";
         testPlace.placeBuyPrice = 150;

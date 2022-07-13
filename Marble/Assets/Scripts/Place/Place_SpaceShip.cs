@@ -38,7 +38,7 @@ public class Place_SpaceShip : Place
         //    passenger[(int)player.Type] = true;
         //    ownerPlayer.Money += shipUsePrice;
         //}
-        base.OnArrive(player);
+        //base.OnArrive(player);
     }
 
     //public override void OnTurnStart(Player player)

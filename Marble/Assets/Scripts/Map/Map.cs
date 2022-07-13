@@ -120,7 +120,7 @@ public class Map : MonoBehaviour
         {
             string[] data = allLineText[i].Split(',');  // ,를 기준으로 텍스트 분리
             MapData mapData = new();
-            mapData.id = int.Parse(data[0]);                // 분리된 각 항목들을 순서에 맞게 처리
+            mapData.id = (MapID)int.Parse(data[0]);                // 분리된 각 항목들을 순서에 맞게 처리
             mapData.type = (PlaceType)int.Parse(data[1]);
             mapData.name = data[2];
             switch (mapData.type)

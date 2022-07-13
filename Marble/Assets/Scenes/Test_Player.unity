@@ -2956,8 +2956,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTest: 1
-  testDice1: 6
-  testDice2: 4
+  testDice1: 1
+  testDice2: 2
 --- !u!114 &1246447349
 MonoBehaviour:
   m_ObjectHideFlags: 0

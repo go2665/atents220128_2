@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public struct MapData
 {
-    public int id;                  // MapID
+    public MapID id;                // MapID
     public PlaceType type;          // 장소의 종류(도시, 황금열쇠, 무인도 등등)
     public string name;             // 장소의 이름
     public int placeBuyPrice;       // 땅 구입비
