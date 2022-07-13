@@ -72,7 +72,7 @@ public class City : CityBase
             // 내 땅이다. => 건물 짖기 UI
         }
 
-        base.OnArrive(player);
+        //base.OnArrive(player);
     }
 
     public override void Initialize(GameObject obj, ref MapData mapData)

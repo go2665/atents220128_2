@@ -8,11 +8,13 @@ public class CityBase : Place
     protected GameObject playerColorLayer;
     Renderer playerColorLayerRenderer;
 
-    public int price;      // 구매 비용
-    public int usePrice;   // 다른 플레이어가 들어왔을때 지불할 비용
+    public int price;       // 구매 비용
+    public int usePrice;    // 다른 플레이어가 들어왔을때 지불할 비용
 
     protected PlayerType owner = PlayerType.Bank;
-    protected int value;
+    protected int value;    // 판매가치
+
+    const int UseDefaultPrice = -1;
 
     public PlayerType Owner
     {
@@ -33,44 +35,81 @@ public class CityBase : Place
         cover.SetImage(CoverImage_Normal.Type.None);
     }
 
+    protected virtual void Start()
+    {
+        value = price;
+    }
+
+    /// <summary>
+    /// 구매 가능여부 확인
+    /// </summary>
+    /// <param name="buyer">확인할 플레이어</param>
+    /// <returns>구매 가능하면 true</returns>
     public bool CanBuy(PlayerType buyer)
     {
         return (GameManager.Inst.Players[(int)buyer].Money > price);
     }
 
-    public void Sell(PlayerType buyer, int sellPrice)
+    /// <summary>
+    /// 도시를 판매하는 함수
+    /// </summary>
+    /// <param name="buyer">구매자</param>
+    /// <param name="sellPrice">판매가격. 디폴트 값일 경우 기본 구매가격 사용</param>
+    public void Sell(PlayerType buyer, int sellPrice = UseDefaultPrice)
     {
+        if(sellPrice == UseDefaultPrice)
+        {
+            sellPrice = price;
+        }
+
         // 이 도시 사고 팔기
-        Player ownerPlayer = GameManager.Inst.Players[(int)owner];
-        Player buyerPlayer = GameManager.Inst.Players[(int)buyer];
+        Player ownerPlayer = GameManager.Inst.GetPlayer(owner);
+        Player buyerPlayer = GameManager.Inst.GetPlayer(buyer);
 
         ownerPlayer.Money += sellPrice;
         buyerPlayer.Money -= sellPrice;
 
         owner = buyer;
 
+        //오너의 색깔 입히기
         playerColorLayerRenderer.material.color = GameManager.Inst.PlayerColor[(int)owner];
         playerColorLayer.SetActive(true);
     }
 
-    protected virtual void Start()
-    {
-        value = price;
-    }
-
+    /// <summary>
+    /// 이 도시에 누군가 도착했을 때 실행될 함수
+    /// </summary>
+    /// <param name="player">도착한 사람</param>
     public override void OnArrive(Player player)
     {
         //Debug.Log($"{player} : {placeName}에 도착했습니다.");
         if (owner == PlayerType.Bank)
         {
             // 은행 땅이다. => 구매 여부 확인
+            if (player.Type == PlayerType.Human)
+            {
+                // 사람 플레이어일 경우 UI 띄워서 확인
+                GameManager.Inst.UI_Manager.ShowCityBaseBuyPanel(true, player, this);
+            }
+            else
+            {
+                // CPU 플레이어일 경우 살 수 있으면 무조건 구매
+                if( CanBuy(player.Type) )
+                {
+                    Sell(player.Type);
+                }
+                base.OnArrive(player);  // 턴 넘기기
+            }
         }
         else if (owner != player.Type)
         {
             // 남의 땅이다.
-            player.Money -= usePrice;
+            player.Money -= usePrice;       // 돈 지불하기
+            Player ownerPlayer = GameManager.Inst.GetPlayer(owner);
+            ownerPlayer.Money += usePrice;  // 소유주의 금액 증가
+
+            base.OnArrive(player);  // 턴 넘기기
         }
-        base.OnArrive(player);
     }
 
     public override void Initialize(GameObject obj, ref MapData mapData)

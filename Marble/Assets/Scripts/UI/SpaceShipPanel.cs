@@ -46,7 +46,7 @@ public class SpaceShipPanel : MonoBehaviour
     /// 우주왕복선 사용판을 보여줄지 결정하는 함수
     /// </summary>
     /// <param name="isShow">true면 보여준다.</param>
-    public void Show(bool isShow, Player candidate)
+    public void Show(bool isShow, Player arrived)
     {        
         if (isShow)
         {
@@ -54,7 +54,7 @@ public class SpaceShipPanel : MonoBehaviour
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
-            if(Place_SpaceShip.shipUsePrice > candidate.Money)
+            if(Place_SpaceShip.shipUsePrice > arrived.Money)
             {
                 // 사용 불가
                 yesButton.interactable = false;
@@ -66,7 +66,7 @@ public class SpaceShipPanel : MonoBehaviour
                 yesButton.interactable = true;
                 availiableText.text = useAvailableStr;
             }
-            passenger = candidate;
+            passenger = arrived;
         }
         else
         {
@@ -110,6 +110,7 @@ public class SpaceShipPanel : MonoBehaviour
     void OnClickNo()
     {
         Debug.Log("사용하지 않습니다.");
+        passenger.PlayerTurnEnd();
         PanelEnd();
     }
 
