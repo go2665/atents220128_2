@@ -7,6 +7,7 @@ public class UI_Manager : MonoBehaviour
     DiceRollPanel diceRollPanel;    // 주사위 굴림판 UI
     ResultPanel resultPanel;        // 주사위 굴린 결과 창 UI(주사위의 눈 합, 더블 여부, 무인도 탈출 여부 출력)
     MoneyPanel moneyPanel;          // 각 플레이어들의 보유금액 표시
+    PlaceInfoPanel placeInfoPanel;
     SpaceShipPanel spaceShipPanel;
     CityBaseBuyPanel cityBaseBuyPanel;
 
@@ -18,6 +19,7 @@ public class UI_Manager : MonoBehaviour
         diceRollPanel = FindObjectOfType<DiceRollPanel>();  // 각 UI 가져오기
         resultPanel = FindObjectOfType<ResultPanel>();
         moneyPanel = FindObjectOfType<MoneyPanel>();
+        placeInfoPanel = FindObjectOfType<PlaceInfoPanel>();
         spaceShipPanel = FindObjectOfType<SpaceShipPanel>();
         cityBaseBuyPanel = FindObjectOfType<CityBaseBuyPanel>();
 
@@ -86,5 +88,15 @@ public class UI_Manager : MonoBehaviour
     public void ShowCityBaseBuyPanel(bool isShow, Player arrived, CityBase city)
     {
         cityBaseBuyPanel.Show(isShow, arrived, city);
+    }
+
+    public void SetPlaceInfo(Place place)
+    {
+        placeInfoPanel.SetInfo(place);
+    }
+
+    public void SetPlaceInfo(MapID id)
+    {
+        placeInfoPanel.SetInfo(id);
     }
 }

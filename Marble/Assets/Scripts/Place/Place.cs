@@ -5,7 +5,8 @@ using UnityEngine;
 public class Place : MonoBehaviour
 {
     GameObject placeObject;    
-    protected MapID id;    
+    protected MapID id;
+    protected PlaceType placeType;
     public string placeName;
 
     public Transform[] playerPostions;
@@ -13,6 +14,11 @@ public class Place : MonoBehaviour
     public MapID ID
     {
         get => id;
+    }
+
+    public PlaceType Type
+    {
+        get => placeType;
     }
 
     public virtual void OnArrive(Player player)
@@ -30,6 +36,7 @@ public class Place : MonoBehaviour
     {
         placeObject = obj;
         id = mapData.id;
+        placeType = mapData.type;
         placeName = mapData.name;
 
         int numOfPlayer = GameManager.Inst.NumOfPlayer;

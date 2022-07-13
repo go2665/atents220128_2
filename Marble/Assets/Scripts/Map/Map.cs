@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// 맵. 게임판
@@ -15,6 +17,8 @@ public class Map : MonoBehaviour
     const int SideSize = 10;        // 일반칸 9개 + 구석칸 1개
     const int NumOfSize = 4;        // 4면
     const int NumOfPlaces = SideSize * NumOfSize;   // 전체 칸수
+
+    PlayerInputActionMaps actions;
 
     /// <summary>
     /// 초기화 함수(우선순위 상관없음)
@@ -58,6 +62,22 @@ public class Map : MonoBehaviour
             }
             places[i].Initialize(mapObjects[i], ref mapDatas[i]);   // 한칸씩 초기화
         }
+
+        actions = new PlayerInputActionMaps();
+        actions.Map.Enable();
+        actions.Map.Point.performed += OnPointMove;
+    }
+
+    private void OnPointMove(InputAction.CallbackContext context)
+    {
+        Vector2 screenPos = context.ReadValue<Vector2>();
+        Ray ray = Camera.main.ScreenPointToRay(screenPos);
+        Place place = null;
+        if (Physics.Raycast(ray, out RaycastHit hit, 10.0f, LayerMask.GetMask("Place")))
+        {
+            place = hit.collider.GetComponentInParent<Place>();
+        }
+        GameManager.Inst.UI_Manager.SetPlaceInfo(place);
     }
 
     /// <summary>

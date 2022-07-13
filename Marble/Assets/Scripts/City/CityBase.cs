@@ -12,7 +12,8 @@ public class CityBase : Place
     public int usePrice;    // 다른 플레이어가 들어왔을때 지불할 비용
 
     protected PlayerType owner = PlayerType.Bank;
-    protected int value;    // 판매가치
+    protected int totalValue;       // 구매가격의 합(citybase는 땅가격만. city는 building 구매비용 추가)
+    protected int totalUsePrice;    // 사용 요금의 합(citybase는 땅 사용료만. city는 building 사용료 추가)
 
     const int UseDefaultPrice = -1;
 
@@ -21,12 +22,14 @@ public class CityBase : Place
         get => owner;
     }
 
-    public int Value
+    public int TotalValue
     {
-        get
-        {
-            return value;
-        }
+        get => totalValue;        
+    }
+
+    public int TotalUsePrice
+    {
+        get => totalUsePrice;
     }
 
     protected virtual void Awake()
@@ -37,7 +40,8 @@ public class CityBase : Place
 
     protected virtual void Start()
     {
-        value = price;
+        totalValue = price;
+        totalUsePrice = usePrice;
     }
 
     /// <summary>

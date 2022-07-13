@@ -5,7 +5,6 @@ using UnityEngine;
 public class City : CityBase
 {
     public BuildingData[] buildingDatas;
-    int totalUsePrice = 0;
     GameObject[] buildingObj;
 
     protected override void Awake()
@@ -28,7 +27,11 @@ public class City : CityBase
         buildingDatas[(int)type].count += count;
 
         Player ownerPlayer = GameManager.Inst.Players[(int)owner];
-        ownerPlayer.Money -= buildingDatas[(int)type].price * count;
+        int totalPrice = buildingDatas[(int)type].price * count;
+        ownerPlayer.Money -= totalPrice;
+
+        totalValue += totalPrice;
+        totalUsePrice += buildingDatas[(int)type].usePrice * count;
 
         ReCalcValue();
         ReCalcTotalUsePrice();
@@ -42,7 +45,7 @@ public class City : CityBase
             buildingValue += b.price * b.count;
         }
 
-        value = buildingValue;
+        totalValue = buildingValue;
     }
 
     void ReCalcTotalUsePrice()
@@ -80,9 +83,12 @@ public class City : CityBase
         base.Initialize(obj, ref mapData);
         buildingDatas[(int)BuildingType.Villa].price = mapData.villaBuyPrice;
         buildingDatas[(int)BuildingType.Villa].usePrice = mapData.villaUsePrice;
+        buildingDatas[(int)BuildingType.Villa].count = 0;
         buildingDatas[(int)BuildingType.Building].price = mapData.buildingBuyPrice;
         buildingDatas[(int)BuildingType.Building].usePrice = mapData.buildingUsePrice;
+        buildingDatas[(int)BuildingType.Building].count = 0;
         buildingDatas[(int)BuildingType.Hotel].price = mapData.hotelBuyPrice;
         buildingDatas[(int)BuildingType.Hotel].usePrice = mapData.hotelUsePrice;
+        buildingDatas[(int)BuildingType.Hotel].count = 0;
     }
 }

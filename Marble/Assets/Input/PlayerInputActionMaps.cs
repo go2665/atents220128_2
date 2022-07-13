@@ -566,6 +566,56 @@ public partial class @PlayerInputActionMaps : IInputActionCollection2, IDisposab
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Map"",
+            ""id"": ""ca7c6ac4-ee4d-4b96-9647-d42b0f090af2"",
+            ""actions"": [
+                {
+                    ""name"": ""Point"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a55c8173-1fc4-419c-81f4-b049347c798c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""b5a8c65c-2d2f-4183-86b6-674678f1ba00"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse;KeyboardMouse"",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3a97d517-fca8-4eb0-8c6d-a5843951999a"",
+                    ""path"": ""<Pen>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9f42577-8d7f-4663-874a-6f832409e04a"",
+                    ""path"": ""<Touchscreen>/touch*/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -602,6 +652,9 @@ public partial class @PlayerInputActionMaps : IInputActionCollection2, IDisposab
         // SpaceShip
         m_SpaceShip = asset.FindActionMap("SpaceShip", throwIfNotFound: true);
         m_SpaceShip_Click = m_SpaceShip.FindAction("Click", throwIfNotFound: true);
+        // Map
+        m_Map = asset.FindActionMap("Map", throwIfNotFound: true);
+        m_Map_Point = m_Map.FindAction("Point", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -795,6 +848,39 @@ public partial class @PlayerInputActionMaps : IInputActionCollection2, IDisposab
         }
     }
     public SpaceShipActions @SpaceShip => new SpaceShipActions(this);
+
+    // Map
+    private readonly InputActionMap m_Map;
+    private IMapActions m_MapActionsCallbackInterface;
+    private readonly InputAction m_Map_Point;
+    public struct MapActions
+    {
+        private @PlayerInputActionMaps m_Wrapper;
+        public MapActions(@PlayerInputActionMaps wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Point => m_Wrapper.m_Map_Point;
+        public InputActionMap Get() { return m_Wrapper.m_Map; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MapActions set) { return set.Get(); }
+        public void SetCallbacks(IMapActions instance)
+        {
+            if (m_Wrapper.m_MapActionsCallbackInterface != null)
+            {
+                @Point.started -= m_Wrapper.m_MapActionsCallbackInterface.OnPoint;
+                @Point.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnPoint;
+                @Point.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnPoint;
+            }
+            m_Wrapper.m_MapActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Point.started += instance.OnPoint;
+                @Point.performed += instance.OnPoint;
+                @Point.canceled += instance.OnPoint;
+            }
+        }
+    }
+    public MapActions @Map => new MapActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -820,5 +906,9 @@ public partial class @PlayerInputActionMaps : IInputActionCollection2, IDisposab
     public interface ISpaceShipActions
     {
         void OnClick(InputAction.CallbackContext context);
+    }
+    public interface IMapActions
+    {
+        void OnPoint(InputAction.CallbackContext context);
     }
 }

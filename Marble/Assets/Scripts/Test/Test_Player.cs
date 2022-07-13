@@ -11,7 +11,9 @@ public class Test_Player : MonoBehaviour
 
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
         //map.Move(p1, MapID.Lisbon);
-        p1.Money = 100;
+        //p1.Money = 100;
+
+        //GameManager.Inst.UI_Manager.SetPlaceInfo(MapID.Taipei);
 
         //map.Move(GameManager.Inst.GetPlayer(PlayerType.Human), 1);
         //map.Move(GameManager.Inst.GetPlayer(PlayerType.CPU1), 2);
