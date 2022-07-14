@@ -19,7 +19,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     readonly public Color[] PlayerColor = new Color[] { Color.black,
         new(0, 0.1726165f, 0.6764706f, 0.454902f), new(0.7352941f, 0,0, 0.454902f), 
-        new(0.7352941f, 0.6237322f, 0, 0.454902f), new(0, 0, 0, 0.454902f) };
+        new(0.7352941f, 0.7352941f, 0.7352941f, 0.454902f), new(0, 0, 0, 0.454902f) };
 
     /// <summary>
     /// UI 매니저

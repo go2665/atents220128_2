@@ -10,8 +10,9 @@ public class Test_Player : MonoBehaviour
         Map map = GameManager.Inst.GameMap;
 
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        Player p2 = GameManager.Inst.GetPlayer(PlayerType.CPU1);
         City city = (City)map.GetPlace(MapID.Beijing);
-        city.Sell(PlayerType.Human);
+        city.Sell(PlayerType.CPU1);
 
         //GameManager.Inst.UI_Manager.ShowBuildingPanel(true, p1, (City)map.GetPlace(MapID.Beijing));
 
