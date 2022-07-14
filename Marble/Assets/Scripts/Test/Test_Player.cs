@@ -10,6 +10,11 @@ public class Test_Player : MonoBehaviour
         Map map = GameManager.Inst.GameMap;
 
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        City city = (City)map.GetPlace(MapID.Beijing);
+        city.Sell(PlayerType.Human);
+
+        //GameManager.Inst.UI_Manager.ShowBuildingPanel(true, p1, (City)map.GetPlace(MapID.Beijing));
+
         //map.Move(p1, MapID.Lisbon);
         //p1.Money = 100;
 

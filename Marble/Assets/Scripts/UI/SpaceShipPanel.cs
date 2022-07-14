@@ -24,6 +24,8 @@ public class SpaceShipPanel : MonoBehaviour
     /// </summary>
     CanvasGroup canvasGroup;
 
+    CanvasGroup targetSelectCanvasGroup;
+
     void Awake()
     {
         actions = new PlayerInputActionMaps();
@@ -35,6 +37,7 @@ public class SpaceShipPanel : MonoBehaviour
         yesButton.onClick.AddListener(OnClickYes);
         noButton.onClick.AddListener(OnClickNo);
         availiableText = transform.Find("AvailiableText").GetComponent<TextMeshProUGUI>();
+        targetSelectCanvasGroup = transform.Find("TargetSelectPanel").GetComponent<CanvasGroup>();
     }    
 
     private void OnDisable()
@@ -89,6 +92,8 @@ public class SpaceShipPanel : MonoBehaviour
 
         actions.SpaceShip.Enable();
 
+        targetSelectCanvasGroup.alpha = 1;
+        targetSelectCanvasGroup.blocksRaycasts = true;
 
         //PanelEnd();
     }
@@ -116,6 +121,9 @@ public class SpaceShipPanel : MonoBehaviour
 
     void PanelEnd()
     {
+        targetSelectCanvasGroup.alpha = 0;
+        targetSelectCanvasGroup.blocksRaycasts = false;
+
         actions.SpaceShip.Disable();
         passenger = null;
         Show(false, null);

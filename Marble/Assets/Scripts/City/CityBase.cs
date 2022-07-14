@@ -93,7 +93,7 @@ public class CityBase : Place
             if (player.Type == PlayerType.Human)
             {
                 // 사람 플레이어일 경우 UI 띄워서 확인
-                GameManager.Inst.UI_Manager.ShowCityBaseBuyPanel(true, player, this);
+                GameManager.Inst.UI_Manager.ShowBuyPanel(true, player, this);
             }
             else
             {
@@ -108,9 +108,9 @@ public class CityBase : Place
         else if (owner != player.Type)
         {
             // 남의 땅이다.
-            player.Money -= usePrice;       // 돈 지불하기
+            player.Money -= totalUsePrice;       // 돈 지불하기
             Player ownerPlayer = GameManager.Inst.GetPlayer(owner);
-            ownerPlayer.Money += usePrice;  // 소유주의 금액 증가
+            ownerPlayer.Money += totalUsePrice;  // 소유주의 금액 증가
 
             base.OnArrive(player);  // 턴 넘기기
         }

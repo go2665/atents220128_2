@@ -10,6 +10,8 @@ public class UI_Manager : MonoBehaviour
     PlaceInfoPanel placeInfoPanel;
     SpaceShipPanel spaceShipPanel;
     CityBaseBuyPanel cityBaseBuyPanel;
+    CityBuyPanel cityBuyPanel;
+    BuildingPanel buildingPanel;
 
     /// <summary>
     /// 초기화 함수. 주사위와 플레이어의 초기화 이후에 실행되어야 한다.
@@ -22,6 +24,8 @@ public class UI_Manager : MonoBehaviour
         placeInfoPanel = FindObjectOfType<PlaceInfoPanel>();
         spaceShipPanel = FindObjectOfType<SpaceShipPanel>();
         cityBaseBuyPanel = FindObjectOfType<CityBaseBuyPanel>();
+        cityBuyPanel = FindObjectOfType<CityBuyPanel>();
+        buildingPanel = FindObjectOfType<BuildingPanel>();
 
         GameManager.Inst.GameDiceSet.OnDouble += OnDouble_Result;   // 주사위가 더블이 나왔을 때 resultPanel에서 표시하기 위한 함수 등록
 
@@ -85,9 +89,21 @@ public class UI_Manager : MonoBehaviour
         spaceShipPanel.Show(isShow, arrived);
     }
 
-    public void ShowCityBaseBuyPanel(bool isShow, Player arrived, CityBase city)
+    public void ShowBuyPanel(bool isShow, Player arrived, CityBase city)
     {
-        cityBaseBuyPanel.Show(isShow, arrived, city);
+        if (city.Type == PlaceType.CityBase)
+        {
+            cityBaseBuyPanel.Show(isShow, arrived, city);
+        }
+        else if(city.Type == PlaceType.City)
+        {
+            cityBuyPanel.Show(isShow, arrived, city);
+        }
+    }
+
+    public void ShowBuildingPanel(bool isShow, Player arrived, City city)
+    {
+        buildingPanel.Show(isShow, arrived, city);
     }
 
     public void SetPlaceInfo(Place place)
