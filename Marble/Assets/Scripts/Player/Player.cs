@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     
     Material material;                  // 플레이어의 색상을 지정하기 위해 사용
 
+    List<CityBase> ownedCities = new List<CityBase>();
+
     /// <summary>
     /// 보유 금액 프로퍼티
     /// </summary>
@@ -216,5 +218,38 @@ public class Player : MonoBehaviour
                 this.PlayerTurnEnd();
             }
         }
+    }
+
+    public void BuyCity(CityBase city)
+    {
+        ownedCities.Add(city);
+    }
+
+    public void SellCity(CityBase city)
+    {
+        ownedCities.Remove(city);
+    }
+
+    public City FindNoBuildCity()
+    {
+        City target = null;
+        float efficient = 0;
+        foreach( CityBase cityBase in ownedCities )
+        {
+            City city = cityBase as City;
+            if (city != null)
+            {
+                for (int i = 2; i >= 0; i--)
+                {                    
+                    float temp = city.buildingDatas[i].usePrice / city.buildingDatas[i].price;
+                    if(temp > efficient)
+                    {
+                        efficient = temp;
+                        target = city;
+                    }
+                }
+            }
+        }
+        return target;
     }
 }

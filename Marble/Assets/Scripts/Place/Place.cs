@@ -45,6 +45,7 @@ public class Place : MonoBehaviour
         {
             playerPostions[i - 1] = transform.Find($"Player{i}");
         }
+        
     }
 
     /// <summary>

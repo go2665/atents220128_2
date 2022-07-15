@@ -5,7 +5,8 @@ using UnityEngine;
 public class City : CityBase
 {
     public BuildingData[] buildingDatas;
-    //GameObject[] buildingObj;
+    public GameObject BuildingObj;
+    Building building;
 
     protected override void Awake()
     {
@@ -13,6 +14,7 @@ public class City : CityBase
 
         int NumOfBuildingTypes = System.Enum.GetValues(typeof(BuildingType)).Length;
         buildingDatas = new BuildingData[NumOfBuildingTypes];
+        
         //buildingObj = new GameObject[NumOfBuildingTypes];
         //for (int i = 0; i < NumOfBuildingTypes; i++)
         //{
@@ -24,6 +26,9 @@ public class City : CityBase
     public void MakeBuildings(int[] counts)
     {
         //buildingObj[(int)type].SetActive(true);
+        building.SetColor(GameManager.Inst.PlayerColor[(int)owner]);
+        building.gameObject.SetActive(true);
+
         Player ownerPlayer = GameManager.Inst.Players[(int)owner];
 
         for (int i = 0; i < counts.Length; i++)
@@ -78,7 +83,7 @@ public class City : CityBase
                 }
 
                 // 건물의 효율이 높을 때(1.7)
-                if (buildingDatas[i].usePrice / buildingDatas[i].price > 1.7f)
+                if ((float)buildingDatas[i].usePrice / buildingDatas[i].price > 1.7f)
                 {
                     probability[i] += 0.5f;
                 }
@@ -138,6 +143,12 @@ public class City : CityBase
         buildingDatas[(int)BuildingType.Hotel].price = mapData.hotelBuyPrice;
         buildingDatas[(int)BuildingType.Hotel].usePrice = mapData.hotelUsePrice;
         buildingDatas[(int)BuildingType.Hotel].count = 0;
+
+        GameObject buildingObj = Instantiate(BuildingObj, transform);
+        building = buildingObj.GetComponent<Building>();
+        buildingObj.transform.Translate(new(-0.5f, 0, -0.5f));
+        buildingObj.SetActive(false);
+
     }
 
     public override void OnArrive(Player player)

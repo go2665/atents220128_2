@@ -68,6 +68,10 @@ public class Map : MonoBehaviour
         actions.Map.Point.performed += OnPointMove;
     }
 
+    /// <summary>
+    /// 피킹된 Place 정보 표시용
+    /// </summary>
+    /// <param name="context"></param>
     private void OnPointMove(InputAction.CallbackContext context)
     {
         Vector2 screenPos = context.ReadValue<Vector2>();
@@ -224,5 +228,105 @@ public class Map : MonoBehaviour
         }
 
         return allPaceObject;
+    }
+
+    // 0이면 매우 안전. 1이면 매우 위험
+    public float TravelRiskCheck(Player player)
+    {
+        int cityBaseCount = 0;          // 28개. 구매할 수 있는 모든 장소의 수
+        int remaingPlaceCount = 0;      // 아무도 사지 않은 장소의 수
+        int hostilePlaceCount = 0;      // 다른 사람이 가지고 있는 장소의 수
+        int myPlaceCount = 0;           // 내가 가지고 있는 장소의 수
+        float averageUsePrice = 0;
+
+        for (MapID id = MapID.Start; id < MapID.Seoul; id++)
+        {
+            CityBase city = GetPlace(id) as CityBase;            
+            if (city!= null)
+            {
+                cityBaseCount++;
+                if( city.Owner == PlayerType.Bank )
+                {
+                    remaingPlaceCount++;
+                }
+                else if( city.Owner == player.Type )
+                {
+                    myPlaceCount++;
+                }
+                else
+                {
+                    hostilePlaceCount++;
+                    averageUsePrice += city.TotalUsePrice;
+                }
+            }
+        }
+        
+        if(hostilePlaceCount > 0)
+        {
+            averageUsePrice /= hostilePlaceCount;
+        }
+        else
+        {
+            averageUsePrice = 0;
+        }        
+
+        float riskCriteiaPrice = 3000.0f;   // 위험하다고 판단하는 사용 비용의 기준
+        float riskRatio = 0.7f;             // 리스크 계산시 도시점유율 적용 비율
+
+        //Debug.Log($"hostilePlaceCount : {hostilePlaceCount}");
+        //Debug.Log($"cityBaseCount : {cityBaseCount}");
+        //Debug.Log($"averageUsePrice : {averageUsePrice}");
+        //Debug.Log($"riskCriteiaPrice : {riskCriteiaPrice}");
+
+        float finalRisk = (hostilePlaceCount / cityBaseCount) * riskRatio 
+            + (averageUsePrice / riskCriteiaPrice) * (1- riskRatio);
+
+        return finalRisk;
+    }
+
+    public float RemainingPlaceRatio()
+    {
+        int cityBaseCount = 0;          // 28개. 구매할 수 있는 모든 장소의 수
+        int remaingPlaceCount = 0;      // 아무도 사지 않은 장소의 수
+
+        for (MapID id = MapID.Start; id < MapID.Seoul; id++)
+        {
+            CityBase city = GetPlace(id) as CityBase;
+            if (city != null)
+            {
+                cityBaseCount++;
+                if (city.Owner == PlayerType.Bank)
+                {
+                    remaingPlaceCount++;
+                }
+            }
+        }
+        return (float)remaingPlaceCount / (float)cityBaseCount;
+    }
+
+    public Place NotOwnedExpensivePlace(Player player)
+    {
+        CityBase expensiveCity = null;
+        int expensiveCityPrice = 0;
+        for (MapID id = MapID.Start; id < MapID.Seoul; id++)
+        {
+            CityBase city = GetPlace(id) as CityBase;
+            if (city != null)
+            {                
+                if (city.Owner == PlayerType.Bank)
+                {
+                    if (city.CanBuy(player.Type))
+                    {
+                        if( city.price > expensiveCityPrice )
+                        {
+                            expensiveCity = city;
+                            expensiveCityPrice = city.price;
+                        }
+                    }
+                }
+            }
+        }
+
+        return expensiveCity;
     }
 }

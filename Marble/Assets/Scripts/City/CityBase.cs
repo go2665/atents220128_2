@@ -71,7 +71,9 @@ public class CityBase : Place
         Player buyerPlayer = GameManager.Inst.GetPlayer(buyer);
 
         ownerPlayer.Money += sellPrice;
+        ownerPlayer.SellCity(this);
         buyerPlayer.Money -= sellPrice;
+        buyerPlayer.BuyCity(this);
 
         owner = buyer;
 

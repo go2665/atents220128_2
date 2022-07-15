@@ -5,6 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - playerColorLayerPrefab: {fileID: 5916949320174917921, guid: bdab70ea7075b024286c28eb27d932d9, type: 3}
+  - BuildingObj: {fileID: 2754214901950720953, guid: 9f133543a385c6047a110104356f1a72, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
