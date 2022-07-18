@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class GoldenKeyManager : MonoBehaviour
 {    
-    System.Action[] keyUseFuncs;
+    System.Action<Player>[] keyUseFuncs;
     //System.Action[] shuffleArray;
     List<GoldenKeyType> shuffle;
 
-    public System.Action this[GoldenKeyType keyType]
+    public System.Action<Player> this[GoldenKeyType keyType]
     {
         get => keyUseFuncs[(int)keyType];
     }
@@ -18,7 +18,7 @@ public class GoldenKeyManager : MonoBehaviour
     public void Initialize()
     {
         int typeCount = System.Enum.GetValues(typeof(GoldenKeyType)).Length;
-        keyUseFuncs = new System.Action[typeCount];
+        keyUseFuncs = new System.Action<Player>[typeCount];
         keyUseFuncs[(int)GoldenKeyType.ForcedSale] = ForcedSale;
         keyUseFuncs[(int)GoldenKeyType.IncomeTex] = IncomeTex;
         keyUseFuncs[(int)GoldenKeyType.RepairCost] = RepairCost;
@@ -51,9 +51,9 @@ public class GoldenKeyManager : MonoBehaviour
         //shuffleArray = Shuffle(keyUseFuncs);
     }
 
-    public void RunGoldenCard(GoldenKeyType type)
+    public void RunGoldenCard(GoldenKeyType type, Player player)
     {
-        this[type]?.Invoke();
+        this[type]?.Invoke(player);
     }
 
     System.Action[] Shuffle(System.Action[] original)
@@ -96,107 +96,107 @@ public class GoldenKeyManager : MonoBehaviour
         return result;
     }
 
-    void ForcedSale() 
+    void ForcedSale(Player player) 
     {
         Debug.Log("ForcedSale");
     }
-    void IncomeTex() 
+    void IncomeTex(Player player) 
     {
         Debug.Log("IncomeTex");
     }
-    void RepairCost()
+    void RepairCost(Player player)
     {
         Debug.Log("RepairCost");
     }
-    void CrimePreventionCost()
+    void CrimePreventionCost(Player player)
     {
         Debug.Log("CrimePreventionCost");
     }
-    void IslandEscapeTicket()
+    void IslandEscapeTicket(Player player)
     {
         Debug.Log("IslandEscapeTicket");
     }
-    void FreePassTicket()
+    void FreePassTicket(Player player)
     {
         Debug.Log("FreePassTicket");
     }
-    void MoveBack()
+    void MoveBack(Player player)
     {
         Debug.Log("MoveBack");
     }
-    void Trip_Busan()
+    void Trip_Busan(Player player)
     {
         Debug.Log("Trip_Busan");
     }
-    void Trip_Jeju()
+    void Trip_Jeju(Player player)
     {
         Debug.Log("Trip_Jeju");
     }
-    void Trip_Seoul()
+    void Trip_Seoul(Player player)
     {
         Debug.Log("Trip_Seoul");
     }
-    void ToIsland()
+    void ToIsland(Player player)
     {
         Debug.Log("ToIsland");
     }
-    void GetFund()
+    void GetFund(Player player)
     {
         Debug.Log("GetFund");
     }
-    void RoundWorld()
+    void RoundWorld(Player player)
     {
         Debug.Log("RoundWorld");
     }
-    void MoveSpaceShip()
+    void MoveSpaceShip(Player player)
     {
         Debug.Log("MoveSpaceShip");
     }
-    void CruieTrip()
+    void CruieTrip(Player player)
     {
         Debug.Log("CruieTrip");
     }
-    void AirplaneTrip()
+    void AirplaneTrip(Player player)
     {
         Debug.Log("AirplaneTrip");
     }
-    void Highway()
+    void Highway(Player player)
     {
         Debug.Log("Highway");
     }
-    void NobelPrize()
+    void NobelPrize(Player player)
     {
         Debug.Log("NobelPrize");
     }
-    void LotteryWin()
+    void LotteryWin(Player player)
     {
         Debug.Log("LotteryWin");
     }
-    void RaceWin()
+    void RaceWin(Player player)
     {
         Debug.Log("RaceWin");
     }
-    void SchilarShip()
+    void SchilarShip(Player player)
     {
         Debug.Log("SchilarShip");
     }
-    void Pension()
+    void Pension(Player player)
     {
         Debug.Log("Pension");
     }
-    void StudyAbroad()
+    void StudyAbroad(Player player)
     {
         Debug.Log("StudyAbroad");
     }
-    void Hospital()
+    void Hospital(Player player)
     {
         Debug.Log("Hospital");
     }
-    void Fine()
+    void Fine(Player player)
     {
         Debug.Log("Fine");
     }
-    void Birthday()
+    void Birthday(Player player)
     {
         Debug.Log("Birthday");
     }
