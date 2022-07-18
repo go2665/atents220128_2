@@ -96,30 +96,108 @@ public class GoldenKeyManager : MonoBehaviour
         return result;
     }
 
-    void ForcedSale() { }
-    void IncomeTex() { }
-    void RepairCost() { }
-    void CrimePreventionCost() { }
-    void IslandEscapeTicket() { }
-    void FreePassTicket() { }
-    void MoveBack() { }
-    void Trip_Busan() { }
-    void Trip_Jeju() { }
-    void Trip_Seoul() { }
-    void ToIsland() { }
-    void GetFund() { }
-    void RoundWorld() { }
-    void MoveSpaceShip() { }
-    void CruieTrip() { }
-    void AirplaneTrip() { }
-    void Highway() { }
-    void NobelPrize() { }
-    void LotteryWin() { }
-    void RaceWin() { }
-    void SchilarShip() { }
-    void Pension() { }
-    void StudyAbroad() { }
-    void Hospital() { }
-    void Fine() { }
-    void Birthday() { }
+    void ForcedSale() 
+    {
+        Debug.Log("ForcedSale");
+    }
+    void IncomeTex() 
+    {
+        Debug.Log("IncomeTex");
+    }
+    void RepairCost()
+    {
+        Debug.Log("RepairCost");
+    }
+    void CrimePreventionCost()
+    {
+        Debug.Log("CrimePreventionCost");
+    }
+    void IslandEscapeTicket()
+    {
+        Debug.Log("IslandEscapeTicket");
+    }
+    void FreePassTicket()
+    {
+        Debug.Log("FreePassTicket");
+    }
+    void MoveBack()
+    {
+        Debug.Log("MoveBack");
+    }
+    void Trip_Busan()
+    {
+        Debug.Log("Trip_Busan");
+    }
+    void Trip_Jeju()
+    {
+        Debug.Log("Trip_Jeju");
+    }
+    void Trip_Seoul()
+    {
+        Debug.Log("Trip_Seoul");
+    }
+    void ToIsland()
+    {
+        Debug.Log("ToIsland");
+    }
+    void GetFund()
+    {
+        Debug.Log("GetFund");
+    }
+    void RoundWorld()
+    {
+        Debug.Log("RoundWorld");
+    }
+    void MoveSpaceShip()
+    {
+        Debug.Log("MoveSpaceShip");
+    }
+    void CruieTrip()
+    {
+        Debug.Log("CruieTrip");
+    }
+    void AirplaneTrip()
+    {
+        Debug.Log("AirplaneTrip");
+    }
+    void Highway()
+    {
+        Debug.Log("Highway");
+    }
+    void NobelPrize()
+    {
+        Debug.Log("NobelPrize");
+    }
+    void LotteryWin()
+    {
+        Debug.Log("LotteryWin");
+    }
+    void RaceWin()
+    {
+        Debug.Log("RaceWin");
+    }
+    void SchilarShip()
+    {
+        Debug.Log("SchilarShip");
+    }
+    void Pension()
+    {
+        Debug.Log("Pension");
+    }
+    void StudyAbroad()
+    {
+        Debug.Log("StudyAbroad");
+    }
+    void Hospital()
+    {
+        Debug.Log("Hospital");
+    }
+    void Fine()
+    {
+        Debug.Log("Fine");
+    }
+    void Birthday()
+    {
+        Debug.Log("Birthday");
+    }
 }
