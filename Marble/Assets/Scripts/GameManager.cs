@@ -66,6 +66,12 @@ public class GameManager : Singleton<GameManager>
         get => map;
     }
 
+    GoldenKeyManager goldenKeyManager;
+    public GoldenKeyManager GoldenKeyManager
+    {
+        get => goldenKeyManager;
+    }
+
     void Awake()
     {
         Initialize();
@@ -101,6 +107,9 @@ public class GameManager : Singleton<GameManager>
 
         turnManager = GetComponent<TurnManager>();
         turnManager.Initialize();
+
+        goldenKeyManager = GetComponent<GoldenKeyManager>();
+        goldenKeyManager.Initialize();
     }
 
     private void Start()

@@ -5,4 +5,5 @@
 
 7/18
 1. GoldenKeyType을 하나씩 넣은 다음 랜덤하게 섞어 shuffle을 채우기.
+  1.1. GoldenKyManager 50번 라인부터 작성 
   1시 20분까지

@@ -4,10 +4,11 @@ using UnityEngine;
 
 
 
-public class GlodenKeyManager : MonoBehaviour
+public class GoldenKeyManager : MonoBehaviour
 {    
     System.Action[] keyUseFuncs;
-    List<GoldenKey> shuffle;
+    //System.Action[] shuffleArray;
+    List<GoldenKeyType> shuffle;
 
     public System.Action this[GoldenKeyType keyType]
     {
@@ -46,7 +47,53 @@ public class GlodenKeyManager : MonoBehaviour
         keyUseFuncs[(int)GoldenKeyType.Birthday] = Birthday;
 
         // GoldenKeyType을 하나씩 넣은 다음 랜덤하게 섞어 shuffle을 채우기.
-        //shuffle;
+        shuffle = Shuffle();
+        //shuffleArray = Shuffle(keyUseFuncs);
+    }
+
+    public void RunGoldenCard(GoldenKeyType type)
+    {
+        this[type]?.Invoke();
+    }
+
+    System.Action[] Shuffle(System.Action[] original)
+    {
+        int typeCount = System.Enum.GetValues(typeof(GoldenKeyType)).Length;
+        System.Action[] result = new System.Action[typeCount];
+        for(int i=0; i<typeCount;i++)
+        {
+            result[i] = original[i];
+        }
+
+        for(int i=typeCount-1; i>0;i--)
+        {
+            int index = Random.Range(0, i);
+            System.Action temp = result[i];
+            result[i] = result[index];
+            result[index] = temp;
+        }
+
+        return result;
+    }
+
+    List<GoldenKeyType> Shuffle()
+    {
+        int typeCount = System.Enum.GetValues(typeof(GoldenKeyType)).Length;
+        List<GoldenKeyType> temp = new List<GoldenKeyType>(typeCount);
+        for (int i = 0; i < typeCount; i++)
+        {
+            temp.Add((GoldenKeyType)i);
+        }
+        List<GoldenKeyType> result = new List<GoldenKeyType>(typeCount);
+        while(temp.Count>0)
+        {
+            int index = Random.Range(0, temp.Count);
+            GoldenKeyType randomType = temp[index];
+            result.Add(randomType);
+            temp.RemoveAt(index);
+        }
+
+        return result;
     }
 
     void ForcedSale() { }
