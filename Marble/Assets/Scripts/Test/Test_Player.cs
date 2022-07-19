@@ -7,6 +7,24 @@ public class Test_Player : MonoBehaviour
 {
     void Start()
     {
+        //Test_MaintenanceCost();
+        GoldenKeyManager gkManager = GameManager.Inst.GoldenKeyManager;
+        Map map = GameManager.Inst.GameMap;
+        Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+
+        gkManager.RunGoldenCard(GoldenKeyType.IslandEscapeTicket, p1);
+        map.Move(p1, MapID.GoldenKey2);
+        
+
+    }
+
+    private void Update()
+    {
+        //Update_Test_MaintenanceCost();
+    }
+
+    private static void Test_MaintenanceCost()
+    {
         Player[] players = GameManager.Inst.Players;
         Map map = GameManager.Inst.GameMap;
 
@@ -14,8 +32,6 @@ public class Test_Player : MonoBehaviour
         Player p2 = GameManager.Inst.GetPlayer(PlayerType.CPU1);
         Player p3 = GameManager.Inst.GetPlayer(PlayerType.CPU2);
         Player p4 = GameManager.Inst.GetPlayer(PlayerType.CPU3);
-
-        
 
         City city = (City)map.GetPlace(MapID.NewYork);
         city.Sell(PlayerType.Human);
@@ -34,7 +50,7 @@ public class Test_Player : MonoBehaviour
         city.MakeBuildings(new int[] { 1, 1, 1 });
 
         CityBase cityBase = (CityBase)map.GetPlace(MapID.Seoul);
-        cityBase.Sell(PlayerType.Human);        
+        cityBase.Sell(PlayerType.Human);
 
         //List<CityBase> test = new List<CityBase>();
         //test.Remove(city);
@@ -60,7 +76,7 @@ public class Test_Player : MonoBehaviour
         //GameManager.Inst.TurnManager.TurnProcess();
     }
 
-    private void Update()
+    private void Update_Test_MaintenanceCost()
     {
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
         GoldenKeyManager gkManager = GameManager.Inst.GoldenKeyManager;

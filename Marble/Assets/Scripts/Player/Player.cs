@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     Material material;                  // 플레이어의 색상을 지정하기 위해 사용
 
     readonly List<CityBase> ownedCities = new();    // 보유한 도시 목록
+    readonly List<GoldenKeyType> ownedGoldenKey = new();
 
     /// <summary>
     /// 보유 금액 프로퍼티
@@ -116,8 +117,25 @@ public class Player : MonoBehaviour
     public void PlayerTurnStart()
     {
         actionCount = 1;    // 행동력 1로 회복
-        islandWaitTime--;   // 무인도 대기 시간 감소
-                
+
+        if (position == MapID.Island)
+        {
+            islandWaitTime--;   // 무인도 대기 시간 감소
+
+            // 무인도 탈출권이 있는지 확인.
+            if (islandWaitTime > 0 && ownedGoldenKey.Exists((x) => x == GoldenKeyType.IslandEscapeTicket))
+            {
+                Debug.Log("무인도 탈출권 있음");
+                GameManager.Inst.UI_Manager.ShowUseGoldenKeyPanel(true, this, GoldenKeyType.IslandEscapeTicket);
+                return;
+            }            
+        }
+
+        PlayerRollProcess();
+    }
+
+    public void PlayerRollProcess()
+    {
         if (Type != PlayerType.Human)
         {
             // CPU 플레이어들
@@ -125,13 +143,13 @@ public class Player : MonoBehaviour
             {
                 RollDice();
             }
-            while(!ActionDone); //플레이어가 액션을 할 수 있으면 계속 반복
+            while (!ActionDone); //플레이어가 액션을 할 수 있으면 계속 반복
         }
         else
         {
             // 인간 플레이어                
             GameManager.Inst.UI_Manager.ShowDiceRollPanel(true);    // 패널 열어서 주사위 굴리기
-        }        
+        }
     }
 
     public void PlayerTurnEnd()
@@ -285,5 +303,23 @@ public class Player : MonoBehaviour
         }
 
         Money -= totalCost;
+    }
+
+    public void AddGoldenKey(GoldenKeyType type)
+    {
+        ownedGoldenKey.Add(type);
+    }
+
+    public void UseGoldenKey(GoldenKeyType type)
+    {
+        if(type == GoldenKeyType.IslandEscapeTicket)
+        {
+            islandWaitTime = 0;
+        }
+        else
+        {
+
+        }
+        ownedGoldenKey.Remove(type);
     }
 }

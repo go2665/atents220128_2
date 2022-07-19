@@ -124,6 +124,7 @@ public class GoldenKeyManager : MonoBehaviour
     void IslandEscapeTicket(Player player)
     {
         Debug.Log("IslandEscapeTicket");
+        player.AddGoldenKey(GoldenKeyType.IslandEscapeTicket);
     }
     void FreePassTicket(Player player)
     {
