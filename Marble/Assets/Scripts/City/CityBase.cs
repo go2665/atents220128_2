@@ -121,12 +121,31 @@ public class CityBase : Place
         else if (owner != player.Type)
         {
             // 남의 땅이다.
-            player.Money -= totalUsePrice;       // 돈 지불하기
-            Player ownerPlayer = GameManager.Inst.GetPlayer(owner);
-            ownerPlayer.Money += totalUsePrice;  // 소유주의 금액 증가
-
-            base.OnArrive(player);  // 턴 넘기기
+            if (player.HaveGoldenKey(GoldenKeyType.FreePassTicket))
+            {
+                if (player.Type == PlayerType.Human)
+                {
+                    GameManager.Inst.UI_Manager.ShowUseGoldenKeyPanel(true, player, GoldenKeyType.FreePassTicket);
+                }
+                else
+                {
+                    player.UseGoldenKey(GoldenKeyType.FreePassTicket);
+                    player.PlayerTurnEnd();
+                }
+            }
+            else
+            {
+                PayUsePrice(player);
+                base.OnArrive(player);
+            }
         }
+    }
+
+    public void PayUsePrice(Player target)
+    {
+        target.Money -= totalUsePrice;       // 돈 지불하기
+        Player ownerPlayer = GameManager.Inst.GetPlayer(owner);
+        ownerPlayer.Money += totalUsePrice;  // 소유주의 금액 증가
     }
 
     public override void Initialize(GameObject obj, ref MapData mapData)

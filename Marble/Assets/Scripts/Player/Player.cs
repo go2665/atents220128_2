@@ -123,11 +123,18 @@ public class Player : MonoBehaviour
             islandWaitTime--;   // 무인도 대기 시간 감소
 
             // 무인도 탈출권이 있는지 확인.
-            if (islandWaitTime > 0 && ownedGoldenKey.Exists((x) => x == GoldenKeyType.IslandEscapeTicket))
+            if (islandWaitTime > 0 && HaveGoldenKey(GoldenKeyType.IslandEscapeTicket))
             {
                 Debug.Log("무인도 탈출권 있음");
-                GameManager.Inst.UI_Manager.ShowUseGoldenKeyPanel(true, this, GoldenKeyType.IslandEscapeTicket);
-                return;
+                if (type == PlayerType.Human)
+                {
+                    GameManager.Inst.UI_Manager.ShowUseGoldenKeyPanel(true, this, GoldenKeyType.IslandEscapeTicket);
+                    return;
+                }
+                else
+                {
+                    UseGoldenKey(GoldenKeyType.IslandEscapeTicket);
+                }
             }            
         }
 
@@ -321,5 +328,10 @@ public class Player : MonoBehaviour
 
         }
         ownedGoldenKey.Remove(type);
+    }
+
+    public bool HaveGoldenKey(GoldenKeyType type)
+    {
+        return ownedGoldenKey.Exists((x) => x == type);
     }
 }

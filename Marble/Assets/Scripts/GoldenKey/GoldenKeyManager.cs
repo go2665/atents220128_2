@@ -129,6 +129,7 @@ public class GoldenKeyManager : MonoBehaviour
     void FreePassTicket(Player player)
     {
         Debug.Log("FreePassTicket");
+        player.AddGoldenKey(GoldenKeyType.FreePassTicket);
     }
     void MoveBack(Player player)
     {

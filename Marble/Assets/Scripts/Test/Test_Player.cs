@@ -7,15 +7,43 @@ public class Test_Player : MonoBehaviour
 {
     void Start()
     {
-        //Test_MaintenanceCost();
+        //Test_MaintenanceCost();        
+        Test_IslandEscapeTicket();
+        //Test_FreepassTicket();
+
+
+
+    }
+
+    private static void Test_FreepassTicket()
+    {
         GoldenKeyManager gkManager = GameManager.Inst.GoldenKeyManager;
         Map map = GameManager.Inst.GameMap;
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        Player p2 = GameManager.Inst.GetPlayer(PlayerType.CPU1);
+        Player p3 = GameManager.Inst.GetPlayer(PlayerType.CPU2);
 
-        gkManager.RunGoldenCard(GoldenKeyType.IslandEscapeTicket, p1);
-        map.Move(p1, MapID.GoldenKey2);
-        
+        City city = (City)map.GetPlace(MapID.NewYork);
+        city.Sell(PlayerType.CPU1);
+        city.MakeBuildings(new int[] { 1, 1, 1 });
+        p1.Money = 0;
+        p2.Money = 0;
+        p3.Money = 0;
 
+        gkManager.RunGoldenCard(GoldenKeyType.FreePassTicket, p3);
+
+        map.Move(p1, MapID.NewYork - 3);
+        map.Move(p3, MapID.NewYork - 3);
+    }
+
+    private static void Test_IslandEscapeTicket()
+    {
+        GoldenKeyManager gkManager = GameManager.Inst.GoldenKeyManager;
+        Map map = GameManager.Inst.GameMap;
+        Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        Player p2 = GameManager.Inst.GetPlayer(PlayerType.CPU1);
+        gkManager.RunGoldenCard(GoldenKeyType.IslandEscapeTicket, p2);
+        map.Move(p2, MapID.GoldenKey2);
     }
 
     private void Update()
