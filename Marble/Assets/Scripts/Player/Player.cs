@@ -252,4 +252,21 @@ public class Player : MonoBehaviour
         }
         return target;
     }
+
+    public CityBase FindHighestTotalvalue()
+    {
+        int highestValue = 0;
+        CityBase highestCity = null;
+        foreach(var city in ownedCities)
+        {
+            if( highestValue < city.TotalValue )
+            {
+                highestValue = city.TotalValue;
+                highestCity = city;
+            }
+
+        }
+
+        return highestCity;
+    }
 }

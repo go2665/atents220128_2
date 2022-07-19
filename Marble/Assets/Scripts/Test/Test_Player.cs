@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Test_Player : MonoBehaviour
 {
@@ -21,50 +22,19 @@ public class Test_Player : MonoBehaviour
         city.MakeBuildings(new int[] { 1, 1, 2 });
 
         city = (City)map.GetPlace(MapID.London);
-        city.Sell(PlayerType.CPU1);
+        city.Sell(PlayerType.Human);
         city.MakeBuildings(new int[] { 1, 1, 1 });
 
         city = (City)map.GetPlace(MapID.Istanbul);
-        city.Sell(PlayerType.CPU2);
+        city.Sell(PlayerType.Human);
         city.MakeBuildings(new int[] { 1, 1, 1 });
 
         city = (City)map.GetPlace(MapID.Hawaii);
-        city.Sell(PlayerType.CPU3);
+        city.Sell(PlayerType.Human);
         city.MakeBuildings(new int[] { 1, 1, 1 });
 
-        CityBase cityBase = (CityBase)map.GetPlace(MapID.Jeju);
-        //cityBase.Sell(PlayerType.Human);
-
-        city = (City)map.GetPlace(MapID.Paris);
-        city.Sell(PlayerType.Human);
-
-        city = (City)map.GetPlace(MapID.Ottawa);
-        city.Sell(PlayerType.Human);
-
-        city = (City)map.GetPlace(MapID.Madrid);
-        city.Sell(PlayerType.CPU3);
-
-        city = (City)map.GetPlace(MapID.BuenosAires);
-        city.Sell(PlayerType.CPU2);
-
-        city = (City)map.GetPlace(MapID.Bern);
-        city.Sell(PlayerType.CPU1);
-
-        city = (City)map.GetPlace(MapID.Beijing);
-        city.Sell(PlayerType.CPU1);
-
-        city = (City)map.GetPlace(MapID.Manila);
-        city.Sell(PlayerType.CPU1);
-
-        city = (City)map.GetPlace(MapID.Cairo);
-        city.Sell(PlayerType.CPU1);
-
-        Debug.Log( map.TravelRiskCheck(p2));
-
-        p1.Money = 100;
-        p2.Money = 100;
-        p3.Money = 100;
-        p4.Money = 100;
+        CityBase cityBase = (CityBase)map.GetPlace(MapID.Seoul);
+        cityBase.Sell(PlayerType.Human);        
 
         //List<CityBase> test = new List<CityBase>();
         //test.Remove(city);
@@ -76,7 +46,7 @@ public class Test_Player : MonoBehaviour
         //map.Move(p4, MapID.Lisbon);
 
 
-        //p1.Money = 100;
+        p1.Money = 0;
 
         //GameManager.Inst.UI_Manager.SetPlaceInfo(MapID.Taipei);
 
@@ -88,5 +58,14 @@ public class Test_Player : MonoBehaviour
         //GameManager.Inst.TurnManager.TurnProcess();
         //GameManager.Inst.TurnManager.TurnProcess();
         //GameManager.Inst.TurnManager.TurnProcess();
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current.digit1Key.wasPressedThisFrame)
+        {
+            Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+            GameManager.Inst.GoldenKeyManager.RunGoldenCard(GoldenKeyType.ForcedSale, p1);
+        }
     }
 }

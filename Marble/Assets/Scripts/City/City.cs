@@ -173,4 +173,38 @@ public class City : CityBase
             base.OnArrive(player);
         }
     }
+
+    public override void Sell(PlayerType buyer, int sellPrice = -1)
+    {        
+        sellPrice = 0;  // 건물 판매 가격 계산
+        for (int i = 0; i < buildingDatas.Length; i++)
+        {
+            sellPrice += buildingDatas[i].price * buildingDatas[i].count;
+        }
+
+        if (buyer == PlayerType.Bank)
+        {
+            sellPrice >>= 1;    // 판매 대상이 은행이니 가격 절반
+
+            // 건물 초기화 작업
+            building.gameObject.SetActive(false);
+            for (int i = 0; i < buildingDatas.Length; i++)
+            {
+                buildingDatas[i].count = 0;
+            }
+
+            // 가격들 다시 계산
+            ReCalcValue();
+            ReCalcTotalUsePrice();
+        }
+
+        // 건물들 비용 전달
+        Player ownerPlayer = GameManager.Inst.GetPlayer(owner);
+        Player buyerPlayer = GameManager.Inst.GetPlayer(buyer);
+
+        ownerPlayer.Money += sellPrice;
+        buyerPlayer.Money -= sellPrice;
+
+        base.Sell(buyer);
+    }
 }

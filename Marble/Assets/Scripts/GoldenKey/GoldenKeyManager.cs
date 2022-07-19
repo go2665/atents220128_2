@@ -99,7 +99,13 @@ public class GoldenKeyManager : MonoBehaviour
     void ForcedSale(Player player) 
     {
         Debug.Log("ForcedSale");
+        CityBase target = player.FindHighestTotalvalue();
+        if (target != null)
+        {
+            target.Sell(PlayerType.Bank);
+        }
     }
+
     void IncomeTex(Player player) 
     {
         Debug.Log("IncomeTex");

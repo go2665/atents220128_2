@@ -59,11 +59,15 @@ public class CityBase : Place
     /// </summary>
     /// <param name="buyer">구매자</param>
     /// <param name="sellPrice">판매가격. 디폴트 값일 경우 기본 구매가격 사용</param>
-    public void Sell(PlayerType buyer, int sellPrice = UseDefaultPrice)
+    public virtual void Sell(PlayerType buyer, int sellPrice = UseDefaultPrice)
     {
         if(sellPrice == UseDefaultPrice)
         {
             sellPrice = price;
+        }
+        if( buyer == PlayerType.Bank )  // 은행에 팔 때는 무조건 반값
+        {
+            sellPrice >>= 1;
         }
 
         // 이 도시 사고 팔기
@@ -76,10 +80,17 @@ public class CityBase : Place
         buyerPlayer.BuyCity(this);
 
         owner = buyer;
-
-        //오너의 색깔 입히기
-        playerColorLayerRenderer.material.color = GameManager.Inst.PlayerColor[(int)owner];
-        playerColorLayer.SetActive(true);
+        if (buyer == PlayerType.Bank)
+        {
+            // 강제 매각(반액대매출 또는 부도 전에 지불하기)
+            playerColorLayer.SetActive(false);
+        }
+        else
+        {
+            //오너의 색깔 입히기
+            playerColorLayerRenderer.material.color = GameManager.Inst.PlayerColor[(int)owner];
+            playerColorLayer.SetActive(true);
+        }
     }
 
     /// <summary>
