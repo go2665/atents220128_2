@@ -19,7 +19,7 @@ public class Test_Player : MonoBehaviour
 
         City city = (City)map.GetPlace(MapID.NewYork);
         city.Sell(PlayerType.Human);
-        city.MakeBuildings(new int[] { 1, 1, 2 });
+        city.MakeBuildings(new int[] { 1, 1, 1 });
 
         city = (City)map.GetPlace(MapID.London);
         city.Sell(PlayerType.Human);
@@ -62,10 +62,19 @@ public class Test_Player : MonoBehaviour
 
     private void Update()
     {
+        Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        GoldenKeyManager gkManager = GameManager.Inst.GoldenKeyManager;
         if (Keyboard.current.digit1Key.wasPressedThisFrame)
         {
-            Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
-            GameManager.Inst.GoldenKeyManager.RunGoldenCard(GoldenKeyType.ForcedSale, p1);
+            gkManager.RunGoldenCard(GoldenKeyType.IncomeTex, p1);
+        }
+        if (Keyboard.current.digit2Key.wasPressedThisFrame)
+        {
+            gkManager.RunGoldenCard(GoldenKeyType.RepairCost, p1);
+        }
+        if (Keyboard.current.digit3Key.wasPressedThisFrame)
+        {
+            gkManager.RunGoldenCard(GoldenKeyType.CrimePreventionCost, p1);
         }
     }
 }

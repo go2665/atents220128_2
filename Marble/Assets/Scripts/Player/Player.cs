@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     
     Material material;                  // 플레이어의 색상을 지정하기 위해 사용
 
-    List<CityBase> ownedCities = new List<CityBase>();
+    readonly List<CityBase> ownedCities = new();    // 보유한 도시 목록
 
     /// <summary>
     /// 보유 금액 프로퍼티
@@ -268,5 +268,22 @@ public class Player : MonoBehaviour
         }
 
         return highestCity;
+    }
+
+    public void PayMaintenenceCost(int VilaCost, int BuildingCost, int hotelCost)
+    {
+        int totalCost = 0;
+        foreach(CityBase cityBase in ownedCities)
+        {
+            City city = cityBase as City;
+            if( city != null )
+            {
+                totalCost += city.buildingDatas[(int)BuildingType.Villa].count * VilaCost;
+                totalCost += city.buildingDatas[(int)BuildingType.Building].count * BuildingCost;
+                totalCost += city.buildingDatas[(int)BuildingType.Hotel].count * hotelCost;
+            }
+        }
+
+        Money -= totalCost;
     }
 }

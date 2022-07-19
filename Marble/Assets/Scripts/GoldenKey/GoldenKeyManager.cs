@@ -109,14 +109,17 @@ public class GoldenKeyManager : MonoBehaviour
     void IncomeTex(Player player) 
     {
         Debug.Log("IncomeTex");
+        player.PayMaintenenceCost(30,100,150);
     }
     void RepairCost(Player player)
     {
         Debug.Log("RepairCost");
+        player.PayMaintenenceCost(30, 60, 100);
     }
     void CrimePreventionCost(Player player)
     {
         Debug.Log("CrimePreventionCost");
+        player.PayMaintenenceCost(10, 30, 50);
     }
     void IslandEscapeTicket(Player player)
     {
