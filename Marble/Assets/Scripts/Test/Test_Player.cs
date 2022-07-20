@@ -19,7 +19,15 @@ public class Test_Player : MonoBehaviour
         //Test_Cruise();
         //Test_Airplane();
         //Test_Highway();
+        //Test_Birthday();
 
+        Map map = GameManager.Inst.GameMap;
+        Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        //map.Move(p1, MapID.GoldenKey1-3);
+    }
+
+    private static void Test_Birthday()
+    {
         GoldenKeyManager gkManager = GameManager.Inst.GoldenKeyManager;
         Map map = GameManager.Inst.GameMap;
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);

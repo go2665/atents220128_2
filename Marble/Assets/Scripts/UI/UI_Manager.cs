@@ -13,6 +13,7 @@ public class UI_Manager : MonoBehaviour
     CityBuyPanel cityBuyPanel;
     BuildingPanel buildingPanel;
     UseGoldenKeyPanel useGoldenKeyPanel;
+    GoldenKeyDrawPanel goldenKeyDrawPanel;
 
     /// <summary>
     /// 초기화 함수. 주사위와 플레이어의 초기화 이후에 실행되어야 한다.
@@ -28,6 +29,7 @@ public class UI_Manager : MonoBehaviour
         cityBuyPanel = FindObjectOfType<CityBuyPanel>();
         buildingPanel = FindObjectOfType<BuildingPanel>();
         useGoldenKeyPanel = FindObjectOfType<UseGoldenKeyPanel>();
+        goldenKeyDrawPanel = FindObjectOfType<GoldenKeyDrawPanel>();
 
         GameManager.Inst.GameDiceSet.OnDouble += OnDouble_Result;   // 주사위가 더블이 나왔을 때 resultPanel에서 표시하기 위한 함수 등록
 
@@ -111,6 +113,11 @@ public class UI_Manager : MonoBehaviour
     public void ShowUseGoldenKeyPanel(bool isShow, Player user, GoldenKeyType goldenKey)
     {
         useGoldenKeyPanel.Show(isShow, user, goldenKey);
+    }
+
+    public void ShowGoldenKeyDrawPanel(bool isShow, Player player, System.Action onClose)
+    {
+        goldenKeyDrawPanel.Show(isShow, player, onClose);
     }
 
     public void SetPlaceInfo(Place place)
