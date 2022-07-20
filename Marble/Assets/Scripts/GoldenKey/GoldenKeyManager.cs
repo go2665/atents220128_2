@@ -39,7 +39,7 @@ public class GoldenKeyManager : MonoBehaviour
         keyUseFuncs[(int)GoldenKeyType.NobelPrize] = NobelPrize;
         keyUseFuncs[(int)GoldenKeyType.LotteryWin] = LotteryWin;
         keyUseFuncs[(int)GoldenKeyType.RaceWin] = RaceWin;
-        keyUseFuncs[(int)GoldenKeyType.SchilarShip] = SchilarShip;
+        keyUseFuncs[(int)GoldenKeyType.ScholarShip] = ScholarShip;
         keyUseFuncs[(int)GoldenKeyType.Pension] = Pension;
         keyUseFuncs[(int)GoldenKeyType.StudyAbroad] = StudyAbroad;
         keyUseFuncs[(int)GoldenKeyType.Hospital] = Hospital;
@@ -202,37 +202,55 @@ public class GoldenKeyManager : MonoBehaviour
     void NobelPrize(Player player)
     {
         Debug.Log("NobelPrize");
+        player.Money += 300;
     }
     void LotteryWin(Player player)
     {
         Debug.Log("LotteryWin");
+        player.Money += 200;
     }
     void RaceWin(Player player)
     {
         Debug.Log("RaceWin");
+        player.Money += 100;
     }
-    void SchilarShip(Player player)
+    void ScholarShip(Player player)
     {
         Debug.Log("SchilarShip");
+        player.Money += 100;
     }
     void Pension(Player player)
     {
         Debug.Log("Pension");
+        player.Money += 50;
     }
     void StudyAbroad(Player player)
     {
         Debug.Log("StudyAbroad");
+        player.Money -= 100;
     }
     void Hospital(Player player)
     {
         Debug.Log("Hospital");
+        player.Money -= 50;
     }
     void Fine(Player player)
     {
         Debug.Log("Fine");
+        player.Money -= 50;
     }
     void Birthday(Player player)
     {
         Debug.Log("Birthday");
+        int present = 0;
+        foreach(var other in GameManager.Inst.Players)
+        {
+            if (other != player && other.Type != PlayerType.Bank)
+            {
+                other.Money -= 100;
+                present += 100;
+            }
+        }
+        player.Money += present;
     }
 }

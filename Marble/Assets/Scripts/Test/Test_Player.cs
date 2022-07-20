@@ -20,7 +20,11 @@ public class Test_Player : MonoBehaviour
         //Test_Airplane();
         //Test_Highway();
 
-
+        GoldenKeyManager gkManager = GameManager.Inst.GoldenKeyManager;
+        Map map = GameManager.Inst.GameMap;
+        Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        map.Move(p1, MapID.GoldenKey6);
+        gkManager.RunGoldenCard(GoldenKeyType.Birthday, p1);
     }
 
     private static void Test_Highway()

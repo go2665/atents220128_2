@@ -24,7 +24,7 @@ public enum GoldenKeyType
     NobelPrize,             // 노벨상
     LotteryWin,             // 복권당첨
     RaceWin,                // 자동차 경주 우승
-    SchilarShip,            // 장학금
+    ScholarShip,            // 장학금
     Pension,                // 연금
     StudyAbroad,            // 해외 유학
     Hospital,               // 병원비
