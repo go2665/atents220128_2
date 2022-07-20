@@ -130,6 +130,14 @@ public class Map : MonoBehaviour
         Move(player, move);
     }
 
+    public void SetPosition(Player player, MapID mapID)
+    {
+        player.Position = mapID;
+        Place place = GetPlace(player.Position);
+        player.transform.position = place.GetPlayerPosition(player.Type);   // 말 위치 변경
+        place.OnArrive(player);                                             // 장소 도착 함수 실행
+    }
+
     /// <summary>
     /// CSV 데이터 파일 읽기 함수
     /// </summary>

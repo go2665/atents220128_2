@@ -18,7 +18,7 @@ public enum GoldenKeyType
     GetFund,                // 사회복지기금으로 이동해서 획득
     RoundWorld,             // 세계일주(월급+기금 획득)
     MoveSpaceShip,          // 우주왕복선으로 이동
-    CruieTrip,              // 베이징으로 이동(퀸 엘리자베스 사용료도 추가 지급)
+    CruiseTrip,              // 베이징으로 이동(퀸 엘리자베스 사용료도 추가 지급)
     AirplaneTrip,           // 콩코드 여객기를 타고 타이페이로(콩코드 비용도 추가 지급)
     Highway,                // 출발지로 이동
     NobelPrize,             // 노벨상

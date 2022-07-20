@@ -35,6 +35,13 @@ public class Place_FundGet : Place
         fundText.text = totalFund.ToString();
     }
 
+    public void GetFund(Player player)
+    {
+        player.Money += totalFund;
+        totalFund = 0;
+        fundText.text = totalFund.ToString();
+    }
+
     /// <summary>
     /// 플레이어가 도착했을 때 실행할 함수. 누적된 기금 지급
     /// </summary>
@@ -42,9 +49,7 @@ public class Place_FundGet : Place
     public override void OnArrive(Player player)
     {
         //Debug.Log($"{player} : 기금을 {totalFund}원 얻었습니다.");
-        player.Money += totalFund;
-        totalFund = 0;
-        fundText.text = totalFund.ToString();
+        GetFund(player);
         base.OnArrive(player);
     }
 }

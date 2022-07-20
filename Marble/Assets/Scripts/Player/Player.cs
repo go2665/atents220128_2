@@ -167,10 +167,11 @@ public class Player : MonoBehaviour
 
     IEnumerator TurnEndWait()
     {
-        yield return new WaitForSeconds(0.3f);
         if (GameManager.Inst.TurnManager != null)
         {
-            GameManager.Inst.TurnManager.NextPlayer.PlayerTurnStart();
+            Player player = GameManager.Inst.TurnManager.NextPlayer;
+            yield return new WaitForSeconds(0.3f);
+            player.PlayerTurnStart();
         }
     }
 
