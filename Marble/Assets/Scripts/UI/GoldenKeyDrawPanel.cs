@@ -40,6 +40,7 @@ public class GoldenKeyDrawPanel : MonoBehaviour, IPointerClickHandler
             mainCanvasGroup.alpha = 1;
             mainCanvasGroup.interactable = true;
             mainCanvasGroup.blocksRaycasts = true;
+            subCanvasGroup.alpha = 0;
             goldenKeyPicker = player;
             OnClose = onClose;
         }
@@ -62,9 +63,9 @@ public class GoldenKeyDrawPanel : MonoBehaviour, IPointerClickHandler
         if( clickCount == 0 )
         {
             // 카드를 뽑아 이름과 설명을 출력
-            Debug.Log("카드를 뽑았다.");
 
             drawCard = goldenKeyManager.DrawCard();
+            Debug.Log($"{goldenKeyManager.GetCardName(drawCard)} 카드를 뽑았다.");
             cardName.text = goldenKeyManager.GetCardName(drawCard);
             cardDescription.text = goldenKeyManager.GetCardDescription(drawCard);
 
@@ -73,7 +74,7 @@ public class GoldenKeyDrawPanel : MonoBehaviour, IPointerClickHandler
         else
         {
             // 뽑은 카드 적용
-            Debug.Log("카드를 적용한다.");
+            Debug.Log($"{goldenKeyManager.GetCardName(drawCard)} 카드를 적용한다.");
             goldenKeyManager.RunGoldenCard(drawCard, goldenKeyPicker);
             Show(false, null, null);
         }        

@@ -82,7 +82,7 @@ public class UseGoldenKeyPanel : MonoBehaviour
         Debug.Log("사용하지 않는다.");
         if (goldenKey == GoldenKeyType.IslandEscapeTicket)
         {
-            player.PlayerRollProcess();
+            player.PlayerMoveProcess();
         }
         else if (goldenKey == GoldenKeyType.FreePassTicket)
         {

@@ -10,18 +10,13 @@ public class TurnManager : MonoBehaviour
     /// <summary>
     /// 플레이어 목록(은행 제거)
     /// </summary>
-    Player[] playersOnly;
-
-    /// <summary>
-    /// 인간 플레이어
-    /// </summary>
-    Player human;
+    Queue<Player> playersQueue;
 
     /// <summary>
     /// 현재 턴을 진행중인 플레이어
     /// </summary>
-    PlayerType currentPlayer = PlayerType.Bank;
-    public PlayerType CurrentPlayer
+    Player currentPlayer = null;
+    public Player CurrentPlayer
     {
         get => currentPlayer;
     }
@@ -33,18 +28,22 @@ public class TurnManager : MonoBehaviour
     {
         get
         {
-            if (playersOnly[(int)currentPlayer-1].ActionDone)
-            {
-                if (currentPlayer != PlayerType.CPU3)   // Human->CPU1->CPU2->CPU3->Human->...
-                {
-                    currentPlayer = currentPlayer + 1;
-                }
-                else
-                {
-                    currentPlayer = PlayerType.Human;
-                }
-            }
-            return playersOnly[(int)(currentPlayer) - 1];
+            //if (currentPlayer.ActionDone)
+            //{
+            //    if (currentPlayer.Money >= 0)
+            //    {
+            //        playersQueue.Enqueue(currentPlayer);
+            //    }
+            //    currentPlayer = playersQueue.Dequeue();
+
+            //    if (playersQueue.Count < 1)
+            //    {
+            //        // 게임이 끝난 상황
+            //        Debug.Log($"Game Clear : {currentPlayer.Type} Win");
+            //    }
+            //}
+
+            return currentPlayer;
         }
     }
 
@@ -54,12 +53,11 @@ public class TurnManager : MonoBehaviour
     public void Initialize()
     {
         int num = GameManager.Inst.NumOfPlayer - 1;
-        playersOnly = new Player[num];
+        playersQueue = new Queue<Player>(num);
         for (int i = 0; i < num; i++)
         {
-            playersOnly[i] = GameManager.Inst.Players[i + 1];
+            playersQueue.Enqueue(GameManager.Inst.Players[i + 1]);
         }
-        human = playersOnly[0];
     }
 
     /// <summary>
@@ -67,7 +65,46 @@ public class TurnManager : MonoBehaviour
     /// </summary>
     public void GameStart()
     {
-        currentPlayer = PlayerType.Human;
-        human.PlayerTurnStart();
+        currentPlayer = playersQueue.Dequeue();
+        TurnStart();
+    }
+
+    Player GetNextPlayer()
+    {
+        if (currentPlayer.ActionDone)
+        {
+            if (currentPlayer.Money >= 0)
+            {
+                playersQueue.Enqueue(currentPlayer);
+            }
+            currentPlayer = playersQueue.Dequeue();
+
+            if (playersQueue.Count < 1)
+            {
+                // 게임이 끝난 상황
+                Debug.Log($"Game Clear : {currentPlayer.Type} Win");
+            }
+        }
+
+        return currentPlayer;
+    }
+
+    void TurnStart()
+    {
+        currentPlayer.PlayerTurnStart();
+    }
+
+    void TurnEnd()
+    {
+        currentPlayer = NextPlayer;
+    }
+
+    private void Update()
+    {
+        if( currentPlayer.ActionDone )
+        {
+            currentPlayer = GetNextPlayer();
+            TurnStart();
+        }
     }
 }

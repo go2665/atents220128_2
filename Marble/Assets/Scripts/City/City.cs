@@ -165,7 +165,7 @@ public class City : CityBase
             {
                 // CPU 일때
                 MakeBuildingsForCPU(player);
-                player.PlayerTurnEnd();
+                base.OnArrive(player);
             }
         }
         else

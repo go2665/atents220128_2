@@ -98,7 +98,7 @@ public class GameManager : Singleton<GameManager>
 
             if (i != 0)
             {
-                map.Move(players[i], MapID.Start);
+                players[i].SetStartPosition(MapID.Start);
             }
         }        
 

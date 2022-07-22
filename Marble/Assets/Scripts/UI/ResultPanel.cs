@@ -33,6 +33,7 @@ public class ResultPanel : MonoBehaviour
         {
             textUI.text = $"{type}의 주사위는 {diceEyes}(이)가 나왔습니다.";
         }
+        //Debug.Log(textUI.text);
     }
 
     /// <summary>

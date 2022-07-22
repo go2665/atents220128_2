@@ -16,7 +16,7 @@ public class Map : MonoBehaviour
     Place[] places;                 // 각 장소(40개가 있음)
     const int SideSize = 10;        // 일반칸 9개 + 구석칸 1개
     const int NumOfSize = 4;        // 4면
-    const int NumOfPlaces = SideSize * NumOfSize;   // 전체 칸수
+    public const int NumOfPlaces = SideSize * NumOfSize;   // 전체 칸수
 
     PlayerInputActionMaps actions;
 
@@ -94,41 +94,42 @@ public class Map : MonoBehaviour
         return places[(int)id];
     }
 
-    /// <summary>
-    /// 맵에 있는 플레이어를 이동시키는 함수
-    /// </summary>
-    /// <param name="player">이동시킬 플레이어</param>
-    /// <param name="count">이동시킬 칸 수</param>
-    public void Move(Player player, int count)
-    {
-        int dest = (int)player.Position + count;    // 목적지 계산하기
-        if(dest >= NumOfPlaces)         // 한바퀴 돌았을 경우
-        {
-            dest -= NumOfPlaces;
-            Place_Start start = GetPlace(MapID.Start) as Place_Start;
-            start.GetSalaray(player);   // 월급 추가
-        }
+    // 플레이어로 이동
+    ///// <summary>
+    ///// 맵에 있는 플레이어를 이동시키는 함수
+    ///// </summary>
+    ///// <param name="player">이동시킬 플레이어</param>
+    ///// <param name="count">이동시킬 칸 수</param>
+    //public void Move(Player player, int count)
+    //{
+    //    int dest = (int)player.Position + count;    // 목적지 계산하기
+    //    if(dest >= NumOfPlaces)         // 한바퀴 돌았을 경우
+    //    {
+    //        dest -= NumOfPlaces;
+    //        Place_Start start = GetPlace(MapID.Start) as Place_Start;
+    //        start.GetSalaray(player);   // 월급 추가
+    //    }
 
-        player.Position = (MapID)dest;  // 실제 위치 변경
-        Place place = GetPlace(player.Position);
-        player.transform.position = place.GetPlayerPosition(player.Type);   // 말 위치 변경
-        place.OnArrive(player);         // 장소 도착 함수 실행
-    }
+    //    player.Position = (MapID)dest;  // 실제 위치 변경
+    //    Place place = GetPlace(player.Position);
+    //    player.transform.position = place.GetPlayerPosition(player.Type);   // 말 위치 변경
+    //    place.OnArrive(player);         // 장소 도착 함수 실행
+    //}
 
-    /// <summary>
-    /// 맵에 있는 플레이어를 이동시키는 함수(특정 칸으로 즉시 이동할 때 사용할 함수)
-    /// </summary>
-    /// <param name="player">이동시킬 플레이어</param>
-    /// <param name="mapID">이동할 장소</param>
-    public void Move(Player player, MapID mapID)
-    {
-        int move = mapID - player.Position;
-        if( move < 0 )
-        {
-            move = NumOfPlaces + move;
-        }
-        Move(player, move);
-    }
+    ///// <summary>
+    ///// 맵에 있는 플레이어를 이동시키는 함수(특정 칸으로 즉시 이동할 때 사용할 함수)
+    ///// </summary>
+    ///// <param name="player">이동시킬 플레이어</param>
+    ///// <param name="mapID">이동할 장소</param>
+    //public void Move(Player player, MapID mapID)
+    //{
+    //    int move = mapID - player.Position;
+    //    if( move < 0 )
+    //    {
+    //        move = NumOfPlaces + move;
+    //    }
+    //    Move(player, move);
+    //}
 
     public void SetPosition(Player player, MapID mapID)
     {

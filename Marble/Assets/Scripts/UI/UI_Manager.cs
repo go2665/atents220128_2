@@ -14,6 +14,8 @@ public class UI_Manager : MonoBehaviour
     BuildingPanel buildingPanel;
     UseGoldenKeyPanel useGoldenKeyPanel;
     GoldenKeyDrawPanel goldenKeyDrawPanel;
+    BankruptcyPanel bankruptcyPanel;
+    IslandEscapePanel islandEscapePanel;
 
     /// <summary>
     /// 초기화 함수. 주사위와 플레이어의 초기화 이후에 실행되어야 한다.
@@ -30,8 +32,10 @@ public class UI_Manager : MonoBehaviour
         buildingPanel = FindObjectOfType<BuildingPanel>();
         useGoldenKeyPanel = FindObjectOfType<UseGoldenKeyPanel>();
         goldenKeyDrawPanel = FindObjectOfType<GoldenKeyDrawPanel>();
+        bankruptcyPanel = FindObjectOfType<BankruptcyPanel>();
+        islandEscapePanel = FindObjectOfType<IslandEscapePanel>();
 
-        GameManager.Inst.GameDiceSet.OnDouble += OnDouble_Result;   // 주사위가 더블이 나왔을 때 resultPanel에서 표시하기 위한 함수 등록
+        //GameManager.Inst.GameDiceSet.OnDouble += OnDouble_Result;   // 주사위가 더블이 나왔을 때 resultPanel에서 표시하기 위한 함수 등록
 
         // 람다식을 이렇게 쓰면 안된다.
         //for (int i = 1; i < GameManager.Inst.NumOfPlayer; i++)
@@ -41,14 +45,14 @@ public class UI_Manager : MonoBehaviour
         //}
 
         // 플레이어의 보유금액이 변경되었을 때 실행될 함수들 등록
-        GameManager.Inst.GetPlayer(PlayerType.Human).OnMoneyChange +=
-                (money) => moneyPanel.SetMoneyText(PlayerType.Human, money);
-        GameManager.Inst.GetPlayer(PlayerType.CPU1).OnMoneyChange +=
-                (money) => moneyPanel.SetMoneyText(PlayerType.CPU1, money);
-        GameManager.Inst.GetPlayer(PlayerType.CPU2).OnMoneyChange +=
-                (money) => moneyPanel.SetMoneyText(PlayerType.CPU2, money);
-        GameManager.Inst.GetPlayer(PlayerType.CPU3).OnMoneyChange +=
-                (money) => moneyPanel.SetMoneyText(PlayerType.CPU3, money);
+        Player p = GameManager.Inst.GetPlayer(PlayerType.Human);
+        p.OnMoneyChange += moneyPanel.SetMoneyText;
+        p = GameManager.Inst.GetPlayer(PlayerType.CPU1);
+        p.OnMoneyChange += moneyPanel.SetMoneyText;
+        p = GameManager.Inst.GetPlayer(PlayerType.CPU2);
+        p.OnMoneyChange += moneyPanel.SetMoneyText;
+        p = GameManager.Inst.GetPlayer(PlayerType.CPU3);
+        p.OnMoneyChange += moneyPanel.SetMoneyText;
     }
 
     /// <summary>
@@ -59,6 +63,12 @@ public class UI_Manager : MonoBehaviour
     {
         diceRollPanel.Show(isShow);
     }
+
+    public void ShowIslandEscapePanel(bool isShow)
+    {
+        islandEscapePanel.Show(isShow);
+    }
+    
 
     /// <summary>
     /// 주사위 굴린 결과를 결과창에 글자로 출력하는 함수
@@ -118,6 +128,11 @@ public class UI_Manager : MonoBehaviour
     public void ShowGoldenKeyDrawPanel(bool isShow, Player player, System.Action onClose)
     {
         goldenKeyDrawPanel.Show(isShow, player, onClose);
+    }
+
+    public void ShowBankruptcyPanel(bool isShow, Player player)
+    {
+        bankruptcyPanel.Show(isShow, player);
     }
 
     public void SetPlaceInfo(Place place)

@@ -130,7 +130,7 @@ public class CityBase : Place
                 else
                 {
                     player.UseGoldenKey(GoldenKeyType.FreePassTicket);
-                    player.PlayerTurnEnd();
+                    base.OnArrive(player);
                 }
             }
             else
@@ -138,6 +138,10 @@ public class CityBase : Place
                 PayUsePrice(player);
                 base.OnArrive(player);
             }
+        }
+        else
+        {
+            base.OnArrive(player);
         }
     }
 

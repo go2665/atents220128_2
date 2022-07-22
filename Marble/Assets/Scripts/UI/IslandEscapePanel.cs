@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// 주사위 굴림판. 클릭하면 주사위를 굴림
 /// </summary>
-public class DiceRollPanel : MonoBehaviour, IPointerClickHandler
+public class IslandEscapePanel : MonoBehaviour, IPointerClickHandler
 {
     /// <summary>
     /// 자식 UI들의 알파값을 조절하기 위한 캔버스 그룹
@@ -44,11 +44,13 @@ public class DiceRollPanel : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData">이벤트 데이터</param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        //Debug.Log("DiceRollPanel");
         Show(false);    // 닫고
 
         Player player = GameManager.Inst.GetPlayer(PlayerType.Human);
-        player.MoveRollDice();
+        if( player.TryDiceDouble() )
+        {
+            player.OnArriveIsland(0);
+        }
         player.OnPanelClose();
     }
 }

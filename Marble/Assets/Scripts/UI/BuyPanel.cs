@@ -80,7 +80,7 @@ public class BuyPanel : MonoBehaviour
 
     private void OnClickYes()
     {
-        Debug.Log("산다.");
+        Debug.Log($"{targetCity.placeName} 구매.");
         targetCity.Sell(player.Type);   // 해당 도시 구매 실행
         
         PanelEnd(); // 종료

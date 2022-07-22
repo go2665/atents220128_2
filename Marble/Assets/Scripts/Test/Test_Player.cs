@@ -20,18 +20,101 @@ public class Test_Player : MonoBehaviour
         //Test_Airplane();
         //Test_Highway();
         //Test_Birthday();
+        //Test_Bankrupt();
 
+
+        //Map map = GameManager.Inst.GameMap;
+        //Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+
+        //CityBase cityBase = (CityBase)map.GetPlace(MapID.Jeju);
+        //cityBase.Sell(PlayerType.Human);
+
+        //map.Move(p1, MapID.Jeju - 4);
+
+        Test_Island_Normal();
+
+    }
+
+    private static void Test_Island_Normal()
+    {
+        Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        p1.TestDice(6, 4);
+        Player p2 = GameManager.Inst.GetPlayer(PlayerType.CPU1);
+        p2.TestDice(1, 3);
+        Player p3 = GameManager.Inst.GetPlayer(PlayerType.CPU2);
+        p3.TestDice(1, 3);
+        Player p4 = GameManager.Inst.GetPlayer(PlayerType.CPU3);
+        p4.TestDice(1, 3);
+    }
+
+    private static void Test_Bankrupt()
+    {
         Map map = GameManager.Inst.GameMap;
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
-        //map.Move(p1, MapID.GoldenKey1-3);
+        Player p2 = GameManager.Inst.GetPlayer(PlayerType.CPU1);
+        Player p3 = GameManager.Inst.GetPlayer(PlayerType.CPU2);
+        Player p4 = GameManager.Inst.GetPlayer(PlayerType.CPU3);
+
+        CityBase cityBase = (CityBase)map.GetPlace(MapID.Seoul);
+        cityBase.Sell(PlayerType.CPU1);
+
+        City city = null;
+
+        //city = (City)map.GetPlace(MapID.NewYork);
+        //city.Sell(PlayerType.Human);
+        //city.MakeBuildings(new int[] { 1, 1, 1 });
+
+        //city = (City)map.GetPlace(MapID.London);
+        //city.Sell(PlayerType.Human);
+        //city.MakeBuildings(new int[] { 1, 1, 1 });
+
+        //city = (City)map.GetPlace(MapID.Athens);
+        //city.Sell(PlayerType.Human);
+        //city.MakeBuildings(new int[] { 1, 1, 1 });
+
+        //city = (City)map.GetPlace(MapID.Hawaii);
+        //city.Sell(PlayerType.Human);
+        //city.MakeBuildings(new int[] { 1, 1, 1 });
+
+        city = (City)map.GetPlace(MapID.Taipei);
+        city.Sell(PlayerType.Human);
+        city.MakeBuildings(new int[] { 1, 1, 1 });
+
+        city = (City)map.GetPlace(MapID.Singapore);
+        city.Sell(PlayerType.Human);
+        city.MakeBuildings(new int[] { 1, 1, 1 });
+
+        city = (City)map.GetPlace(MapID.Cairo);
+        city.Sell(PlayerType.Human);
+        city.MakeBuildings(new int[] { 1, 1, 1 });
+
+        cityBase = (CityBase)map.GetPlace(MapID.Jeju);
+        cityBase.Sell(PlayerType.Human);
+
+        cityBase = (CityBase)map.GetPlace(MapID.Concord);
+        cityBase.Sell(PlayerType.Human);
+
+        p1.Money = 0;
+        p1.Move(MapID.Seoul - 3);
     }
+
+    private void Update()
+    {
+        //Update_Test_MaintenanceCost();
+        if( Keyboard.current.digit1Key.wasPressedThisFrame)
+        {
+            Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+            p1.Money = 100000;
+        }
+    }
+
 
     private static void Test_Birthday()
     {
         GoldenKeyManager gkManager = GameManager.Inst.GoldenKeyManager;
         Map map = GameManager.Inst.GameMap;
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
-        map.Move(p1, MapID.GoldenKey6);
+        p1.Move(MapID.GoldenKey6);
         gkManager.RunGoldenCard(GoldenKeyType.Birthday, p1);
     }
 
@@ -40,7 +123,7 @@ public class Test_Player : MonoBehaviour
         GoldenKeyManager gkManager = GameManager.Inst.GoldenKeyManager;
         Map map = GameManager.Inst.GameMap;
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
-        map.Move(p1, MapID.GoldenKey1);
+        p1.Move(MapID.GoldenKey1);
         gkManager.RunGoldenCard(GoldenKeyType.Highway, p1);
     }
 
@@ -56,7 +139,7 @@ public class Test_Player : MonoBehaviour
         p1.Money = 0;
         p2.Money = 0;
 
-        map.Move(p1, MapID.GoldenKey6);
+        p1.Move(MapID.GoldenKey6);
         gkManager.RunGoldenCard(GoldenKeyType.AirplaneTrip, p1);
     }
     
@@ -72,7 +155,7 @@ public class Test_Player : MonoBehaviour
         p1.Money = 0;
         p2.Money = 0;
 
-        map.Move(p1, MapID.GoldenKey6);
+        p1.Move(MapID.GoldenKey6);
         gkManager.RunGoldenCard(GoldenKeyType.CruiseTrip, p1);
     }
 
@@ -96,9 +179,9 @@ public class Test_Player : MonoBehaviour
         p2.Money = 0;
         p3.Money = 0;
         p4.Money = 0;
-        map.Move(p2, MapID.Fund_Pay);
-        map.Move(p3, MapID.Fund_Pay);
-        map.Move(p4, MapID.Fund_Pay);
+        p2.Move(MapID.Fund_Pay);
+        p3.Move(MapID.Fund_Pay);
+        p4.Move(MapID.Fund_Pay);
         gkManager.RunGoldenCard(GoldenKeyType.RoundWorld, p1);
     }
 
@@ -114,9 +197,9 @@ public class Test_Player : MonoBehaviour
         p2.Money = 0;
         p3.Money = 0;
         p4.Money = 0;
-        map.Move(p1, MapID.Fund_Pay);
-        map.Move(p2, MapID.Fund_Pay);
-        map.Move(p3, MapID.Fund_Pay);
+        p1.Move(MapID.Fund_Pay);
+        p2.Move(MapID.Fund_Pay);
+        p3.Move(MapID.Fund_Pay);
         gkManager.RunGoldenCard(GoldenKeyType.GetFund, p4);
     }
 
@@ -187,8 +270,8 @@ public class Test_Player : MonoBehaviour
 
         gkManager.RunGoldenCard(GoldenKeyType.FreePassTicket, p3);
 
-        map.Move(p1, MapID.NewYork - 3);
-        map.Move(p3, MapID.NewYork - 3);
+        p1.Move(MapID.NewYork - 3);
+        p3.Move(MapID.NewYork - 3);
     }
 
     private static void Test_IslandEscapeTicket()
@@ -198,13 +281,8 @@ public class Test_Player : MonoBehaviour
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
         Player p2 = GameManager.Inst.GetPlayer(PlayerType.CPU1);
         gkManager.RunGoldenCard(GoldenKeyType.IslandEscapeTicket, p2);
-        map.Move(p2, MapID.GoldenKey2);
-    }
-
-    private void Update()
-    {
-        //Update_Test_MaintenanceCost();
-    }
+        p2.Move(MapID.GoldenKey2);
+    }    
 
     private static void Test_MaintenanceCost()
     {

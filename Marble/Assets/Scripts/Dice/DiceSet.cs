@@ -11,12 +11,17 @@ public class DiceSet : MonoBehaviour
     public int testDice2 = 1;
 
     Dice[] dices;
+
+    bool isLastDouble = false;
+    public bool IsLastDouble => isLastDouble;
+    
+
     public int NumOfDices
     {
         get => dices.Length;
     }
 
-    public System.Action<PlayerType> OnDouble;
+    public System.Action OnDouble;
 
     void Awake()
     {
@@ -70,9 +75,10 @@ public class DiceSet : MonoBehaviour
             }
         }
 
+        isLastDouble = isDouble;
         if (isDouble)
         {
-            OnDouble?.Invoke(GameManager.Inst.TurnManager.CurrentPlayer);
+            OnDouble?.Invoke();
         }
 
         return results;
@@ -91,5 +97,27 @@ public class DiceSet : MonoBehaviour
             result = dices[index].Roll();
         }
         return result;
+    }
+
+    public bool TryDouble()
+    {
+        int[] results = new int[dices.Length];
+        for (int i = 0; i < dices.Length; i++)
+        {
+            results[i] = dices[i].Roll();
+        }
+
+        bool isDouble = true;
+        int oldRoll = results[0];
+        for (int i = 1; i < dices.Length; i++)
+        {
+            if (oldRoll != results[i])
+            {
+                isDouble = false;
+                break;
+            }
+        }
+
+        return isDouble;
     }
 }

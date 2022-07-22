@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Place : MonoBehaviour
 {
-    GameObject placeObject;    
+    GameObject placeObject;
     protected MapID id;
     protected PlaceType placeType;
     public string placeName;
@@ -21,10 +21,12 @@ public class Place : MonoBehaviour
         get => placeType;
     }
 
+    //System.Action onPlaceActionDone;
+
     public virtual void OnArrive(Player player)
     {
         Debug.Log($"{player} : {placeName}에 도착했습니다.");
-        player.PlayerTurnEnd();
+        ArrivePlaceAction(player);
     }
 
     /// <summary>
@@ -41,11 +43,11 @@ public class Place : MonoBehaviour
 
         int numOfPlayer = GameManager.Inst.NumOfPlayer;
         playerPostions = new Transform[numOfPlayer - 1];
-        for(int i=1;i< numOfPlayer;i++)
+        for (int i = 1; i < numOfPlayer; i++)
         {
             playerPostions[i - 1] = transform.Find($"Player{i}");
         }
-        
+
     }
 
     /// <summary>
@@ -56,5 +58,14 @@ public class Place : MonoBehaviour
     public Vector3 GetPlayerPosition(PlayerType type)
     {
         return playerPostions[(int)type - 1].position;
+    }
+
+    protected virtual void ArrivePlaceAction(Player player)
+    {
+        player.PlayerTurnEnd();
+    }
+
+    public virtual void TurnStartPlaceAction(Player player)
+    {
     }
 }

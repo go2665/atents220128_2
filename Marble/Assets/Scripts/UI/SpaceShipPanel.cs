@@ -105,7 +105,7 @@ public class SpaceShipPanel : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit,  10.0f, LayerMask.GetMask("Place")))
         {
             Place place = hit.collider.GetComponentInParent<Place>();
-            GameManager.Inst.GameMap.Move(passenger, place.ID);
+            passenger.Move(place.ID);
             
             Debug.Log($"{place.placeName}로 이동합니다.");
             PanelEnd();

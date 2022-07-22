@@ -5,7 +5,10 @@ using UnityEngine;
 
 
 public class GoldenKeyManager : MonoBehaviour
-{    
+{
+    public bool isTestMode = false;
+    public GoldenKeyType testCard = GoldenKeyType.ToIsland;
+
     System.Action<Player>[] keyUseFuncs;
     //System.Action[] shuffleArray;
     Queue<GoldenKeyType> shuffle;
@@ -166,6 +169,15 @@ public class GoldenKeyManager : MonoBehaviour
             result.Enqueue(randomType);
         }
 
+        if( isTestMode )
+        {
+            result.Clear();
+            for (int i = 0; i < typeCount; i++)
+            {
+                result.Enqueue(testCard);
+            }
+        }
+
         return result;
     }
 
@@ -219,17 +231,17 @@ public class GoldenKeyManager : MonoBehaviour
     void Trip_Busan(Player player)
     {
         Debug.Log("Trip_Busan");
-        GameManager.Inst.GameMap.Move(player, MapID.Busan);
+        player.Move(MapID.Busan);
     }
     void Trip_Jeju(Player player)
     {
         Debug.Log("Trip_Jeju");
-        GameManager.Inst.GameMap.Move(player, MapID.Jeju);
+        player.Move(MapID.Jeju);
     }
     void Trip_Seoul(Player player)
     {
         Debug.Log("Trip_Seoul");
-        GameManager.Inst.GameMap.Move(player, MapID.Seoul);
+        player.Move(MapID.Seoul);
     }
     void ToIsland(Player player)
     {
@@ -239,38 +251,38 @@ public class GoldenKeyManager : MonoBehaviour
     void GetFund(Player player)
     {
         Debug.Log("GetFund");
-        GameManager.Inst.GameMap.Move(player, MapID.Fund_Get);
+        player.Move(MapID.Fund_Get);
     }
     void RoundWorld(Player player)
     {
         Debug.Log("RoundWorld");
         Place_FundGet fundGet = GameManager.Inst.GameMap.GetPlace(MapID.Fund_Get) as Place_FundGet;
         fundGet.GetFund(player);
-        GameManager.Inst.GameMap.Move(player, 40);
+        player.Move(40);
     }
     void MoveSpaceShip(Player player)
     {
         Debug.Log("MoveSpaceShip");
-        GameManager.Inst.GameMap.Move(player, MapID.SpaceShip);
+        player.Move(MapID.SpaceShip);
     }
     void CruiseTrip(Player player)
     {
         Debug.Log("CruieTrip");
         CityBase ship = GameManager.Inst.GameMap.GetPlace(MapID.QueenElizabeth) as CityBase;
         ship.PayUsePrice(player);
-        GameManager.Inst.GameMap.Move(player, MapID.Beijing);
+        player.Move(MapID.Beijing);
     }
     void AirplaneTrip(Player player)
     {
         Debug.Log("AirplaneTrip");
         CityBase air = GameManager.Inst.GameMap.GetPlace(MapID.Concord) as CityBase;
         air.PayUsePrice(player);
-        GameManager.Inst.GameMap.Move(player, MapID.Taipei);
+        player.Move(MapID.Taipei);
     }
     void Highway(Player player)
     {
         Debug.Log("Highway");
-        GameManager.Inst.GameMap.Move(player, MapID.Start);
+        player.Move(MapID.Start);
     }
     void NobelPrize(Player player)
     {

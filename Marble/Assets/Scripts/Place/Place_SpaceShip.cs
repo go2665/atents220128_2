@@ -101,7 +101,7 @@ public class Place_SpaceShip : Place
                 player.Money -= shipUsePrice;
                 ownerPlayer.Money += shipUsePrice;
 
-                map.Move(player, target);
+                player.Move(target);
                 return;
             }
 
