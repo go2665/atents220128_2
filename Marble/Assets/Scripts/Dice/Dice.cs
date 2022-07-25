@@ -12,6 +12,7 @@ public class Dice : MonoBehaviour
     // 6 - 0,0,90
 
     public int diceMax = 6;
+    public const int NotTest = -999;
 
     Quaternion[] diceEyeRotation = new Quaternion[6];
 
@@ -30,13 +31,16 @@ public class Dice : MonoBehaviour
     /// </summary>
     /// <param name="showDiceRotate">주사위 눈이 보이게 회전시킬지 결정</param>
     /// <returns></returns>
-    public int Roll(bool showDiceRotate = false)
+    public int Roll(int testValue = NotTest)
     {
-        int eye = Random.Range(1, diceMax + 1);
-        if (showDiceRotate)
+        int eye = testValue;
+        if (eye == NotTest)
         {
-            transform.rotation = diceEyeRotation[eye - 1];
+            eye = Random.Range(1, diceMax + 1);
         }
+
+        transform.rotation = diceEyeRotation[eye - 1];
+        
         //Debug.Log($"{gameObject.name} : {eye}");
 
         return eye;

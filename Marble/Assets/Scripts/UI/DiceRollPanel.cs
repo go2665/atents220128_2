@@ -48,7 +48,7 @@ public class DiceRollPanel : MonoBehaviour, IPointerClickHandler
         Show(false);    // 닫고
 
         Player player = GameManager.Inst.GetPlayer(PlayerType.Human);
-        player.MoveRollDice();
+        player.MoveDiceRoll();
         player.OnPanelClose();
     }
 }

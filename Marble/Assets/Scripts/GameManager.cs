@@ -98,7 +98,7 @@ public class GameManager : Singleton<GameManager>
 
             if (i != 0)
             {
-                players[i].SetStartPosition(MapID.Start);
+                players[i].SetPosition(MapID.Start);
             }
         }        
 

@@ -338,4 +338,10 @@ public class Map : MonoBehaviour
 
         return expensiveCity;
     }
+
+    public void PaySalaray(Player player)
+    {
+        Place_Start start = places[(int)MapID.Start] as Place_Start;
+        start.PaySalaray(player);
+    }
 }

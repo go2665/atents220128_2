@@ -65,7 +65,7 @@ public class Place_Island : Place
             }
             else
             {
-                if (player.TryDiceDouble())
+                if (player.TryEscapeIsland())
                 {
                     player.OnArriveIsland(0);
                 }

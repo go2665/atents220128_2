@@ -8,7 +8,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     DiceSet dice;
-    Map map;    
+    Map map;
 
     const int StartMoney = 5000;        // 시작 금액
 
@@ -16,23 +16,28 @@ public class Player : MonoBehaviour
 
     int money;                          // 보유 금액    
     MapID position = MapID.Start;       // Start 위치로 초기 위치 설정
-    
+
     Material material;                  // 플레이어의 색상을 지정하기 위해 사용
 
+    PlayerState state;
+    bool isStatePause = false;
+    System.Action[] stateUpdates;
 
-    bool panelWaiting = false;
-    int actionCount = 0;                // 행동력
-    int islandWaitTime = -1;            // 무인도 대기 시간
+    readonly List<CityBase> ownedCities = new();            // 보유한 도시 목록
+    readonly List<GoldenKeyType> ownedGoldenKey = new();    // 보유한 황금 카드 목록
 
-    readonly List<CityBase> ownedCities = new();    // 보유한 도시 목록
-    readonly List<GoldenKeyType> ownedGoldenKey = new();
+
+
+    //bool panelWaiting = false;
+    //int actionCount = 0;                // 행동력
+    //int islandWaitTime = -1;            // 무인도 대기 시간
 
     /// <summary>
     /// 보유 금액 프로퍼티
     /// </summary>
-    public int Money 
-    { 
-        get => money; 
+    public int Money
+    {
+        get => money;
         set
         {
             if (money != value)
@@ -67,13 +72,13 @@ public class Player : MonoBehaviour
         get => type;
     }
 
-    /// <summary>
-    /// 행동력 다 사용했는지 표시하는 프로퍼티(읽기전용)
-    /// </summary>
-    public bool ActionDone
-    {
-        get => actionCount < 1;
-    }
+    ///// <summary>
+    ///// 행동력 다 사용했는지 표시하는 프로퍼티(읽기전용)
+    ///// </summary>
+    //public bool ActionDone
+    //{
+    //    get => actionCount < 1;
+    //}
 
     /// <summary>
     /// 돈에 변화가 있을 때 실행될 델리게이트
@@ -85,7 +90,13 @@ public class Player : MonoBehaviour
     {
         material = GetComponent<Renderer>().material;
         dice = GetComponent<DiceSet>();
-        dice.OnDouble += OnDouble;
+        //dice.OnDouble += OnDouble;
+        stateUpdates = new System.Action[System.Enum.GetValues(typeof(PlayerState)).Length];
+        stateUpdates[(int)PlayerState.TurnStart] = Update_TurnStart;
+        stateUpdates[(int)PlayerState.DiceRoll] = Update_DiceRoll;
+        stateUpdates[(int)PlayerState.RollResult] = Update_RollResult;
+        stateUpdates[(int)PlayerState.TurnEnd] = Update_TurnEnd;
+        stateUpdates[(int)PlayerState.WaitStart] = Update_WaitStart;
     }
 
     /// <summary>
@@ -104,7 +115,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Money = StartMoney;  
+            Money = StartMoney;
         }
 
         gameObject.name = $"Player_{playerType}";   // 플레이어 이름 설정
@@ -112,116 +123,115 @@ public class Player : MonoBehaviour
         map = GameManager.Inst.GameMap;
     }
 
+    ///// <summary>
+    ///// 무인도 도착했을 때 실행될 함수
+    ///// </summary>
+    ///// <param name="wait">기다리는 시간(기본3)</param>
+    //public void OnArriveIsland(int wait)
+    //{
+    //    islandWaitTime = wait;
+    //}
+
+    //public void PlayerTurnStart()
+    //{
+    //    actionCount = 1;    // 행동력 1로 회복
+    //    PlayerPlaceActionProcess();
+    //}
+
+    //public void PlayerPlaceActionProcess()
+    //{
+    //    Place place = map.GetPlace(Position);
+    //    place.TurnStartPlaceAction(this);
+    //    PlayerMoveProcess();
+    //}
+
+    //public void PlayerMoveProcess()
+    //{
+    //    if (islandWaitTime < 0) // 무인도에서 대기하는 상황이 아닐 때만 이동
+    //    {
+    //        if (Type != PlayerType.Human)
+    //        {
+    //            // CPU 플레이어들            
+    //            MoveRollDice();
+    //        }
+    //        else
+    //        {
+    //            // 인간 플레이어
+    //            OnPanelOpen();
+    //            GameManager.Inst.UI_Manager.ShowDiceRollPanel(true);    // 패널 열어서 주사위 굴리기
+    //        }
+    //    }
+
+    //    if(!panelWaiting)
+    //    {
+    //        PlayerTurnEnd();
+    //    }
+    //}
+
+    //public void PlayerTurnEnd()
+    //{
+    //    // 각 플레이스의 OnArrive 끝날 때 자동 실행
+    //    if (ActionDone)
+    //    {
+    //        //StartCoroutine(TurnEndWait());
+    //        Player player = GameManager.Inst.TurnManager.NextPlayer;
+    //        player.PlayerTurnStart();
+    //    }
+    //    else
+    //    {
+    //        PlayerMoveProcess();
+    //    }
+    //}
+
+    //IEnumerator TurnEndWait()
+    //{
+    //    if (GameManager.Inst.TurnManager != null)
+    //    {
+    //        Player player = GameManager.Inst.TurnManager.NextPlayer;
+    //        yield return new WaitForSeconds(0.3f);
+    //        player.PlayerTurnStart();
+    //    }
+    //}
+
+    ///// <summary>
+    ///// 더블이 나왔을 때 실행될 함수
+    ///// </summary>
+    ///// <param name="diceThrower"></param>
+    //void OnDouble()
+    //{
+    //    //if (diceThrower == PlayerType.Human)
+    //    //{
+    //    Debug.Log($"{Type}이 더블이 나왔습니다.");
+    //    //}
+
+    //    if (position == MapID.Island)
+    //    {
+    //        islandWaitTime = 0; // 무인도에 있는 상황이면 무인도 탈출 조건 성립 시킴
+    //    }
+
+    //    actionCount++;          // 한번 더 던지도록 행동 횟수 추가
+    //}
+
     /// <summary>
-    /// 무인도 도착했을 때 실행될 함수
+    /// 주사위를 굴리는 함수(이동용 주사위 굴리기)
     /// </summary>
-    /// <param name="wait">기다리는 시간(기본3)</param>
-    public void OnArriveIsland(int wait)
+    void MoveDiceRoll()
     {
-        islandWaitTime = wait;
-    }
+        // 주사위 돌리는 애니메이션 등 처리            
+        string str = $"{Type}은 {this.Position}에서 ";
 
-    public void PlayerTurnStart()
-    {
-        actionCount = 1;    // 행동력 1로 회복
-        PlayerPlaceActionProcess();
-    }
-
-    public void PlayerPlaceActionProcess()
-    {
-        Place place = map.GetPlace(Position);
-        place.TurnStartPlaceAction(this);
-        PlayerMoveProcess();
-    }
-
-    public void PlayerMoveProcess()
-    {
-        if (islandWaitTime < 0) // 무인도에서 대기하는 상황이 아닐 때만 이동
+        // 주사위 결과에 따라 이동처리
+        dice.Roll();        // 주사위 굴리고
+        int dicesum = dice.LastResult;
+        Move(dicesum);      // 이동시키기
+        str += $"{this.Position}에 도착했습니다.";
+        Debug.Log($"{Type}은 {dicesum}이 나왔습니다.");
+        if (dice.IsLastDouble)
         {
-            if (Type != PlayerType.Human)
-            {
-                // CPU 플레이어들            
-                MoveRollDice();
-            }
-            else
-            {
-                // 인간 플레이어
-                OnPanelOpen();
-                GameManager.Inst.UI_Manager.ShowDiceRollPanel(true);    // 패널 열어서 주사위 굴리기
-            }
+            Debug.Log("[더블]입니다.");
         }
-
-        if(!panelWaiting)
-        {
-            PlayerTurnEnd();
-        }
-    }
-
-    public void PlayerTurnEnd()
-    {
-        // 각 플레이스의 OnArrive 끝날 때 자동 실행
-        if (ActionDone)
-        {
-            //StartCoroutine(TurnEndWait());
-            Player player = GameManager.Inst.TurnManager.NextPlayer;
-            player.PlayerTurnStart();
-        }
-        else
-        {
-            PlayerMoveProcess();
-        }
-    }
-
-    IEnumerator TurnEndWait()
-    {
-        if (GameManager.Inst.TurnManager != null)
-        {
-            Player player = GameManager.Inst.TurnManager.NextPlayer;
-            yield return new WaitForSeconds(0.3f);
-            player.PlayerTurnStart();
-        }
-    }
-
-    /// <summary>
-    /// 더블이 나왔을 때 실행될 함수
-    /// </summary>
-    /// <param name="diceThrower"></param>
-    void OnDouble()
-    {
-        //if (diceThrower == PlayerType.Human)
-        //{
-        Debug.Log($"{Type}이 더블이 나왔습니다.");
-        //}
-
-        if (position == MapID.Island)
-        {
-            islandWaitTime = 0; // 무인도에 있는 상황이면 무인도 탈출 조건 성립 시킴
-        }
-            
-        actionCount++;          // 한번 더 던지도록 행동 횟수 추가
-    }
-
-    /// <summary>
-    /// 주사위를 굴리는 함수
-    /// </summary>
-    public void MoveRollDice()
-    {
-        // 행동력이 있을 때만 실행
-        if (actionCount > 0)
-        {
-            actionCount--;  // 행동력 감소
-
-            //// 주사위 돌리는 애니메이션 등 처리            
-            string str = $"{Type}은 {this.Position}에서 ";
-            
-            // 주사위 결과에 따라 이동처리
-            int dicesum = dice.RollAll_GetTotalSum(Type == PlayerType.Human);   // 주사위 굴리고
-            Move(dicesum);    // 이동시키기
-            str += $"{this.Position}에 도착했습니다.";
-            Debug.Log($"{Type}은 {dicesum}이 나왔습니다. 더블[{dice.IsLastDouble}]");
-            Debug.Log(str);
-            GameManager.Inst.UI_Manager.SetResultText(Type, dicesum);   // 결과를 결과창에 띄우기
-        }
+        Debug.Log(str);
+        GameManager.Inst.UI_Manager.SetResultText(Type, dicesum);   // 결과를 결과창에 띄우기
     }
 
     public void BuyCity(CityBase city)
@@ -238,15 +248,15 @@ public class Player : MonoBehaviour
     {
         City target = null;
         float efficient = 0;
-        foreach( CityBase cityBase in ownedCities )
+        foreach (CityBase cityBase in ownedCities)
         {
             City city = cityBase as City;
             if (city != null)
             {
                 for (int i = 2; i >= 0; i--)
-                {                    
+                {
                     float temp = city.buildingDatas[i].usePrice / city.buildingDatas[i].price;
-                    if(temp > efficient)
+                    if (temp > efficient)
                     {
                         efficient = temp;
                         target = city;
@@ -261,9 +271,9 @@ public class Player : MonoBehaviour
     {
         int highestValue = 0;
         CityBase highestCity = null;
-        foreach(var city in ownedCities)
+        foreach (var city in ownedCities)
         {
-            if( highestValue < city.TotalValue )
+            if (highestValue < city.TotalValue)
             {
                 highestValue = city.TotalValue;
                 highestCity = city;
@@ -276,10 +286,10 @@ public class Player : MonoBehaviour
     public void PayMaintenenceCost(int VilaCost, int BuildingCost, int hotelCost)
     {
         int totalCost = 0;
-        foreach(CityBase cityBase in ownedCities)
+        foreach (CityBase cityBase in ownedCities)
         {
             City city = cityBase as City;
-            if( city != null )
+            if (city != null)
             {
                 totalCost += city.buildingDatas[(int)BuildingType.Villa].count * VilaCost;
                 totalCost += city.buildingDatas[(int)BuildingType.Building].count * BuildingCost;
@@ -297,9 +307,9 @@ public class Player : MonoBehaviour
 
     public void UseGoldenKey(GoldenKeyType type)
     {
-        if(type == GoldenKeyType.IslandEscapeTicket)
+        if (type == GoldenKeyType.IslandEscapeTicket)
         {
-            islandWaitTime = 0;
+            // 무인도가 가지는 갇힌 플레이어 목록에서 제거
         }
         else
         {
@@ -314,12 +324,14 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 파산 처리
     /// </summary>
     /// <param name="order">true면 오름차순, false면 내림차순</param>
     /// <returns></returns>
     public List<CityBase> OnBankrupt(bool order)
     {
+        // 미완성 
+
         List<CityBase> list = new List<CityBase>(ownedCities.Count);
 
         if (order)
@@ -332,11 +344,11 @@ public class Player : MonoBehaviour
         }
 
         int totalSellPrice = 0;
-        foreach(var city in ownedCities)
+        foreach (var city in ownedCities)
         {
             list.Add(city);
             totalSellPrice += (city.TotalValue >> 1);
-            if(totalSellPrice + Money >= 0 )
+            if (totalSellPrice + Money >= 0)
             {
                 break;
             }
@@ -351,9 +363,14 @@ public class Player : MonoBehaviour
         dice.testDice1 = one;
         dice.testDice2 = two;
     }
-    public bool TryDiceDouble() => dice.TryDouble();
 
-    public void SetStartPosition(MapID mapID)
+    public bool TryEscapeIsland()
+    {
+        dice.Roll();
+        return dice.IsLastDouble;
+    }
+
+    public void SetPosition(MapID mapID)
     {
         Place place = map.GetPlace(mapID);
         transform.position = place.GetPlayerPosition(Type);
@@ -369,14 +386,13 @@ public class Player : MonoBehaviour
         if (dest >= Map.NumOfPlaces)         // 한바퀴 돌았을 경우
         {
             dest -= Map.NumOfPlaces;
-            Place_Start start = map.GetPlace(MapID.Start) as Place_Start;
-            start.GetSalaray(this);   // 월급 추가
+            map.PaySalaray(this);   // 월급 추가
         }
 
-        Position = (MapID)dest; // 실제 위치 변경
+        Position = (MapID)dest;     // 실제 위치 변경
         Place place = map.GetPlace(Position);
-        transform.position = place.GetPlayerPosition(Type);   // 말 위치 변경
-                
+        transform.position = place.GetPlayerPosition(Type);   // 플레이어 말 위치 변경
+
         place.OnArrive(this);         // 장소 도착 함수 실행
     }
 
@@ -386,27 +402,60 @@ public class Player : MonoBehaviour
     /// <param name="mapID">이동할 장소</param>
     public void Move(MapID mapID)
     {
-        int move = mapID - Position;
-        if (move < 0)
+        int move = mapID - Position;    // 목적지까지 거리 계산
+        if (move < 0)   // 위치 비교해서 한바퀴 도는지 확인
         {
             move = Map.NumOfPlaces + move;
         }
         Move(move);
     }
 
-    public int IslandWait()
-    {
-        islandWaitTime--;
-        return islandWaitTime;
-    }
+    //public int IslandWait()
+    //{
+    //    islandWaitTime--;
+    //    return islandWaitTime;
+    //}
 
     public void OnPanelOpen()
     {
-        panelWaiting = true;
+        //panelWaiting = true;
+        isStatePause = true;
     }
 
     public void OnPanelClose()
     {
-        panelWaiting = false;
+        //panelWaiting = false;
+        isStatePause = false;
+    }
+
+    private void Update()
+    {
+        stateUpdates[(int)state]();
+    }
+
+
+    void Update_TurnStart()
+    {
+
+    }
+
+    void Update_DiceRoll()
+    {
+
+    }
+
+    void Update_RollResult()
+    {
+
+    }
+
+    void Update_TurnEnd()
+    {
+
+    }
+
+    void Update_WaitStart()
+    {
+
     }
 }

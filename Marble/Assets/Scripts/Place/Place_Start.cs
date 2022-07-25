@@ -13,7 +13,7 @@ public class Place_Start : Place
         cover.transform.Rotate(0, 0, -90);
     }
 
-    public void GetSalaray(Player player)
+    public void PaySalaray(Player player)
     {
         player.Money += Salary;
         Debug.Log($"{player} : 시작지점을 통과합니다.");
