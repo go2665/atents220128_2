@@ -16,6 +16,7 @@ public class UI_Manager : MonoBehaviour
     GoldenKeyDrawPanel goldenKeyDrawPanel;
     BankruptcyPanel bankruptcyPanel;
     IslandEscapePanel islandEscapePanel;
+    MessagePanel messagePanel;
 
     /// <summary>
     /// 초기화 함수. 주사위와 플레이어의 초기화 이후에 실행되어야 한다.
@@ -34,6 +35,7 @@ public class UI_Manager : MonoBehaviour
         goldenKeyDrawPanel = FindObjectOfType<GoldenKeyDrawPanel>();
         bankruptcyPanel = FindObjectOfType<BankruptcyPanel>();
         islandEscapePanel = FindObjectOfType<IslandEscapePanel>();
+        messagePanel = FindObjectOfType<MessagePanel>();
 
         //GameManager.Inst.GameDiceSet.OnDouble += OnDouble_Result;   // 주사위가 더블이 나왔을 때 resultPanel에서 표시하기 위한 함수 등록
 
@@ -59,9 +61,9 @@ public class UI_Manager : MonoBehaviour
     /// 주사위 굴림판을 보여줄지 결정하는 함수
     /// </summary>
     /// <param name="isShow">true면 주사위 굴림판을 보여준다.</param>
-    public void ShowDiceRollPanel(bool isShow)
+    public void ShowDiceRollPanel(bool isShow, Player target)
     {
-        diceRollPanel.Show(isShow);
+        diceRollPanel.Show(isShow, target);
     }
 
     public void ShowIslandEscapePanel(bool isShow)
@@ -125,9 +127,14 @@ public class UI_Manager : MonoBehaviour
         useGoldenKeyPanel.Show(isShow, user, goldenKey);
     }
 
-    public void ShowGoldenKeyDrawPanel(bool isShow, Player player, System.Action onClose)
+    public void ShowGoldenKeyDrawPanel(bool isShow, Player player)
     {
-        goldenKeyDrawPanel.Show(isShow, player, onClose);
+        goldenKeyDrawPanel.Show(isShow, player);
+    }
+
+    public void ShowMessagePanel(bool isShow, Player player, string message)
+    {
+        messagePanel.Show(isShow, player, message);
     }
 
     public void ShowBankruptcyPanel(bool isShow, Player player)

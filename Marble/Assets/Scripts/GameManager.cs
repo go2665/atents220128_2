@@ -98,6 +98,7 @@ public class GameManager : Singleton<GameManager>
 
             if (i != 0)
             {
+                // 은행이 아님
                 players[i].SetPosition(MapID.Start);
             }
         }        

@@ -38,13 +38,15 @@ public class Test_Player : MonoBehaviour
     private static void Test_Island_Normal()
     {
         Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
-        p1.TestDice(6, 4);
+        p1.TestDice(1, 2);
         Player p2 = GameManager.Inst.GetPlayer(PlayerType.CPU1);
-        p2.TestDice(1, 3);
+        p2.TestDice(1, 2);
         Player p3 = GameManager.Inst.GetPlayer(PlayerType.CPU2);
-        p3.TestDice(1, 3);
+        p3.TestDice(1, 2);
         Player p4 = GameManager.Inst.GetPlayer(PlayerType.CPU3);
-        p4.TestDice(1, 3);
+        //p4.SetPosition(MapID.Fund_Pay - 3);
+        p4.AddGoldenKey(GoldenKeyType.IslandEscapeTicket);
+        p4.TestDice(6, 4);
     }
 
     private static void Test_Bankrupt()

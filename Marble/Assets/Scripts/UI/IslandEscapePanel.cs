@@ -46,11 +46,11 @@ public class IslandEscapePanel : MonoBehaviour, IPointerClickHandler
     {
         Show(false);    // 닫고
 
-        Player player = GameManager.Inst.GetPlayer(PlayerType.Human);
-        if( player.TryEscapeIsland() )
-        {
-            player.OnArriveIsland(0);
-        }
-        player.OnPanelClose();
+        //Player player = GameManager.Inst.GetPlayer(PlayerType.Human);
+        //if( player.TryEscapeIsland() )
+        //{
+        //    player.OnArriveIsland(0);
+        //}
+        //player.OnPanelClose();
     }
 }

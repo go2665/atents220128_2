@@ -2,32 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 /// <summary>
-/// 주사위 굴림판. 클릭하면 주사위를 굴림
+/// 메세지 패널
 /// </summary>
-public class DiceRollPanel : MonoBehaviour, IPointerClickHandler
+public class MessagePanel : MonoBehaviour, IPointerClickHandler
 {
     /// <summary>
     /// 자식 UI들의 알파값을 조절하기 위한 캔버스 그룹
     /// </summary>
     CanvasGroup canvasGroup;
     Player target;
+    TextMeshProUGUI messageText;
 
     void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        messageText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     /// <summary>
-    /// 주사위 굴림판을 보여줄지 결정하는 함수
+    /// 메세지 패널을 보여줄지 결정하는 함수
     /// </summary>
     /// <param name="isShow">true면 보여준다.</param>
-    public void Show(bool isShow, Player targetPlayer)
+    public void Show(bool isShow, Player targetPlayer, string message = "")
     {        
         if ( isShow )
         {
             targetPlayer.OnPanelOpen();
+            messageText.text = message;
             canvasGroup.alpha = 1;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
@@ -48,11 +52,6 @@ public class DiceRollPanel : MonoBehaviour, IPointerClickHandler
     /// <param name="eventData">이벤트 데이터</param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        //Debug.Log("DiceRollPanel");
         Show(false, target);    // 닫고
-
-        //Player player = GameManager.Inst.GetPlayer(PlayerType.Human);
-        //player.MoveDiceRoll();
-        //player.OnPanelClose();
     }
 }

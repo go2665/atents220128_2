@@ -65,14 +65,14 @@ public class UseGoldenKeyPanel : MonoBehaviour
     {
         Debug.Log("사용한다.");
         player.UseGoldenKey(goldenKey);
-        if (goldenKey == GoldenKeyType.IslandEscapeTicket)
-        {
-            player.PlayerTurnStart();
-        }
-        else if(goldenKey == GoldenKeyType.FreePassTicket)
-        {
-            player.PlayerTurnEnd();
-        }
+        //if (goldenKey == GoldenKeyType.IslandEscapeTicket)
+        //{
+        //    player.PlayerTurnStart();
+        //}
+        //else if(goldenKey == GoldenKeyType.FreePassTicket)
+        //{
+        //    player.PlayerTurnEnd();
+        //}
 
         PanelEnd(); // 종료
     }
@@ -80,16 +80,16 @@ public class UseGoldenKeyPanel : MonoBehaviour
     private void OnClickNo()
     {
         Debug.Log("사용하지 않는다.");
-        if (goldenKey == GoldenKeyType.IslandEscapeTicket)
-        {
-            player.PlayerMoveProcess();
-        }
-        else if (goldenKey == GoldenKeyType.FreePassTicket)
-        {
-            CityBase city = GameManager.Inst.GameMap.GetPlace(player.Position) as CityBase;
-            city.PayUsePrice(player);
-            player.PlayerTurnEnd();
-        }
+        //if (goldenKey == GoldenKeyType.IslandEscapeTicket)
+        //{
+        //    player.PlayerMoveProcess();
+        //}
+        //else if (goldenKey == GoldenKeyType.FreePassTicket)
+        //{
+        //    CityBase city = GameManager.Inst.GameMap.GetPlace(player.Position) as CityBase;
+        //    city.PayUsePrice(player);
+        //    player.PlayerTurnEnd();
+        //}
 
         PanelEnd(); // 종료
     }

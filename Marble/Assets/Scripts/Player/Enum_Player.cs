@@ -20,5 +20,5 @@ public enum PlayerState
     DiceRoll,       // 주사위 굴리기
     RollResult,     // 주사위 굴린 결과 처리
     TurnEnd,        // 턴 종료
-    WaitStart       // 시작대기
+    WaitStart       // 시작대기(플레이어 큐에 들어가 있는 상황)
 }

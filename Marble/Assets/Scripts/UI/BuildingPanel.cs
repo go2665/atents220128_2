@@ -59,7 +59,7 @@ public class BuildingPanel : MonoBehaviour
         else
         {
             // UI를 끌 때
-            player.PlayerTurnEnd();
+            //player.PlayerTurnEnd();
             player = null;
             targetCity = null;
 

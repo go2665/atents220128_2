@@ -115,7 +115,7 @@ public class SpaceShipPanel : MonoBehaviour
     void OnClickNo()
     {
         Debug.Log("사용하지 않습니다.");
-        passenger.PlayerTurnEnd();
+        //passenger.PlayerTurnEnd();
         PanelEnd();
     }
 

@@ -19,14 +19,15 @@ public class Player : MonoBehaviour
 
     Material material;                  // 플레이어의 색상을 지정하기 위해 사용
 
-    PlayerState state;
-    bool isStatePause = false;
+    PlayerState state = PlayerState.WaitStart;    
     System.Action[] stateUpdates;
 
     readonly List<CityBase> ownedCities = new();            // 보유한 도시 목록
     readonly List<GoldenKeyType> ownedGoldenKey = new();    // 보유한 황금 카드 목록
 
+    protected UI_Manager ui_Manager;
 
+    public PlayerState State => state;
 
     //bool panelWaiting = false;
     //int actionCount = 0;                // 행동력
@@ -121,6 +122,11 @@ public class Player : MonoBehaviour
         gameObject.name = $"Player_{playerType}";   // 플레이어 이름 설정
 
         map = GameManager.Inst.GameMap;
+    }
+
+    private void Start()
+    {
+        ui_Manager = GameManager.Inst.UI_Manager;
     }
 
     ///// <summary>
@@ -374,6 +380,7 @@ public class Player : MonoBehaviour
     {
         Place place = map.GetPlace(mapID);
         transform.position = place.GetPlayerPosition(Type);
+        Position = mapID;
     }
 
     /// <summary>
@@ -416,6 +423,15 @@ public class Player : MonoBehaviour
     //    return islandWaitTime;
     //}
 
+    // 결과가 true면 탈출 성공
+    public bool TryIslandEscape()
+    {
+        dice.Roll();
+        return dice.IsLastDouble;
+    }
+
+    bool isStatePause = false;
+
     public void OnPanelOpen()
     {
         //panelWaiting = true;
@@ -428,33 +444,107 @@ public class Player : MonoBehaviour
         isStatePause = false;
     }
 
+
     private void Update()
     {
         stateUpdates[(int)state]();
     }
 
+    public void StateChange(PlayerState newState)
+    {
+        ExitState(state);   // 이전 상태 빠져나오기
+        string log = $"{gameObject.name} : {state}에서 {newState}로 상태 전환";
+        Debug.Log(log);
+        state = newState;
+        EnterState(state);  // 새 상태 들어가기
+        
+    }
 
-    void Update_TurnStart()
+    protected virtual void ExitState(PlayerState newState)
+    {
+        switch (newState)
+        {
+            case PlayerState.TurnStart:
+                break;
+            case PlayerState.DiceRoll:
+                dice.Roll();
+                break;
+            case PlayerState.RollResult:
+                break;
+            case PlayerState.TurnEnd:
+                break;
+            case PlayerState.WaitStart:
+                break;
+            default:
+                break;
+        }
+    }
+
+    protected virtual void EnterState(PlayerState newState)
+    {
+        switch (newState)
+        {
+            case PlayerState.TurnStart:
+                if (ui_Manager == null)
+                    ui_Manager = GameManager.Inst.UI_Manager;
+                ui_Manager.SetResultText($"{this.Type} : 턴 시작");                
+                break;
+            case PlayerState.DiceRoll:
+                ui_Manager.SetResultText($"{this.Type}가 주사위를 굴립니다.");
+                ui_Manager.ShowDiceRollPanel(true, this);
+                break;
+            case PlayerState.RollResult:
+                ui_Manager.SetResultText($"{this.Type}가 ({dice[0]}, {dice[1]})가 나왔습니다.");
+                Move(dice.LastResult);
+                break;
+            case PlayerState.TurnEnd:
+                int i = 0;
+                break;
+            case PlayerState.WaitStart:
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    protected virtual void Update_TurnStart()
+    {
+        if (!isStatePause)
+        {
+            StateChange(PlayerState.DiceRoll);
+        }
+    }
+
+    protected virtual void Update_DiceRoll()
+    {
+        if(!isStatePause)
+        {
+            StateChange(PlayerState.RollResult);         
+        }
+    }
+
+    protected virtual void Update_RollResult()
+    {
+        if (!isStatePause)
+        {
+            if( dice.IsLastDouble )
+            {
+                StateChange(PlayerState.DiceRoll);
+            }
+            else
+            {
+                StateChange(PlayerState.TurnEnd);
+            }
+        }
+    }
+
+    protected virtual void Update_TurnEnd()
     {
 
     }
 
-    void Update_DiceRoll()
-    {
-
-    }
-
-    void Update_RollResult()
-    {
-
-    }
-
-    void Update_TurnEnd()
-    {
-
-    }
-
-    void Update_WaitStart()
+    protected virtual void Update_WaitStart()
     {
 
     }

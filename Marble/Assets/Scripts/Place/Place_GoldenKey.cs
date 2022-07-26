@@ -22,13 +22,13 @@ public class Place_GoldenKey : Place
     {
         //Debug.Log($"{player} : 황금 열쇠를 엽니다.");
         arrivePlayer = player;
-        GameManager.Inst.UI_Manager.ShowGoldenKeyDrawPanel(true, player, OnPanelClose);
+        GameManager.Inst.UI_Manager.ShowGoldenKeyDrawPanel(true, player);
 
     }
 
-    void OnPanelClose()
-    {
-        base.OnArrive(arrivePlayer);
-        arrivePlayer = null;
-    }
+    //void OnPanelClose()
+    //{
+    //    base.OnArrive(arrivePlayer);
+    //    arrivePlayer = null;
+    //}
 }

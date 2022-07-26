@@ -16,7 +16,7 @@ public class GoldenKeyDrawPanel : MonoBehaviour, IPointerClickHandler
     GoldenKeyType drawCard;
     int clickCount = 0;
 
-    System.Action OnClose;
+    //System.Action OnClose;
 
     private void Awake()
     {
@@ -32,7 +32,7 @@ public class GoldenKeyDrawPanel : MonoBehaviour, IPointerClickHandler
         goldenKeyManager = GameManager.Inst.GoldenKeyManager;
     }
 
-    public void Show(bool isShow, Player player, System.Action onClose)
+    public void Show(bool isShow, Player player)
     {
         if (isShow)
         {
@@ -42,7 +42,8 @@ public class GoldenKeyDrawPanel : MonoBehaviour, IPointerClickHandler
             mainCanvasGroup.blocksRaycasts = true;
             subCanvasGroup.alpha = 0;
             goldenKeyPicker = player;
-            OnClose = onClose;
+            player.OnPanelOpen();
+            //OnClose = onClose;
         }
         else
         {
@@ -52,9 +53,10 @@ public class GoldenKeyDrawPanel : MonoBehaviour, IPointerClickHandler
             subCanvasGroup.alpha = 0;
             cardName.text = "";
             cardDescription.text = "";
+            player.OnPanelClose();
             goldenKeyPicker = null;
-            OnClose?.Invoke();
-            OnClose = null;
+            //OnClose?.Invoke();
+            //OnClose = null;
         }
     }
 
@@ -76,7 +78,7 @@ public class GoldenKeyDrawPanel : MonoBehaviour, IPointerClickHandler
             // 뽑은 카드 적용
             Debug.Log($"{goldenKeyManager.GetCardName(drawCard)} 카드를 적용한다.");
             goldenKeyManager.RunGoldenCard(drawCard, goldenKeyPicker);
-            Show(false, null, null);
+            Show(false, goldenKeyPicker);
         }        
 
         clickCount++;

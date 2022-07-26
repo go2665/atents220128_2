@@ -97,7 +97,7 @@ public class BuyPanel : MonoBehaviour
     /// </summary>
     void PanelEnd()
     {
-        player.PlayerTurnEnd();
+        //player.PlayerTurnEnd();
         Show(false, null, null);
     }
 

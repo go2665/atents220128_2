@@ -62,10 +62,10 @@ public class Place : MonoBehaviour
 
     protected virtual void ArrivePlaceAction(Player player)
     {
-        player.PlayerTurnEnd();
     }
 
-    public virtual void TurnStartPlaceAction(Player player)
+    public virtual PlayerState TurnStartPlaceAction(Player player)
     {
+        return PlayerState.TurnStart;
     }
 }
