@@ -66,6 +66,6 @@ public class Place : MonoBehaviour
 
     public virtual PlayerState TurnStartPlaceAction(Player player)
     {
-        return PlayerState.TurnStart;
+        return PlayerState.DiceRoll;
     }
 }

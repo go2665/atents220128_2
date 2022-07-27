@@ -28,23 +28,50 @@ public class Place_Island : Place
         victimList = new List<Victim>(4);
     }
 
-    public override void OnArrive(Player player)
-    {        
-        //Debug.Log($"{player} : 무인도에 도착했습니다.");
-        base.OnArrive(player);
+    //public override void OnArrive(Player player)
+    //{        
+    //    //Debug.Log($"{player} : 무인도에 도착했습니다.");
+    //    base.OnArrive(player);
+    //}
+
+    PlayerState TryIslandEscape(Player player)
+    {
+        PlayerState result = PlayerState.TurnEnd;
+        if (player.TryIslandEscapeRoll())
+        {
+            Debug.Log($"{player} : 더블. 무인도에서 탈출 성공.");
+            GameManager.Inst.UI_Manager.ShowMessagePanel(true, player, "무인도에서 탈출 성공!");
+            EscapeIsland(player);
+            result = PlayerState.DiceRoll;
+        }
+        else
+        {
+            GameManager.Inst.UI_Manager.ShowMessagePanel(true, player, "무인도에서 탈출 실패...");
+            Debug.Log($"{player} : 무인도에서 탈출 시도 실패");
+        }
+
+        return result;
     }
+
 
     protected override void ArrivePlaceAction(Player player)
     {
         Debug.Log($"{player} : 무인도에서 {waitTime}턴간 대기.");
         //player.OnArriveIsland(waitCount);
         victimList.Add(new(player, waitTime));
+
+        if (player.IsLastDiceDouble())
+        {
+            PlayerState result = TryIslandEscape(player);
+            player.StateChange(result);
+        }
+
         base.ArrivePlaceAction(player);
     }
 
     public override PlayerState TurnStartPlaceAction(Player player)
     {
-        PlayerState playerState = PlayerState.TurnStart;
+        PlayerState playerState = PlayerState.DiceRoll;
 
         //victimList에 플레이어가 있으면 갇힌상태
         Victim victim = victimList.Find((x) => x.player == player);
@@ -60,7 +87,7 @@ public class Place_Island : Place
                 {
                     // 사람이면 사용할지 물어보기
                     GameManager.Inst.UI_Manager.ShowUseGoldenKeyPanel(true, player, GoldenKeyType.IslandEscapeTicket);
-                    return;
+                    return PlayerState.WaitPanelResponse;
 
                     // Player의 상태 중에 대기 상태 만들기
                     // 대기 상태로 들어가면 아무것도 안함
@@ -70,25 +97,29 @@ public class Place_Island : Place
                 {
                     // CPU면 그냥 사용하기
                     player.UseGoldenKey(GoldenKeyType.IslandEscapeTicket);
-                    GameManager.Inst.UI_Manager.ShowMessagePanel(true, player, "무인도 탈출권 사용!");
-                    EscapeIsland(player);
+                    GameManager.Inst.UI_Manager.ShowMessagePanel(true, player, "무인도 탈출권 사용!");                    
                     return playerState;
                 }
             }
 
             // 더블이 나오는가?
-            if(player.TryEscapeIsland())
+            playerState = TryIslandEscape(player);
+            if(playerState == PlayerState.DiceRoll)
             {
-                Debug.Log($"{player} : 더블. 무인도에서 탈출 성공.");
-                GameManager.Inst.UI_Manager.ShowMessagePanel(true, player, "무인도에서 탈출 성공!" );
-                EscapeIsland(player);
                 return playerState;
             }
-            else
-            {
-                GameManager.Inst.UI_Manager.ShowMessagePanel(true, player, "무인도에서 탈출 실패...");
-                Debug.Log($"{player} : 무인도에서 탈출 시도 실패");
-            }
+            //if(player.TryIslandEscapeRoll())
+            //{
+            //    Debug.Log($"{player} : 더블. 무인도에서 탈출 성공.");
+            //    GameManager.Inst.UI_Manager.ShowMessagePanel(true, player, "무인도에서 탈출 성공!" );
+            //    EscapeIsland(player);
+            //    return playerState;
+            //}
+            //else
+            //{
+            //    GameManager.Inst.UI_Manager.ShowMessagePanel(true, player, "무인도에서 탈출 실패...");
+            //    Debug.Log($"{player} : 무인도에서 탈출 시도 실패");
+            //}
 
             victim.waitRemain--;
             if (victim.waitRemain < 1)

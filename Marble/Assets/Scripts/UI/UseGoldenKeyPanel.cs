@@ -58,6 +58,8 @@ public class UseGoldenKeyPanel : MonoBehaviour
             canvasGroup.alpha = 0;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
+
+            user.StateChange(PlayerState.TurnEnd);
         }
     }
 
@@ -65,14 +67,6 @@ public class UseGoldenKeyPanel : MonoBehaviour
     {
         Debug.Log("사용한다.");
         player.UseGoldenKey(goldenKey);
-        //if (goldenKey == GoldenKeyType.IslandEscapeTicket)
-        //{
-        //    player.PlayerTurnStart();
-        //}
-        //else if(goldenKey == GoldenKeyType.FreePassTicket)
-        //{
-        //    player.PlayerTurnEnd();
-        //}
 
         PanelEnd(); // 종료
     }

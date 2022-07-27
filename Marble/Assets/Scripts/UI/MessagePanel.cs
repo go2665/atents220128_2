@@ -30,7 +30,6 @@ public class MessagePanel : MonoBehaviour, IPointerClickHandler
     {        
         if ( isShow )
         {
-            targetPlayer.OnPanelOpen();
             messageText.text = message;
             canvasGroup.alpha = 1;
             canvasGroup.interactable = true;
@@ -41,7 +40,7 @@ public class MessagePanel : MonoBehaviour, IPointerClickHandler
             canvasGroup.alpha = 0;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
-            targetPlayer.OnPanelClose();
+            targetPlayer.OldStateRollback();
         }
         target = targetPlayer;
     }

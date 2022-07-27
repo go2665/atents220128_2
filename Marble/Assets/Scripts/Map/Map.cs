@@ -313,11 +313,11 @@ public class Map : MonoBehaviour
         return (float)remaingPlaceCount / (float)cityBaseCount;
     }
 
-    public Place NotOwnedExpensivePlace(Player player)
+    public Place NoOwnerExpensivePlace(Player player)
     {
         CityBase expensiveCity = null;
         int expensiveCityPrice = 0;
-        for (MapID id = MapID.Start; id < MapID.Seoul; id++)
+        for (MapID id = MapID.Start; id <= MapID.Seoul; id++)
         {
             CityBase city = GetPlace(id) as CityBase;
             if (city != null)

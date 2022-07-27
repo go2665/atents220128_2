@@ -27,7 +27,6 @@ public class DiceRollPanel : MonoBehaviour, IPointerClickHandler
     {        
         if ( isShow )
         {
-            targetPlayer.OnPanelOpen();
             canvasGroup.alpha = 1;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
@@ -37,7 +36,7 @@ public class DiceRollPanel : MonoBehaviour, IPointerClickHandler
             canvasGroup.alpha = 0;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
-            targetPlayer.OnPanelClose();
+            targetPlayer.StateChange(PlayerState.RollResult);
         }
         target = targetPlayer;
     }
@@ -49,6 +48,7 @@ public class DiceRollPanel : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         //Debug.Log("DiceRollPanel");
+        target.DiceRoll();
         Show(false, target);    // 닫고
 
         //Player player = GameManager.Inst.GetPlayer(PlayerType.Human);

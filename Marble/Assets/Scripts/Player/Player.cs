@@ -19,7 +19,9 @@ public class Player : MonoBehaviour
 
     Material material;                  // 플레이어의 색상을 지정하기 위해 사용
 
-    PlayerState state = PlayerState.WaitStart;    
+    PlayerState state = PlayerState.WaitStart;
+    PlayerState oldState = PlayerState.WaitStart;
+    bool waitPlaceAction = false;
     System.Action[] stateUpdates;
 
     readonly List<CityBase> ownedCities = new();            // 보유한 도시 목록
@@ -98,6 +100,7 @@ public class Player : MonoBehaviour
         stateUpdates[(int)PlayerState.RollResult] = Update_RollResult;
         stateUpdates[(int)PlayerState.TurnEnd] = Update_TurnEnd;
         stateUpdates[(int)PlayerState.WaitStart] = Update_WaitStart;
+        stateUpdates[(int)PlayerState.WaitPanelResponse] = Update_WaitPanelResponse;
     }
 
     /// <summary>
@@ -261,7 +264,7 @@ public class Player : MonoBehaviour
             {
                 for (int i = 2; i >= 0; i--)
                 {
-                    float temp = city.buildingDatas[i].usePrice / city.buildingDatas[i].price;
+                    float temp = city.buildingDatas[i].usePrice - city.buildingDatas[i].price;
                     if (temp > efficient)
                     {
                         efficient = temp;
@@ -316,6 +319,8 @@ public class Player : MonoBehaviour
         if (type == GoldenKeyType.IslandEscapeTicket)
         {
             // 무인도가 가지는 갇힌 플레이어 목록에서 제거
+            Place_Island island = map.GetPlace(MapID.Island) as Place_Island;
+            island.EscapeIsland(this);
         }
         else
         {
@@ -370,7 +375,7 @@ public class Player : MonoBehaviour
         dice.testDice2 = two;
     }
 
-    public bool TryEscapeIsland()
+    public bool TryIslandEscapeRoll()
     {
         dice.Roll();
         return dice.IsLastDouble;
@@ -423,32 +428,15 @@ public class Player : MonoBehaviour
     //    return islandWaitTime;
     //}
 
-    // 결과가 true면 탈출 성공
-    public bool TryIslandEscape()
-    {
-        dice.Roll();
-        return dice.IsLastDouble;
-    }
-
-    bool isStatePause = false;
-
-    public void OnPanelOpen()
-    {
-        //panelWaiting = true;
-        isStatePause = true;
-    }
-
-    public void OnPanelClose()
-    {
-        //panelWaiting = false;
-        isStatePause = false;
-    }
-
 
     private void Update()
     {
         stateUpdates[(int)state]();
     }
+
+    public void DiceRoll() => dice.Roll();
+
+    public bool IsLastDiceDouble() => dice.IsLastDouble;
 
     public void StateChange(PlayerState newState)
     {
@@ -460,11 +448,17 @@ public class Player : MonoBehaviour
         
     }
 
+    public void OldStateRollback()
+    {
+        StateChange(oldState);
+    }
+
     protected virtual void ExitState(PlayerState newState)
     {
         switch (newState)
         {
             case PlayerState.TurnStart:
+                waitPlaceAction = false;
                 break;
             case PlayerState.DiceRoll:
                 dice.Roll();
@@ -475,9 +469,12 @@ public class Player : MonoBehaviour
                 break;
             case PlayerState.WaitStart:
                 break;
+            case PlayerState.WaitPanelResponse:
+                break;
             default:
                 break;
         }
+        oldState = state;
     }
 
     protected virtual void EnterState(PlayerState newState)
@@ -487,20 +484,23 @@ public class Player : MonoBehaviour
             case PlayerState.TurnStart:
                 if (ui_Manager == null)
                     ui_Manager = GameManager.Inst.UI_Manager;
-                ui_Manager.SetResultText($"{this.Type} : 턴 시작");                
+                ui_Manager.SetResultText($"{this.Type} : 턴 시작");
+                waitPlaceAction = true;
                 break;
             case PlayerState.DiceRoll:
                 ui_Manager.SetResultText($"{this.Type}가 주사위를 굴립니다.");
                 ui_Manager.ShowDiceRollPanel(true, this);
+                StateChange(PlayerState.WaitPanelResponse);
                 break;
             case PlayerState.RollResult:
                 ui_Manager.SetResultText($"{this.Type}가 ({dice[0]}, {dice[1]})가 나왔습니다.");
                 Move(dice.LastResult);
                 break;
             case PlayerState.TurnEnd:
-                int i = 0;
                 break;
             case PlayerState.WaitStart:
+                break;
+            case PlayerState.WaitPanelResponse:
                 break;
             default:
                 break;
@@ -510,7 +510,7 @@ public class Player : MonoBehaviour
 
     protected virtual void Update_TurnStart()
     {
-        if (!isStatePause)
+        if (!waitPlaceAction)
         {
             StateChange(PlayerState.DiceRoll);
         }
@@ -518,24 +518,18 @@ public class Player : MonoBehaviour
 
     protected virtual void Update_DiceRoll()
     {
-        if(!isStatePause)
-        {
-            StateChange(PlayerState.RollResult);         
-        }
+        StateChange(PlayerState.RollResult);         
     }
 
     protected virtual void Update_RollResult()
     {
-        if (!isStatePause)
+        if( dice.IsLastDouble )
         {
-            if( dice.IsLastDouble )
-            {
-                StateChange(PlayerState.DiceRoll);
-            }
-            else
-            {
-                StateChange(PlayerState.TurnEnd);
-            }
+            StateChange(PlayerState.DiceRoll);
+        }
+        else
+        {
+            StateChange(PlayerState.TurnEnd);
         }
     }
 
@@ -545,6 +539,11 @@ public class Player : MonoBehaviour
     }
 
     protected virtual void Update_WaitStart()
+    {
+
+    }
+
+    protected virtual void Update_WaitPanelResponse()
     {
 
     }

@@ -42,7 +42,6 @@ public class GoldenKeyDrawPanel : MonoBehaviour, IPointerClickHandler
             mainCanvasGroup.blocksRaycasts = true;
             subCanvasGroup.alpha = 0;
             goldenKeyPicker = player;
-            player.OnPanelOpen();
             //OnClose = onClose;
         }
         else
@@ -53,7 +52,7 @@ public class GoldenKeyDrawPanel : MonoBehaviour, IPointerClickHandler
             subCanvasGroup.alpha = 0;
             cardName.text = "";
             cardDescription.text = "";
-            player.OnPanelClose();
+            player.OldStateRollback();
             goldenKeyPicker = null;
             //OnClose?.Invoke();
             //OnClose = null;

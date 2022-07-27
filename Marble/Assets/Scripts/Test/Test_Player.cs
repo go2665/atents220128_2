@@ -33,6 +33,34 @@ public class Test_Player : MonoBehaviour
 
         Test_Island_Normal();
 
+        //Test_SpaceShipUse();
+    }
+
+    private static void Test_SpaceShipUse()
+    {
+        Player p1 = GameManager.Inst.GetPlayer(PlayerType.Human);
+        p1.TestDice(1, 2);
+        p1.SetPosition(MapID.SpaceShip - 3);
+        Player p2 = GameManager.Inst.GetPlayer(PlayerType.CPU1);
+        p2.TestDice(1, 2);
+        p2.SetPosition(MapID.SpaceShip - 3);
+        Player p3 = GameManager.Inst.GetPlayer(PlayerType.CPU2);
+        p3.TestDice(1, 2);
+        Player p4 = GameManager.Inst.GetPlayer(PlayerType.CPU3);
+        p4.SetPosition(MapID.SpaceShip - 3);
+        p4.TestDice(1, 2);
+
+        Map map = GameManager.Inst.GameMap;
+        City city = null;
+
+        city = (City)map.GetPlace(MapID.NewYork);
+        city.Sell(PlayerType.CPU3);
+        city = (City)map.GetPlace(MapID.Cairo);
+        city.Sell(PlayerType.CPU3);
+        city.MakeBuildings(new int[] { 1, 1, 1 });
+
+        p2.Money = 0;
+        p4.Money = 5000;
     }
 
     private static void Test_Island_Normal()
@@ -45,7 +73,7 @@ public class Test_Player : MonoBehaviour
         p3.TestDice(1, 2);
         Player p4 = GameManager.Inst.GetPlayer(PlayerType.CPU3);
         //p4.SetPosition(MapID.Fund_Pay - 3);
-        p4.AddGoldenKey(GoldenKeyType.IslandEscapeTicket);
+        //p4.AddGoldenKey(GoldenKeyType.IslandEscapeTicket);
         p4.TestDice(6, 4);
     }
 

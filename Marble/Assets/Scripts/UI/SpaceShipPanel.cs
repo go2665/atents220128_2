@@ -19,6 +19,9 @@ public class SpaceShipPanel : MonoBehaviour
 
     Player passenger;
 
+    Place_SpaceShip spaceShip;
+    CityBase coumbia;
+
     /// <summary>
     /// 자식 UI들의 알파값을 조절하기 위한 캔버스 그룹
     /// </summary>
@@ -38,7 +41,13 @@ public class SpaceShipPanel : MonoBehaviour
         noButton.onClick.AddListener(OnClickNo);
         availiableText = transform.Find("AvailiableText").GetComponent<TextMeshProUGUI>();
         targetSelectCanvasGroup = transform.Find("TargetSelectPanel").GetComponent<CanvasGroup>();
-    }    
+    }
+
+    private void Start()
+    {
+        spaceShip = GameManager.Inst.GameMap.GetPlace(MapID.SpaceShip) as Place_SpaceShip;
+        coumbia = GameManager.Inst.GameMap.GetPlace(MapID.Columbia) as CityBase;
+    }
 
     private void OnDisable()
     {
@@ -73,6 +82,7 @@ public class SpaceShipPanel : MonoBehaviour
         }
         else
         {
+            passenger = null;
             canvasGroup.alpha = 0;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
@@ -84,7 +94,6 @@ public class SpaceShipPanel : MonoBehaviour
         Debug.Log("사용합니다.");        
 
         // 탑승할 경우
-        CityBase coumbia = GameManager.Inst.GameMap.GetPlace(MapID.Columbia) as CityBase;
         Player ownerPlayer = GameManager.Inst.GetPlayer(coumbia.Owner);
 
         passenger.Money -= Place_SpaceShip.shipUsePrice;
@@ -105,16 +114,16 @@ public class SpaceShipPanel : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit,  10.0f, LayerMask.GetMask("Place")))
         {
             Place place = hit.collider.GetComponentInParent<Place>();
-            passenger.Move(place.ID);
-            
-            Debug.Log($"{place.placeName}로 이동합니다.");
+            //passenger.Move(place.ID);
+            spaceShip.AddPassenger(passenger, place.ID);
+            Debug.Log($"{passenger} : {place.ID}로 이동할 예정");
             PanelEnd();
         }
     }
 
     void OnClickNo()
     {
-        Debug.Log("사용하지 않습니다.");
+        Debug.Log($"{passenger} : {spaceShip.placeName}을 사용하지 않습니다.");
         //passenger.PlayerTurnEnd();
         PanelEnd();
     }
@@ -125,7 +134,7 @@ public class SpaceShipPanel : MonoBehaviour
         targetSelectCanvasGroup.blocksRaycasts = false;
 
         actions.SpaceShip.Disable();
-        passenger = null;
-        Show(false, null);
+        passenger.StateChange(PlayerState.TurnEnd);
+        Show(false, passenger);
     }
 }
